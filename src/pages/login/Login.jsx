@@ -1,18 +1,32 @@
-import React from 'react'
-import { useNavigate } from 'react-router-dom'
+import {Autocomplete, AutocompleteItem} from "@nextui-org/react";
+import {roles} from "./roles/roles";
+import { useNavigate } from "react-router-dom";
 
-export const Login = () => {
-   const  navigate = useNavigate();
+export function Login() {
+const navigate = useNavigate();
 
-    const handleSiguiente = ()=>{
-        navigate('/home');
-
-    }
+const handleSelection = (selectedKey) => {
+  switch (selectedKey) {
+    case "admin":
+      navigate("/home"); 
+      break;
+  
+  }
+};
 
   return (
-   <>
-    <h1>Login</h1>
-    <button onClick={handleSiguiente} >siguiente</button>
-   </>
-  )
+    <Autocomplete
+      isRequired
+      label="Selecciona tu rol"
+      defaultItems={roles}
+      placeholder="Roles"
+      defaultSelectedKey="cat"
+      className="max-w-xs"
+      onSelectionChange={handleSelection}
+    >
+      {(item) => <AutocompleteItem key={item.value}>{item.label}</AutocompleteItem>}
+    </Autocomplete>
+  );
 }
+
+export default Login;
