@@ -16,7 +16,7 @@ export const Home = () => {
         <NavBar />
         <MainContent>
           <Sidebar>
-            <MenuItem onClick={() => handleMenuClick('Home')}>Home</MenuItem>
+            <MenuItem onClick={() => handleMenuClick('Colectivos')}>Colectivos</MenuItem>
             <MenuItem onClick={() => handleMenuClick('Profile')}>Profile</MenuItem>
             <MenuItem onClick={() => handleMenuClick('Settings')}>Settings</MenuItem>
           </Sidebar>
