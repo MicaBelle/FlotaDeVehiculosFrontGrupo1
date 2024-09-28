@@ -62,7 +62,7 @@ export const Login = () => {
     <StyledWrapper>
       <div className="card">
         <div className="card2">
-          <form className="form" onSubmit={handleLogin}>
+          <form className="form" onSubmit={handleLogin}> 
             <p id="heading">Iniciar sesión</p>
             <div className="field">
               <svg
@@ -117,17 +117,24 @@ export const Login = () => {
 };
 
 const StyledWrapper = styled.div`
+  display: flex; 
+  justify-content: center; 
+  align-items: center; 
+  height: 100vh; 
+  background-color: #f0f0f0; 
+
   .form {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  padding-left: 2em;
-  padding-right: 2em;
-  padding-bottom: 0.4em;
-  background-color: #171717;
-  border-radius: 25px;
-  transition: 0.4s ease-in-out;
-}
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding-left: 2em;
+    padding-right: 2em;
+    padding-bottom: 0.4em;
+    background-color: #171717;
+    border-radius: 25px;
+    transition: 0.4s ease-in-out;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5); /* (Opcional) Sombra para el formulario */
+  }
 
 .card {
   background-image: linear-gradient(163deg, #00ff75 0%, #3700ff 100%);
