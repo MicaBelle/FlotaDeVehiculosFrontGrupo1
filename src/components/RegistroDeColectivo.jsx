@@ -24,7 +24,7 @@ export const RegistroDeColectivo = () => {
     
     console.log('Registro guardado:', formData);
     
-    // Aquí podrías agregar la lógica para guardar el registro en la API o el estado global
+    // registrarlo en la api
   };
 
   return (
