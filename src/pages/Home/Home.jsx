@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux'; // Importar useSelector para acceder al estado de Redux
 import NavBar from '../../components/NavBar';
 import Principal from '../../components/Principal';
 import styled from 'styled-components';
 
 export const Home = () => {
   const [activeMenu, setActiveMenu] = useState('Home');
+  const userRole = useSelector((state) => state.user.role); 
 
   const handleMenuClick = (menu) => {
     setActiveMenu(menu);
@@ -16,9 +18,10 @@ export const Home = () => {
         <NavBar />
         <MainContent>
           <Sidebar>
+            {userRole === 'admin' && ( 
+              <MenuItem onClick={() => handleMenuClick('Registro')}>Registro</MenuItem>
+            )}
             <MenuItem onClick={() => handleMenuClick('Colectivos')}>Colectivos</MenuItem>
-            <MenuItem onClick={() => handleMenuClick('Profile')}>Profile</MenuItem>
-            <MenuItem onClick={() => handleMenuClick('Settings')}>Settings</MenuItem>
           </Sidebar>
           <ContentArea>
             <Principal activeMenu={activeMenu} />
@@ -28,7 +31,6 @@ export const Home = () => {
     </>
   );
 };
-
 
 const DashboardWrapper = styled.div`
   display: flex;
@@ -60,3 +62,5 @@ const ContentArea = styled.div`
   padding: 1em;
   background-color: #fff;
 `;
+
+export default Home;
