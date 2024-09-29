@@ -1,5 +1,5 @@
 import React from 'react';
-import LogoNavBar from '/src/assets/Images/LogoNavBar.jpeg'; 
+import LogoNavBar from '../../assets/Images/LogoNavBar.jpeg'; 
 
 export const NavBarLogo = () => {
   return (

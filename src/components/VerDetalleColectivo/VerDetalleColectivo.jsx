@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card, CardHeader, CardBody, CardFooter, Divider, Button, Image } from "@nextui-org/react";
-import colectivoImagen from '../assets/Images/LogoNavBar.jpeg'
+import colectivoImagen from '../../assets/Images/LogoNavBar.jpeg'
 
 export const VerDetalleColectivo = ({ colectivo, irAtras, editar}) => {
   return (

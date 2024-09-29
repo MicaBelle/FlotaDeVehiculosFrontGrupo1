@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { setUser } from '../../components/store/userSlice';
+import { setUser } from '../store/userSlice';
 import styled from "styled-components";
 
 //import axios from 'axios'; // Para hacer la llamada al backend

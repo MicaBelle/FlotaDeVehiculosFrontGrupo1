@@ -1,8 +1,8 @@
 import React from 'react';
 import { useSelector } from 'react-redux'; 
-import TablaDeColectivos from './tablaColectivos';
-import { RegistroDeColectivo } from './RegistroDeColectivo';
-import { HistorialDeMantenimientos } from './HistorialDeMantenimientos';
+import TablaDeColectivos from '../TablaColectivos/TablaColectivos';
+import { RegistroDeColectivo } from '../RegistroDeCoelctivo/RegistroDeColectivo';
+import { HistorialDeMantenimientos } from '../HistorialDeMantenimiento/HistorialDeMantenimientos';
 
 
 export const Principal = ({ activeMenu }) => {

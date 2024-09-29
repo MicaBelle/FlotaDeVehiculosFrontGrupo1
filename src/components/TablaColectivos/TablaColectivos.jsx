@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, getKeyValue } from "@nextui-org/react";
-import VerDetalleColectivo from './VerDetalleColectivo';
+import VerDetalleColectivo from '../VerDetalleColectivo/VerDetalleColectivo';
 
 const columns = [
   { key: "patente", label: "PATENTE" },

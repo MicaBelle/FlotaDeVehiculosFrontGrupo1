@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../styles/registroDeColectivo.css';
+import './styles/registroDeColectivo.css';
 
 export const RegistroDeColectivo = () => {
   const [formData, setFormData] = useState({
