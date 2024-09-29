@@ -22,6 +22,7 @@ export const Home = () => {
               <MenuItem onClick={() => handleMenuClick('Registro')}>Registro</MenuItem>
             )}
             <MenuItem onClick={() => handleMenuClick('Colectivos')}>Colectivos</MenuItem>
+            <MenuItem onClick={() => handleMenuClick('Mantenimientos')}>Mantenimientos</MenuItem>
           </Sidebar>
           <ContentArea>
             <Principal activeMenu={activeMenu} />
