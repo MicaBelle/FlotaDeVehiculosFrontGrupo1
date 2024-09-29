@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import TablaDeColectivos from './tablaColectivos';
 import { RegistroDeColectivo } from './RegistroDeColectivo';
 
+
 export const Principal = ({ activeMenu }) => {
   const userRole = useSelector((state) => state.user.role); 
 
