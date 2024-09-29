@@ -13,38 +13,8 @@ const columns = [
 ];
 
 export function TablaDeColectivos({ userRole }) {
-  const [rows, setRows] = useState([]);
+  const [filas, setFilas] = useState([]);
   const [selectedColectivo, setSelectedColectivo] = useState(null); 
-
-  /*export function TablaDeColectivos() {
-  const [rows, setRows] = useState([]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get('/api/colectivos'); 
-        const data = response.data;
-
-        
-        const mappedRows = data.map((item, index) => ({
-          key: index.toString(),
-          patente: item.patente,
-          chasis: item.chasis,
-          antiguedad: item.antiguedad,
-          kilometraje: item.kilometraje,
-          litrosTanque: item.litrosTanque || 800,
-          chofer: item.chofer,
-        }));
-
-        setRows(mappedRows);
-      } catch (error) {
-        console.error("Error fetching data: ", error);
-      }
-    };
-
-    fetchData();
-  }, []);*/
-
 
   useEffect(() => {
     const mockData = [
@@ -64,26 +34,29 @@ export function TablaDeColectivos({ userRole }) {
       chofer: item.chofer,
     }));
 
-    setRows(mappedRows);
+    setFilas(mappedRows);
   }, []);
 
   const handleVerDetalle = (colectivo) => {
     setSelectedColectivo(colectivo); 
   };
 
-  const handleDelete = (patente) => {
-    console.log(`Eliminando colectivo con patente: ${patente}`);
+  const handleIrAtras = () => {
+    setSelectedColectivo(null); 
+  };
+
+  const handleEditar = () => {
+    alert('Función para editar colectivo');
   };
 
   return (
     <div>
-      
       {!selectedColectivo ? (
         <Table aria-label="Tabla de Colectivos">
           <TableHeader columns={columns}>
             {(column) => <TableColumn key={column.key}>{column.label}</TableColumn>}
           </TableHeader>
-          <TableBody items={rows}>
+          <TableBody items={filas}>
             {(item) => (
               <TableRow key={item.key}>
                 {(columnKey) => {
@@ -92,7 +65,7 @@ export function TablaDeColectivos({ userRole }) {
                     return userRole === "admin" ? (
                       <TableCell>
                         <Button color="primary" onClick={() => handleVerDetalle(item)}>Ver detalle</Button>
-                        <Button color="danger" onClick={() => handleDelete(item.patente)}>Eliminar</Button>
+                        <Button color="danger" onClick={() => console.log(`Eliminar: ${item.patente}`)}>Eliminar</Button>
                       </TableCell>
                     ) : (
                       <TableCell>No tienes permisos</TableCell>
@@ -105,11 +78,39 @@ export function TablaDeColectivos({ userRole }) {
           </TableBody>
         </Table>
       ) : (
-        
-        <VerDetalleColectivo colectivo={selectedColectivo} />
+        <VerDetalleColectivo colectivo={selectedColectivo} irAtras={handleIrAtras} editar={handleEditar} />
       )}
     </div>
   );
 }
 
 export default TablaDeColectivos;
+
+/*export function TablaDeColectivos() {
+const [rows, setRows] = useState([]);
+
+useEffect(() => {
+  const fetchData = async () => {
+    try {
+      const response = await axios.get('/api/colectivos'); 
+      const data = response.data;
+
+      
+      const mappedRows = data.map((item, index) => ({
+        key: index.toString(),
+        patente: item.patente,
+        chasis: item.chasis,
+        antiguedad: item.antiguedad,
+        kilometraje: item.kilometraje,
+        litrosTanque: item.litrosTanque || 800,
+        chofer: item.chofer,
+      }));
+
+      setRows(mappedRows);
+    } catch (error) {
+      console.error("Error fetching data: ", error);
+    }
+  };
+
+  fetchData();
+}, []);*/
