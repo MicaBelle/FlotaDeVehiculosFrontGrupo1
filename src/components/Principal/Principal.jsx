@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import TablaDeColectivos from '../TablaColectivos/TablaColectivos';
 import { RegistroDeColectivo } from '../RegistroDeCoelctivo/RegistroDeColectivo';
 import { HistorialDeMantenimientos } from '../HistorialDeMantenimiento/HistorialDeMantenimientos';
+import RegistroControlesRutinarios from '../RegistroDeControlesRutinarios/RegistroDeControlesRutinarios';
 
 
 export const Principal = ({ activeMenu }) => {
@@ -11,6 +12,7 @@ export const Principal = ({ activeMenu }) => {
   return (
     <div>
       {activeMenu === 'Registro' && userRole === 'admin' && <RegistroDeColectivo />} 
+      {activeMenu === 'RegistroMantenimiento' && userRole === 'supervisor' && <RegistroControlesRutinarios />} 
       {activeMenu === 'Colectivos' && <TablaDeColectivos userRole={userRole} />} 
       {activeMenu === 'Mantenimientos' && <HistorialDeMantenimientos userRole={userRole} />} 
     </div>

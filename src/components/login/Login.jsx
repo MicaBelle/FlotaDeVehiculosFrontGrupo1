@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { setUser } from '../store/userSlice';
 import '../login/styles/login.css'
-import styled from "styled-components";
+
 
 //import axios from 'axios'; // Para hacer la llamada al backend
 
@@ -46,7 +46,7 @@ export const Login = () => {
    
     const mockUserData = {
       username: username || 'mockUser', 
-      role: 'admin', 
+      role: 'supervisor', 
     };
 
     
