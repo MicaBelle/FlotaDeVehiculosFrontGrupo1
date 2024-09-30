@@ -8,6 +8,7 @@ const columns = [
   { key: "antiguedad", label: "ANTIGÜEDAD" },
   { key: "kilometraje", label: "KILOMETRAJE" },
   { key: "litrosTanque", label: "LITROS DE TANQUE" },
+  { key: "estado", label: "ESTADO" },
   { key: "chofer", label: "CHOFER" },
   { key: "actions", label: "ACCIONES" },
 ];
@@ -18,10 +19,10 @@ export function TablaDeColectivos({ userRole }) {
 
   useEffect(() => {
     const mockData = [
-      { patente: "ABC123", chasis: "XYZ456", antiguedad: 5, kilometraje: 150000, litrosTanque: 800, chofer: "Juan Pérez" },
-      { patente: "DEF456", chasis: "UVW789", antiguedad: 3, kilometraje: 80000, litrosTanque: 800, chofer: "Ana Gómez" },
-      { patente: "GHI789", chasis: "RST012", antiguedad: 8, kilometraje: 200000, litrosTanque: 800, chofer: "Carlos Martínez" },
-      { patente: "JKL012", chasis: "OPQ345", antiguedad: 2, kilometraje: 50000, litrosTanque: 800, chofer: "Lucía Fernández" },
+      { patente: "ABC123", chasis: "XYZ456", antiguedad: 5, kilometraje: 150000, litrosTanque: 800,estado:"No disponible" , chofer: "Juan Pérez" },
+      { patente: "DEF456", chasis: "UVW789", antiguedad: 3, kilometraje: 80000, litrosTanque: 800,estado:"Disponible" , chofer: "Ana Gómez" },
+      { patente: "GHI789", chasis: "RST012", antiguedad: 8, kilometraje: 200000, litrosTanque: 800,estado:"No disponible" , chofer: "Carlos Martínez" },
+      { patente: "JKL012", chasis: "OPQ345", antiguedad: 2, kilometraje: 50000, litrosTanque: 800,estado:"Disponible" ,chofer: "Lucía Fernández" },
     ];
 
     const mappedRows = mockData.map((item, index) => ({
@@ -31,6 +32,7 @@ export function TablaDeColectivos({ userRole }) {
       antiguedad: item.antiguedad,
       kilometraje: item.kilometraje,
       litrosTanque: item.litrosTanque,
+      estado: item.estado,
       chofer: item.chofer,
     }));
 

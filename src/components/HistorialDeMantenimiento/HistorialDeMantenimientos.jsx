@@ -14,14 +14,14 @@ export const HistorialDeMantenimientos = () => {
 
      
       const mockData = [
-        { fecha: "2024-09-15", repuesto: "Filtro de aceite", realizadoPor: "Carlos Gómez" },
-        { fecha: "2024-08-10", repuesto: "Pastillas de freno", realizadoPor: "Ana Martínez" },
-        { fecha: "2024-07-22", repuesto: "Correa de distribución", realizadoPor: "Juan Pérez" },
-        { fecha: "2024-06-30", repuesto: "Neumáticos", realizadoPor: "Lucía Fernández" },
-        { fecha: "2024-05-12", repuesto: "Batería", realizadoPor: "Pedro López" },
-        { fecha: "2024-04-25", repuesto: "Amortiguadores", realizadoPor: "Marta Sánchez" },
-        { fecha: "2024-03-14", repuesto: "Aceite del motor", realizadoPor: "Esteban Rodríguez" },
-        { fecha: "2024-02-18", repuesto: "Cables de bujía", realizadoPor: "Luis González" },
+        { patente: "ABC123",fecha: "2024-09-15", repuesto: "Filtro de aceite", realizadoPor: "Carlos Gómez" },
+        { patente: "ABC123",fecha: "2024-08-10", repuesto: "Pastillas de freno", realizadoPor: "Ana Martínez" },
+        {  patente: "ABC123",fecha: "2024-07-22", repuesto: "Correa de distribución", realizadoPor: "Juan Pérez" },
+        { patente: "ABC123", fecha: "2024-06-30", repuesto: "Neumáticos", realizadoPor: "Lucía Fernández" },
+        { patente: "ABC123", fecha: "2024-05-12", repuesto: "Batería", realizadoPor: "Pedro López" },
+        { patente: "ABC123", fecha: "2024-04-25", repuesto: "Amortiguadores", realizadoPor: "Marta Sánchez" },
+        { patente: "ABC123", fecha: "2024-03-14", repuesto: "Aceite del motor", realizadoPor: "Esteban Rodríguez" },
+        { patente: "ABC123", fecha: "2024-02-18", repuesto: "Cables de bujía", realizadoPor: "Luis González" },
       ];
 
      
@@ -56,6 +56,7 @@ export const HistorialDeMantenimientos = () => {
       }}
     >
       <TableHeader>
+        <TableColumn key="patente">Patente</TableColumn>
         <TableColumn key="fecha">Fecha del Mantenimiento</TableColumn>
         <TableColumn key="repuesto">Repuesto Usado</TableColumn>
         <TableColumn key="realizadoPor">Realizado por</TableColumn>
@@ -67,6 +68,7 @@ export const HistorialDeMantenimientos = () => {
       >
         {(item) => (
           <TableRow key={item.fecha}>
+            <TableCell>{item.patente}</TableCell>
             <TableCell>{item.fecha}</TableCell>
             <TableCell>{item.repuesto}</TableCell>
             <TableCell>{item.realizadoPor}</TableCell>

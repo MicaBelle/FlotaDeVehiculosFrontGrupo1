@@ -24,6 +24,7 @@ export const VerDetalleColectivo = ({ colectivo, irAtras, editar}) => {
       <CardBody>
         <p><strong>Patente:</strong> {colectivo.patente}</p>
         <p><strong>Chasis:</strong> {colectivo.chasis}</p>
+        <p><strong>Estado del Vehículo:</strong> {colectivo.estado} L</p>
         <p><strong>Antigüedad:</strong> {colectivo.antiguedad} años</p>
         <p><strong>Kilometraje:</strong> {colectivo.kilometraje} km</p>
         <p><strong>Litros de Tanque:</strong> {colectivo.litrosTanque} L</p>
