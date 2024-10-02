@@ -38,6 +38,13 @@ export function TablaDeColectivos({ userRole }) {
       { patente: "DEF456", chasis: "UVW789", antiguedad: 3, kilometraje: 80000, litrosTanque: 800, estado: "Disponible", chofer: "Ana Gómez" },
       { patente: "GHI789", chasis: "RST012", antiguedad: 8, kilometraje: 200000, litrosTanque: 800, estado: "No disponible", chofer: "Carlos Martínez" },
       { patente: "JKL012", chasis: "OPQ345", antiguedad: 2, kilometraje: 50000, litrosTanque: 800, estado: "Disponible", chofer: "Lucía Fernández" },
+      { patente: "ABC123", chasis: "XYZ456", antiguedad: 5, kilometraje: 150000, litrosTanque: 800, estado: "No disponible", chofer: "Juan Pérez" },
+      { patente: "DEF456", chasis: "UVW789", antiguedad: 3, kilometraje: 80000, litrosTanque: 800, estado: "Disponible", chofer: "Ana Gómez" },
+      { patente: "GHI789", chasis: "RST012", antiguedad: 8, kilometraje: 200000, litrosTanque: 800, estado: "No disponible", chofer: "Carlos Martínez" },
+      { patente: "JKL012", chasis: "OPQ345", antiguedad: 2, kilometraje: 50000, litrosTanque: 800, estado: "Disponible", chofer: "Lucía Fernández" },
+      { patente: "ABC123", chasis: "XYZ456", antiguedad: 5, kilometraje: 150000, litrosTanque: 800, estado: "No disponible", chofer: "Juan Pérez" },
+      { patente: "ABC123", chasis: "XYZ456", antiguedad: 5, kilometraje: 150000, litrosTanque: 800, estado: "No disponible", chofer: "Juan Pérez" },
+      { patente: "DEF456", chasis: "UVW789", antiguedad: 3, kilometraje: 80000, litrosTanque: 800, estado: "Disponible", chofer: "Ana Gómez" },  
     ];
 
     const mappedRows = mockData.map((item, index) => ({
@@ -106,13 +113,13 @@ export function TablaDeColectivos({ userRole }) {
             {userRole === "admin" && (
               <Button color="danger" onClick={() => console.log(`Eliminar: ${item.patente}`)}>Eliminar</Button>
             )}
-            {cellValue === "No disponible" && (
-              <Button 
-                color="warning" 
-                onClick={() => { 
-                  setColectivoParaAsignar(item); 
-                  setAsignarOperador(true); 
-                }}>
+            {item.estado === "No disponible" && (
+            <Button 
+              color="warning" 
+              onClick={() => { 
+                setColectivoParaAsignar(item); 
+                setAsignarOperador(true); 
+              }}>
                 Asignar Operador
               </Button>
             )}

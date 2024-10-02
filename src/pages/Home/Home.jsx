@@ -20,16 +20,17 @@ export const Home = () => {
           {userRole === 'admin' && (
             <>
               <div className="MenuItem" onClick={() => handleMenuClick('Registro')}>Registro de colectivo</div>
+              <div className="MenuItem" onClick={() => handleMenuClick('Mantenimientos')}>Mantenimientos</div>
             </>
           )}
            {userRole === 'supervisor' && (
             <>
               <div className="MenuItem" onClick={() => handleMenuClick('RegistroMantenimiento')}>Registro de mantenimiento</div>
+              <div className="MenuItem" onClick={() => handleMenuClick('Colectivos')}>Colectivos</div>
+              <div className="MenuItem" onClick={() => handleMenuClick('Mantenimientos')}>Mantenimientos</div>
             </>
           )}
-
-          <div className="MenuItem" onClick={() => handleMenuClick('Colectivos')}>Colectivos</div>
-          <div className="MenuItem" onClick={() => handleMenuClick('Mantenimientos')}>Mantenimientos</div>
+          
         </div>
         <div className="ContentArea"> 
           <Principal activeMenu={activeMenu} />
