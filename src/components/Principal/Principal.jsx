@@ -13,6 +13,7 @@ export const Principal = ({ activeMenu }) => {
     <div>
       {activeMenu === 'Registro' && userRole === 'admin' && <RegistroDeColectivo />} 
       {activeMenu === 'RegistroMantenimiento' && userRole === 'supervisor' && <RegistroControlesRutinarios />} 
+      {activeMenu === 'TareasAsignadas' && userRole === 'operador' &&  <h1>hola operador</h1> } 
       {activeMenu === 'Colectivos' && <TablaDeColectivos userRole={userRole} />} 
       {activeMenu === 'Mantenimientos' && <HistorialDeMantenimientos userRole={userRole} />} 
     </div>

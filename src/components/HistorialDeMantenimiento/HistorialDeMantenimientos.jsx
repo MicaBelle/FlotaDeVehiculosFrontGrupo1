@@ -37,7 +37,8 @@ export function HistorialDeMantenimientos() {
       { patente: "XYZ789", fecha: "2024-05-12", repuesto: "Batería", realizadoPor: "Pedro López" },
       { patente: "ABC123", fecha: "2024-04-25", repuesto: "Amortiguadores", realizadoPor: "Marta Sánchez" },
       { patente: "DEF456", fecha: "2024-03-14", repuesto: "Aceite del motor", realizadoPor: "Esteban Rodríguez" },
-      { patente: "XYZ789", fecha: "2024-02-18", repuesto: "Cables de bujía", realizadoPor: "Luis González" },
+      { patente: "DEZ456", fecha: "2024-03-14", repuesto: "Aceite del motor", realizadoPor: "Esteban Rodríguez" },
+     
     ];
 
     setTimeout(() => {
@@ -124,7 +125,7 @@ export function HistorialDeMantenimientos() {
             items={filteredMantenimientos}
           >
             {(item) => (
-              <TableRow key={item.fecha}>
+              <TableRow key={item.patente}>
                 <TableCell>{item.patente}</TableCell>
                 <TableCell>{item.fecha}</TableCell>
                 <TableCell>{item.repuesto}</TableCell>
