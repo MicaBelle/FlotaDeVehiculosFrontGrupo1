@@ -8,15 +8,10 @@ import {
   TableCell,
   Input,
   Button,
-  DropdownTrigger,
-  Dropdown,
-  DropdownMenu,
-  DropdownItem,
   Chip,
-  Pagination,
 } from "@nextui-org/react";
 import { VerDetalleColectivo } from '../VerDetalleColectivo/VerDetalleColectivo';
-import { AsignarOperador } from '../AsignarOperador/AsignarOperador'; 
+import { AsignarOperador } from '../AsignarOperador/AsignarOperador';
 
 const columns = [
   { uid: "patente", name: "PATENTE" },
@@ -33,8 +28,7 @@ export function TablaDeColectivos({ userRole }) {
   const [filas, setFilas] = useState([]);
   const [selectedColectivo, setSelectedColectivo] = useState(null);
   const [filterValue, setFilterValue] = useState("");
-  const [rowsPerPage, setRowsPerPage] = useState(5);
-  const [page, setPage] = useState(1);
+  const [filterStatus, setFilterStatus] = useState("all");
   const [asignarOperador, setAsignarOperador] = useState(false);
   const [colectivoParaAsignar, setColectivoParaAsignar] = useState(null); 
 
@@ -66,19 +60,16 @@ export function TablaDeColectivos({ userRole }) {
     alert('Función para editar colectivo');
   };
 
+  const handleFilterByStatus = (status) => {
+    setFilterStatus(status);
+  };
+
   const filteredRows = useMemo(() => {
     return filas.filter(row => 
+      (filterStatus === "all" || row.estado === filterStatus) &&
       row.patente.toLowerCase().includes(filterValue.toLowerCase())
     );
-  }, [filas, filterValue]);
-
-  const pages = Math.ceil(filteredRows.length / rowsPerPage);
-
-  const items = useMemo(() => {
-    const start = (page - 1) * rowsPerPage;
-    const end = start + rowsPerPage;
-    return filteredRows.slice(start, end);
-  }, [page, filteredRows, rowsPerPage]);
+  }, [filas, filterValue, filterStatus]);
 
   const topContent = (
     <div className="flex justify-between items-end mb-4">
@@ -90,21 +81,11 @@ export function TablaDeColectivos({ userRole }) {
         onClear={() => setFilterValue("")}
         onValueChange={setFilterValue}
       />
-    </div>
-  );
-
-  const bottomContent = (
-    <div className="py-2 flex justify-between items-center">
-      <span className="text-default-400 text-small">Total {filteredRows.length} colectivos</span>
-      <Pagination
-        isCompact
-        showControls
-        showShadow
-        color="primary"
-        page={page}
-        total={pages}
-        onChange={setPage}
-      />
+      <div className="flex gap-2">
+        <Button onClick={() => handleFilterByStatus("all")}>Todos</Button>
+        <Button onClick={() => handleFilterByStatus("Disponible")}>Disponibles</Button>
+        <Button onClick={() => handleFilterByStatus("No disponible")}>No Disponibles</Button>
+      </div>
     </div>
   );
 
@@ -153,8 +134,6 @@ export function TablaDeColectivos({ userRole }) {
           aria-label="Tabla de Colectivos"
           isHeaderSticky
           topContent={topContent}
-          bottomContent={bottomContent}
-          bottomContentPlacement="outside"
         >
           <TableHeader columns={columns}>
             {(column) => (
@@ -163,7 +142,7 @@ export function TablaDeColectivos({ userRole }) {
               </TableColumn>
             )}
           </TableHeader>
-          <TableBody emptyContent={"No hay colectivos encontrados"} items={items}>
+          <TableBody emptyContent={"No hay colectivos encontrados"} items={filteredRows}>
             {(item) => (
               <TableRow key={item.key}>
                 {(columnKey) => <TableCell>{renderCell(item, columnKey)}</TableCell>}
@@ -177,8 +156,6 @@ export function TablaDeColectivos({ userRole }) {
 }
 
 export default TablaDeColectivos;
-
-
 
 
 

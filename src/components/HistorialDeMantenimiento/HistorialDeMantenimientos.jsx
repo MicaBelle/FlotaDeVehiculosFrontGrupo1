@@ -1,82 +1,153 @@
-import React from "react";
-import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Button, Spinner } from "@nextui-org/react";
-import { useAsyncList } from "@react-stately/data";
+import React, { useEffect, useState } from "react";
+import {
+  Table,
+  TableHeader,
+  TableColumn,
+  TableBody,
+  TableRow,
+  TableCell,
+  Spinner,
+  Input,
+  Dropdown,
+  DropdownTrigger,
+  DropdownMenu,
+  DropdownItem,
+  Button,
+} from "@nextui-org/react";
 
-export const HistorialDeMantenimientos = () => {
-  const [page, setPage] = React.useState(1);
-  const [isLoading, setIsLoading] = React.useState(true);
+const columns = [
+  { uid: "patente", name: "Patente" },
+  { uid: "fecha", name: "Fecha del Mantenimiento" },
+  { uid: "repuesto", name: "Repuesto Usado" },
+  { uid: "realizadoPor", name: "Realizado por" },
+];
 
-  let list = useAsyncList({
-    async load({ signal, cursor }) {
-      if (cursor) {
-        setPage((prev) => prev + 1);
-      }
+export function HistorialDeMantenimientos() {
+  const [mantenimientos, setMantenimientos] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [searchValue, setSearchValue] = useState(""); 
+  const [selectedRepuesto, setSelectedRepuesto] = useState("Todos"); 
 
-     
-      const mockData = [
-        { patente: "ABC123",fecha: "2024-09-15", repuesto: "Filtro de aceite", realizadoPor: "Carlos Gómez" },
-        { patente: "ABC123",fecha: "2024-08-10", repuesto: "Pastillas de freno", realizadoPor: "Ana Martínez" },
-        {  patente: "ABC123",fecha: "2024-07-22", repuesto: "Correa de distribución", realizadoPor: "Juan Pérez" },
-        { patente: "ABC123", fecha: "2024-06-30", repuesto: "Neumáticos", realizadoPor: "Lucía Fernández" },
-        { patente: "ABC123", fecha: "2024-05-12", repuesto: "Batería", realizadoPor: "Pedro López" },
-        { patente: "ABC123", fecha: "2024-04-25", repuesto: "Amortiguadores", realizadoPor: "Marta Sánchez" },
-        { patente: "ABC123", fecha: "2024-03-14", repuesto: "Aceite del motor", realizadoPor: "Esteban Rodríguez" },
-        { patente: "ABC123", fecha: "2024-02-18", repuesto: "Cables de bujía", realizadoPor: "Luis González" },
-      ];
+  useEffect(() => {
+    const mockData = [
+      { patente: "ABC123", fecha: "2024-09-15", repuesto: "Filtro de aceite", realizadoPor: "Carlos Gómez" },
+      { patente: "ABC123", fecha: "2024-08-10", repuesto: "Pastillas de freno", realizadoPor: "Ana Martínez" },
+      { patente: "DEF456", fecha: "2024-07-22", repuesto: "Correa de distribución", realizadoPor: "Juan Pérez" },
+      { patente: "ABC123", fecha: "2024-06-30", repuesto: "Neumáticos", realizadoPor: "Lucía Fernández" },
+      { patente: "XYZ789", fecha: "2024-05-12", repuesto: "Batería", realizadoPor: "Pedro López" },
+      { patente: "ABC123", fecha: "2024-04-25", repuesto: "Amortiguadores", realizadoPor: "Marta Sánchez" },
+      { patente: "DEF456", fecha: "2024-03-14", repuesto: "Aceite del motor", realizadoPor: "Esteban Rodríguez" },
+      { patente: "XYZ789", fecha: "2024-02-18", repuesto: "Cables de bujía", realizadoPor: "Luis González" },
+    ];
 
-     
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-
+    setTimeout(() => {
+      setMantenimientos(mockData);
       setIsLoading(false);
-      return {
-        items: mockData,
-        cursor: null, 
-      };
+    }, 1000);
+  }, []);
+
+ 
+  const filteredBySearch = mantenimientos.filter((item) =>
+    item.realizadoPor.toLowerCase().includes(searchValue.toLowerCase())
+  );
+
+  
+  const filteredMantenimientos = filteredBySearch.filter((item) =>
+    selectedRepuesto === "Todos" ? true : item.repuesto === selectedRepuesto
+  );
+
+ 
+  const repuestoOptions = [
+    "Todos",
+    "Filtro de aceite",
+    "Pastillas de freno",
+    "Correa de distribución",
+    "Neumáticos",
+    "Batería",
+    "Amortiguadores",
+    "Aceite del motor",
+    "Cables de bujía",
+  ];
+
+  const topContent = (
+    <div className="flex justify-between items-end mb-4">
+     
+      <Input
+        isClearable
+        className="w-full sm:max-w-[44%]"
+        placeholder="Buscar por quien lo realizó..."
+        value={searchValue}
+        onClear={() => setSearchValue("")}
+        onValueChange={setSearchValue}
+      />
 
       
-      /*
-      const res = await fetch('https://api.mantenimiento.com/historial', { signal });
-      let json = await res.json();
-      setIsLoading(false);
-      return {
-        items: json.data,
-        cursor: json.nextCursor,
-      };
-      */
-    },
-  });
+      <Dropdown>
+        <DropdownTrigger>
+          <Button className="bg-gray-800 text-white border-gray-700 hover:bg-gray-700">
+            {selectedRepuesto}
+          </Button>
+        </DropdownTrigger>
+        <DropdownMenu
+          className="bg-gray-800 text-white"
+          onAction={(key) => setSelectedRepuesto(key)}
+        >
+          {repuestoOptions.map((repuesto) => (
+            <DropdownItem key={repuesto}>{repuesto}</DropdownItem>
+          ))}
+        </DropdownMenu>
+      </Dropdown>
+    </div>
+  );
 
   return (
-    <Table
-      aria-label="Historial de Mantenimientos"
-      isHeaderSticky
-      classNames={{
-        base: "max-h-[520px] overflow-scroll",
-        table: "min-h-[420px]",
-      }}
-    >
-      <TableHeader>
-        <TableColumn key="patente">Patente</TableColumn>
-        <TableColumn key="fecha">Fecha del Mantenimiento</TableColumn>
-        <TableColumn key="repuesto">Repuesto Usado</TableColumn>
-        <TableColumn key="realizadoPor">Realizado por</TableColumn>
-      </TableHeader>
-      <TableBody
-        isLoading={isLoading}
-        items={list.items}
-        loadingContent={<Spinner label="Cargando historial..." />}
-      >
-        {(item) => (
-          <TableRow key={item.fecha}>
-            <TableCell>{item.patente}</TableCell>
-            <TableCell>{item.fecha}</TableCell>
-            <TableCell>{item.repuesto}</TableCell>
-            <TableCell>{item.realizadoPor}</TableCell>
-          </TableRow>
-        )}
-      </TableBody>
-    </Table>
+    <div>
+      {isLoading ? (
+        <Spinner label="Cargando historial de mantenimientos..." />
+      ) : (
+        <Table
+          aria-label="Historial de Mantenimientos"
+          isHeaderSticky
+          topContent={topContent}
+          classNames={{
+            base: "max-h-[520px] overflow-scroll",
+            table: "min-h-[420px]",
+          }}
+        >
+          <TableHeader columns={columns}>
+            {(column) => (
+              <TableColumn key={column.uid}>{column.name}</TableColumn>
+            )}
+          </TableHeader>
+          <TableBody
+            emptyContent="No hay mantenimientos encontrados"
+            items={filteredMantenimientos}
+          >
+            {(item) => (
+              <TableRow key={item.fecha}>
+                <TableCell>{item.patente}</TableCell>
+                <TableCell>{item.fecha}</TableCell>
+                <TableCell>{item.repuesto}</TableCell>
+                <TableCell>{item.realizadoPor}</TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      )}
+    </div>
   );
-};
+}
 
 export default HistorialDeMantenimientos;
+
+    
+    /*
+    const res = await fetch('https://api.mantenimiento.com/historial', { signal });
+    let json = await res.json();
+    setIsLoading(false);
+    return {
+      items: json.data,
+      cursor: json.nextCursor,
+    };
+    */
+  
