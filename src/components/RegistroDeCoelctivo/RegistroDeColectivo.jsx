@@ -8,7 +8,7 @@ export const RegistroDeColectivo = () => {
     antiguedad: '',
     kilometraje: '',
     litrosTanque: 800,
-    chofer: '',
+    fechaDeRevision: '',
   });
 
   const handleChange = (e) => {
@@ -24,7 +24,6 @@ export const RegistroDeColectivo = () => {
     
     console.log('Registro guardado:', formData);
     
-    // registrarlo en la api
   };
 
   return (
@@ -97,11 +96,11 @@ export const RegistroDeColectivo = () => {
         </div>
         <div className="form-group">
           <label className="label">
-            Chofer:
+            Fecha de Revisión:
             <input
-              type="text"
-              name="chofer"
-              value={formData.chofer}
+              type="date"
+              name="fechaDeRevision"
+              value={formData.fechaDeRevision}
               onChange={handleChange}
               required
               className="input-field"
