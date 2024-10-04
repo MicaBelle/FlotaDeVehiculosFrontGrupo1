@@ -31,11 +31,7 @@ export function HistorialDeMantenimientos() {
   useEffect(() => {
     const mockData = [
       { patente: "ABC123", fecha: "2024-09-15", repuesto: "Filtro de aceite", realizadoPor: "Carlos Gómez" },
-      { patente: "ABC123", fecha: "2024-08-10", repuesto: "Pastillas de freno", realizadoPor: "Ana Martínez" },
-      { patente: "DEF456", fecha: "2024-07-22", repuesto: "Correa de distribución", realizadoPor: "Juan Pérez" },
-      { patente: "ABC123", fecha: "2024-06-30", repuesto: "Neumáticos", realizadoPor: "Lucía Fernández" },
       { patente: "XYZ789", fecha: "2024-05-12", repuesto: "Batería", realizadoPor: "Pedro López" },
-      { patente: "ABC123", fecha: "2024-04-25", repuesto: "Amortiguadores", realizadoPor: "Marta Sánchez" },
       { patente: "DEF456", fecha: "2024-03-14", repuesto: "Aceite del motor", realizadoPor: "Esteban Rodríguez" },
       { patente: "DEZ456", fecha: "2024-03-14", repuesto: "Aceite del motor", realizadoPor: "Esteban Rodríguez" },
      
