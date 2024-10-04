@@ -34,6 +34,7 @@ export const Home = () => {
           )}
            {userRole === 'operador' && (
             <>
+              <div className="MenuItem" onClick={() => handleMenuClick('AsignarTarea')}>Pendientes</div>
               <div className="MenuItem" onClick={() => handleMenuClick('TareasAsignadas')}>Mis tareas</div>
               
             </>

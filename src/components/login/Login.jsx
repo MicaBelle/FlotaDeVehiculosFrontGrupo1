@@ -46,7 +46,7 @@ export const Login = () => {
    
     const mockUserData = {
       username: username || 'mockUser', 
-      role: 'admin', 
+      role: 'operador', 
     };
 
     
