@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   Table,
   TableHeader,
@@ -6,27 +6,26 @@ import {
   TableBody,
   TableRow,
   TableCell,
-  Spinner,
   Input,
-  Dropdown,
-  DropdownTrigger,
-  DropdownMenu,
-  DropdownItem,
   Button,
+  Chip,
 } from "@nextui-org/react";
+import VerDetalleMantenimiento from "../VerDetalleColectivo/VerDetalleMantenimiento";
+
 
 const columns = [
-  { uid: "patente", name: "Patente" },
-  { uid: "fecha", name: "Fecha del Mantenimiento" },
-  { uid: "repuesto", name: "Repuesto Usado" },
-  { uid: "realizadoPor", name: "Realizado por" },
+  { uid: "patente", name: "PATENTE" },
+  { uid: "fecha", name: "FECHA DEL MANTENIMIENTO" },
+  { uid: "repuesto", name: "REPUSETO USADO" },
+  { uid: "realizadoPor", name: "REALIZADO POR" },
+  { uid: "actions", name: "ACCIONES" },
 ];
 
 export function HistorialDeMantenimientos() {
   const [mantenimientos, setMantenimientos] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [searchValue, setSearchValue] = useState(""); 
-  const [selectedRepuesto, setSelectedRepuesto] = useState("Todos"); 
+  const [filterValue, setFilterValue] = useState("");
+  const [selectedMantenimiento, setSelectedMantenimiento] = useState(null);
 
   useEffect(() => {
     const mockData = [
@@ -34,98 +33,81 @@ export function HistorialDeMantenimientos() {
       { patente: "XYZ789", fecha: "2024-05-12", repuesto: "Batería", realizadoPor: "Pedro López" },
       { patente: "DEF456", fecha: "2024-03-14", repuesto: "Aceite del motor", realizadoPor: "Esteban Rodríguez" },
       { patente: "DEZ456", fecha: "2024-03-14", repuesto: "Aceite del motor", realizadoPor: "Esteban Rodríguez" },
-     
     ];
 
-    setTimeout(() => {
-      setMantenimientos(mockData);
-      setIsLoading(false);
-    }, 1000);
+    const mappedRows = mockData.map((item, index) => ({
+      key: index.toString(),
+      ...item,
+    }));
+
+    setMantenimientos(mappedRows);
+    setIsLoading(false);
   }, []);
 
- 
-  const filteredBySearch = mantenimientos.filter((item) =>
-    item.realizadoPor.toLowerCase().includes(searchValue.toLowerCase())
-  );
+  const handleVerDetalle = (mantenimiento) => {
+    setSelectedMantenimiento(mantenimiento);
+  };
 
-  
-  const filteredMantenimientos = filteredBySearch.filter((item) =>
-    selectedRepuesto === "Todos" ? true : item.repuesto === selectedRepuesto
-  );
+  const handleIrAtras = () => {
+    setSelectedMantenimiento(null);
+  };
 
- 
-  const repuestoOptions = [
-    "Todos",
-    "Filtro de aceite",
-    "Pastillas de freno",
-    "Correa de distribución",
-    "Neumáticos",
-    "Batería",
-    "Amortiguadores",
-    "Aceite del motor",
-    "Cables de bujía",
-  ];
+  const filteredMantenimientos = useMemo(() => {
+    return mantenimientos.filter((mantenimiento) =>
+      mantenimiento.realizadoPor.toLowerCase().includes(filterValue.toLowerCase())
+    );
+  }, [mantenimientos, filterValue]);
 
   const topContent = (
     <div className="flex justify-between items-end mb-4">
-     
       <Input
         isClearable
         className="w-full sm:max-w-[44%]"
         placeholder="Buscar por quien lo realizó..."
-        value={searchValue}
-        onClear={() => setSearchValue("")}
-        onValueChange={setSearchValue}
+        value={filterValue}
+        onClear={() => setFilterValue("")}
+        onValueChange={setFilterValue}
       />
-
-      
-      <Dropdown>
-        <DropdownTrigger>
-          <Button className="bg-gray-800 text-white border-gray-700 hover:bg-gray-700">
-            {selectedRepuesto}
-          </Button>
-        </DropdownTrigger>
-        <DropdownMenu
-          className="bg-gray-800 text-white"
-          onAction={(key) => setSelectedRepuesto(key)}
-        >
-          {repuestoOptions.map((repuesto) => (
-            <DropdownItem key={repuesto}>{repuesto}</DropdownItem>
-          ))}
-        </DropdownMenu>
-      </Dropdown>
     </div>
   );
 
+  const renderCell = (item, columnKey) => {
+    const cellValue = item[columnKey];
+
+    switch (columnKey) {
+      case "actions":
+        return (
+          <div >
+            <Button color="primary" variant="shadow" onClick={() => handleVerDetalle(item)}>Ver Detalle</Button>
+          </div>
+        );
+      default:
+        return cellValue;
+    }
+  };
+
   return (
     <div>
-      {isLoading ? (
-        <Spinner label="Cargando historial de mantenimientos..." />
+      {selectedMantenimiento ? (
+        <VerDetalleMantenimiento
+          mantenimiento={selectedMantenimiento}
+          irAtras={handleIrAtras}
+        />
       ) : (
         <Table
           aria-label="Historial de Mantenimientos"
           isHeaderSticky
           topContent={topContent}
-          classNames={{
-            base: "max-h-[520px] overflow-scroll",
-            table: "min-h-[420px]",
-          }}
         >
           <TableHeader columns={columns}>
             {(column) => (
               <TableColumn key={column.uid}>{column.name}</TableColumn>
             )}
           </TableHeader>
-          <TableBody
-            emptyContent="No hay mantenimientos encontrados"
-            items={filteredMantenimientos}
-          >
+          <TableBody emptyContent={"No hay mantenimientos encontrados"} items={filteredMantenimientos}>
             {(item) => (
-              <TableRow key={item.patente}>
-                <TableCell>{item.patente}</TableCell>
-                <TableCell>{item.fecha}</TableCell>
-                <TableCell>{item.repuesto}</TableCell>
-                <TableCell>{item.realizadoPor}</TableCell>
+              <TableRow key={item.key}>
+                {(columnKey) => <TableCell>{renderCell(item, columnKey)}</TableCell>}
               </TableRow>
             )}
           </TableBody>
@@ -136,15 +118,3 @@ export function HistorialDeMantenimientos() {
 }
 
 export default HistorialDeMantenimientos;
-
-    
-    /*
-    const res = await fetch('https://api.mantenimiento.com/historial', { signal });
-    let json = await res.json();
-    setIsLoading(false);
-    return {
-      items: json.data,
-      cursor: json.nextCursor,
-    };
-    */
-  

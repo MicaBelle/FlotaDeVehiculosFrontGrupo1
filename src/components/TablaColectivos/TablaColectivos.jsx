@@ -10,7 +10,7 @@ import {
   Button,
   Chip,
 } from "@nextui-org/react";
-import { VerDetalleColectivo } from "../VerDetalleColectivo/VerDetalleColectivo";
+import { VerDetalleMantenimiento } from "../VerDetalleColectivo/VerDetalleMantenimiento";
 
 const columns = [
   { uid: "patente", name: "PATENTE" },
@@ -25,7 +25,6 @@ const columns = [
 
 export function TablaDeColectivos({ userRole }) {
   const [filas, setFilas] = useState([]);
-  const [selectedColectivo, setSelectedColectivo] = useState(null);
   const [filterValue, setFilterValue] = useState("");
   const [filterStatus, setFilterStatus] = useState("all");
 
@@ -46,13 +45,6 @@ export function TablaDeColectivos({ userRole }) {
     setFilas(mappedRows);
   }, []);
 
-  const handleVerDetalle = (colectivo) => {
-    setSelectedColectivo(colectivo);
-  };
-
-  const handleIrAtras = () => {
-    setSelectedColectivo(null);
-  };
 
   const handleFilterByStatus = (status) => {
     setFilterStatus(status);
@@ -112,7 +104,6 @@ export function TablaDeColectivos({ userRole }) {
       case "actions":
         return (
           <div className="flex justify-end items-center gap-2">
-            <Button onClick={() => handleVerDetalle(item)}>Ver detalle</Button>
             {userRole === "admin" && (
               <Button
                 color={item.estado === "Habilitado" ? "danger" : "success"}
@@ -130,12 +121,6 @@ export function TablaDeColectivos({ userRole }) {
 
   return (
     <div>
-      {selectedColectivo ? (
-        <VerDetalleColectivo
-          colectivo={selectedColectivo}
-          irAtras={handleIrAtras}
-        />
-      ) : (
         <Table
           aria-label="Tabla de Colectivos"
           isHeaderSticky
@@ -159,7 +144,6 @@ export function TablaDeColectivos({ userRole }) {
             )}
           </TableBody>
         </Table>
-      )}
     </div>
   );
 }
