@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import './styles/registroDeColectivo.css';
+import { useSelector } from 'react-redux';
+import { registrar } from "../../services/vehiculoService"; 
 
 export const RegistroDeColectivo = () => {
   const [formData, setFormData] = useState({
@@ -7,9 +9,12 @@ export const RegistroDeColectivo = () => {
     chasis: '',
     antiguedad: '',
     kilometraje: '',
-    litrosTanque: 800,
-    fechaDeRevision: '',
+    litrosDeTanque: 800,
+    modelo: '',  
+    fechaRevision: '',  
   });
+
+  const token = useSelector((state) => state.user.token); 
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -19,12 +24,35 @@ export const RegistroDeColectivo = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    console.log('Registro guardado:', formData);
-    
+  
+    const fechaRevisionFormateada = new Date(formData.fechaRevision);
+    const anio = fechaRevisionFormateada.getFullYear();
+    const mes = String(fechaRevisionFormateada.getMonth() + 1).padStart(2, '0'); 
+    const dia = String(fechaRevisionFormateada.getDate()).padStart(2, '0');
+    const fechaRevisionString = `${anio}-${mes}-${dia}`;
+  
+    const dataToSubmit = {
+      id: 0,  
+      patente: formData.patente,
+      antiguedad: parseInt(formData.antiguedad),  
+      kilometraje: parseInt(formData.kilometraje),  
+      litrosDeTanque: formData.litrosDeTanque,
+      modelo: formData.modelo, 
+      fechaRevision: fechaRevisionString, 
+    };
+  
+    try {
+      const response = await registrar(dataToSubmit, token);// hay un problema cuando la respuesta es {} 
+      console.log('Registro guardado:', response);
+    } catch (error) {
+      console.error("Error al registrar el colectivo:", error);
+      alert("Error al registrar el colectivo. Por favor, intente nuevamente.");
+    }
   };
+  
+
 
   return (
     <div className="container">
@@ -87,9 +115,22 @@ export const RegistroDeColectivo = () => {
             Litros de Tanque:
             <input
               type="number"
-              name="litrosTanque"
-              value={formData.litrosTanque}
+              name="litrosDeTanque" 
+              value={formData.litrosDeTanque} 
               readOnly
+              className="input-field"
+            />
+          </label>
+        </div>
+        <div className="form-group">
+          <label className="label">
+            Modelo:
+            <input
+              type="text"
+              name="modelo" 
+              value={formData.modelo}
+              onChange={handleChange}
+              required
               className="input-field"
             />
           </label>
@@ -99,8 +140,8 @@ export const RegistroDeColectivo = () => {
             Fecha de Revisión:
             <input
               type="date"
-              name="fechaDeRevision"
-              value={formData.fechaDeRevision}
+              name="fechaRevision"  
+              value={formData.fechaRevision}
               onChange={handleChange}
               required
               className="input-field"
