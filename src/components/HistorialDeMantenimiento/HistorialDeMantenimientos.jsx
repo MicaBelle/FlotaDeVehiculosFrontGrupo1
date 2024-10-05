@@ -33,6 +33,7 @@ export function HistorialDeMantenimientos() {
             fecha: item.fechaInicio,
             repuesto: item.itemUtilizado.map((utilizado) => utilizado.item).join(", "),
             realizadoPor: item.operador.usuario,
+            idVehiculo: item.vehiculo.id,
           }));
           setMantenimientos(mappedRows); 
         } else {
@@ -83,7 +84,13 @@ export function HistorialDeMantenimientos() {
       case "actions":
         return (
           <div>
-            <Button color="primary" variant="shadow" onClick={() => handleVerDetalle(item)}>Ver Detalle</Button>
+            <Button
+              color="primary"
+              variant="shadow"
+              onClick={() => handleVerDetalle(item)}
+            >
+              Ver Detalle
+            </Button>
           </div>
         );
       default:
@@ -95,7 +102,8 @@ export function HistorialDeMantenimientos() {
     <div>
       {selectedMantenimiento ? (
         <VerDetalleMantenimiento
-          mantenimiento={selectedMantenimiento}
+          idVehiculo={selectedMantenimiento.idVehiculo} 
+          token={token} 
           irAtras={handleIrAtras}
         />
       ) : (
@@ -103,16 +111,22 @@ export function HistorialDeMantenimientos() {
           aria-label="Historial de Mantenimientos"
           isHeaderSticky
           topContent={topContent}
+          isLoading={isLoading} 
         >
           <TableHeader columns={columns}>
             {(column) => (
               <TableColumn key={column.uid}>{column.name}</TableColumn>
             )}
           </TableHeader>
-          <TableBody emptyContent={"No hay mantenimientos encontrados"} items={filteredMantenimientos}>
+          <TableBody
+            emptyContent={"No hay mantenimientos encontrados"}
+            items={filteredMantenimientos}
+          >
             {(item) => (
               <TableRow key={item.key}>
-                {(columnKey) => <TableCell>{renderCell(item, columnKey)}</TableCell>}
+                {(columnKey) => (
+                  <TableCell>{renderCell(item, columnKey)}</TableCell>
+                )}
               </TableRow>
             )}
           </TableBody>
