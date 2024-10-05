@@ -1,5 +1,5 @@
-import { executeFetch } from "./fetch";
-import { HttpMethods } from "./HttpMethods";
+import { executeFetch } from "../connection/fetch";
+import { HttpMethods } from "../connection/HttpMethods";
 
 /*
 public class RegistrarMantenimientoDTO {
@@ -8,22 +8,22 @@ public class RegistrarMantenimientoDTO {
 }
 */
 export const cargarMantenimientoManual = async (data, token) => {
-    const endpoint = 'localhost:8080/mantenimiento/crearManual';
+    const endpoint = 'http://localhost:8080/mantenimiento/crearManual/';
     return await executeFetch(endpoint, data, HttpMethods.POST, token, 201);
 };
 
 export const verMantenimientoPorVehiculo = async (id, token) => {
-    const endpoint = 'localhost:8080/mantenimiento/porVehiculo/' + id;
+    const endpoint = 'http://localhost:8080/mantenimiento/porVehiculo/' + id;
     return await executeFetch(endpoint, null, HttpMethods.GET, token, 200);
 };
 
 export const verMantenimientos = async (token) => {
-    const endpoint = 'localhost:8080/mantenimiento';
+    const endpoint = 'http://localhost:8080/mantenimiento/';
     return await executeFetch(endpoint, null, HttpMethods.GET, token, 200);
 };
 
 export const verMantenimientosPendientes = async (token) => {
-    const endpoint = 'localhost:8080/mantenimiento';
+    const endpoint = 'http://localhost:8080/mantenimiento/';
     return await executeFetch(endpoint, null, HttpMethods.GET, token, 200);
 };
 

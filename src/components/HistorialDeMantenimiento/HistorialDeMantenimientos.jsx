@@ -1,47 +1,52 @@
 import React, { useEffect, useMemo, useState } from "react";
-import {
-  Table,
-  TableHeader,
-  TableColumn,
-  TableBody,
-  TableRow,
-  TableCell,
-  Input,
-  Button,
-  Chip,
-} from "@nextui-org/react";
+import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Input, Button } from "@nextui-org/react";
 import VerDetalleMantenimiento from "../VerDetalleColectivo/VerDetalleMantenimiento";
-
+import { verMantenimientos } from "../../services/mantenimientoService"; 
+import { useSelector } from "react-redux";
 
 const columns = [
   { uid: "patente", name: "PATENTE" },
   { uid: "fecha", name: "FECHA DEL MANTENIMIENTO" },
-  { uid: "repuesto", name: "REPUSETO USADO" },
+  { uid: "repuesto", name: "REPUESTO USADO" },
   { uid: "realizadoPor", name: "REALIZADO POR" },
   { uid: "actions", name: "ACCIONES" },
 ];
 
 export function HistorialDeMantenimientos() {
-  const [mantenimientos, setMantenimientos] = useState([]);
+  const [mantenimientos, setMantenimientos] = useState([]); 
   const [isLoading, setIsLoading] = useState(true);
   const [filterValue, setFilterValue] = useState("");
   const [selectedMantenimiento, setSelectedMantenimiento] = useState(null);
+  const token = useSelector((state) => state.user.token); 
+
 
   useEffect(() => {
-    const mockData = [
-      { patente: "ABC123", fecha: "2024-09-15", repuesto: "Filtro de aceite", realizadoPor: "Carlos Gómez" },
-      { patente: "XYZ789", fecha: "2024-05-12", repuesto: "Batería", realizadoPor: "Pedro López" },
-      { patente: "DEF456", fecha: "2024-03-14", repuesto: "Aceite del motor", realizadoPor: "Esteban Rodríguez" },
-      { patente: "DEZ456", fecha: "2024-03-14", repuesto: "Aceite del motor", realizadoPor: "Esteban Rodríguez" },
-    ];
+    const cargarMantenimientos = async () => {
+      try {
+        const response = await verMantenimientos(token);
+        
+      
+        if (response && Array.isArray(response.mantenimientos)) {
+          const mappedRows = response.mantenimientos.map((item, index) => ({
+            key: index.toString(),
+            patente: item.vehiculo.patente,
+            fecha: item.fechaInicio,
+            repuesto: item.itemUtilizado.map((utilizado) => utilizado.item).join(", "),
+            realizadoPor: item.operador.usuario,
+          }));
+          setMantenimientos(mappedRows); 
+        } else {
+          setMantenimientos([]); 
+        }
+      } catch (error) {
+        console.error("Error al cargar los mantenimientos:", error);
+        setMantenimientos([]);
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
-    const mappedRows = mockData.map((item, index) => ({
-      key: index.toString(),
-      ...item,
-    }));
-
-    setMantenimientos(mappedRows);
-    setIsLoading(false);
+    cargarMantenimientos();
   }, []);
 
   const handleVerDetalle = (mantenimiento) => {
@@ -77,7 +82,7 @@ export function HistorialDeMantenimientos() {
     switch (columnKey) {
       case "actions":
         return (
-          <div >
+          <div>
             <Button color="primary" variant="shadow" onClick={() => handleVerDetalle(item)}>Ver Detalle</Button>
           </div>
         );
