@@ -9,7 +9,7 @@ public class LoginRequestDTO {
 */
 export const login = async (data) => {
     const endpoint = 'localhost:8080/auth/login';
-    return await executeFetch(endpoint, data, HttpMethods.POST);
+    return await executeFetch(endpoint, data, HttpMethods.POST, null, 200);
 };
 
 /*
@@ -21,5 +21,5 @@ public class RegisterRequestDTO {
 */ 
 export const register = async (data, token) => {
     const endpoint = 'localhost:8080/auth/register';
-    return await executeFetch(endpoint, data, HttpMethods.POST, token);
+    return await executeFetch(endpoint, data, HttpMethods.POST, token, 201);
 };

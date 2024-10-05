@@ -33,20 +33,31 @@ const getFetchOptions = (method, data, token) => {
     return options;
 };
 
-const handleResponse = async (response) => {
-    if (!response.ok) {
-        throw new Error(`Error en la solicitud: ${response.statusText}`);
+const handleResponse = async (response, statusExpected) => {
+    const status = response.status
+
+    if (status !== statusExpected) {
+        try {
+            const errorData = await response.json();
+
+            if (errorData.message) {
+                throw new Error(`Error en la solicitud: ${errorData.message}`);
+            }
+        } catch (e) {
+            throw new Error(`Error en la solicitud: ${response.statusText}`);
+        }
     }
+
     return await response.json();
 };
 
 /*
 Ejemplo de ejecución: 
-executeFetch('https://api.example.com/1', { key: 'value' }, HttpMethods.POST)
+executeFetch('https://api.example.com/1', { key: 'value' }, HttpMethods.POST, 201)
 .then(data => console.log(data))
 .catch(error => console.error(error));
 */
-export const executeFetch = async (endpoint, data = null, method, token = null) => {
+export const executeFetch = async (endpoint, data = null, method, token = null, statusExpected) => {
     try {
         validateEndpoint(endpoint);
         const httpMethod = validateMethod(method);
@@ -55,7 +66,7 @@ export const executeFetch = async (endpoint, data = null, method, token = null) 
 
         const response = await fetch(endpoint, options);
 
-        return await handleResponse(response);
+        return await handleResponse(response, statusExpected);
     } catch (error) {
         console.error('Error en la solicitud:', error);
         throw error;

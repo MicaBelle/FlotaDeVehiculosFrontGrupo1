@@ -10,10 +10,10 @@ public class RegistrarItemDeInventarioDTO {
 */
 export const registrarItem = async (data, token) => {
     const endpoint = 'localhost:8080/inventario/registrarItem';
-    return await executeFetch(endpoint, data, HttpMethods.POST, token);
+    return await executeFetch(endpoint, data, HttpMethods.POST, token, 201);
 };
 
 export const utilizarItem = async (id, token) => {
     const endpoint = 'localhost:8080/inventario/utilizarItem/' + id;
-    return await executeFetch(endpoint, null, HttpMethods.PATCH, token);
+    return await executeFetch(endpoint, null, HttpMethods.PATCH, token, 200);
 };
