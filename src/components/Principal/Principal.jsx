@@ -6,6 +6,7 @@ import { HistorialDeMantenimientos } from '../HistorialDeMantenimiento/Historial
 import RegistroControlesRutinarios from '../RegistroDeControlesRutinarios/RegistroDeControlesRutinarios';
 import TablaDeInventario from '../RegistroItemInventario/TablaInventario';
 import AsignarTareas from '../AsignarTareas/AsignarTareas';
+import { TareasAsignadas } from '../TareasAsignadas/TareasAsignadas';
 
 
 
@@ -20,6 +21,7 @@ export const Principal = ({ activeMenu }) => {
       {activeMenu === 'Colectivos' && <TablaDeColectivos userRole={userRole} />} 
       {activeMenu === 'Mantenimientos' && <HistorialDeMantenimientos userRole={userRole} />} 
       {activeMenu === 'AsignarTarea' && userRole === 'operador' &&  <AsignarTareas/> } 
+      {activeMenu === 'TareasAsignadas' && userRole === 'operador' &&  <TareasAsignadas/> } 
     </div>
   );
 };
