@@ -23,3 +23,8 @@ export const register = async (data, token) => {
     const endpoint = 'localhost:8080/auth/register';
     return await executeFetch(endpoint, data, HttpMethods.POST, token, 201);
 };
+
+export const logout = async (token) => {
+    const endpoint = 'http://localhost:8080/auth/logout';
+    return await executeFetch(endpoint, null, HttpMethods.POST, token, 200);
+};
