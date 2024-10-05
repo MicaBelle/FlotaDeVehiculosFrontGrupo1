@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { setUser } from '../store/userSlice';
 import '../login/styles/login.css'
+import { login } from '../../services/authService';
 
 
 //import axios from 'axios'; // Para hacer la llamada al backend
@@ -14,33 +15,9 @@ export const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  /*const handleLogin = async (e) => {
-    e.preventDefault();
+  
 
-    try {
-     
-      const response = await axios.post('/api/login', {
-        username,
-        password
-      });
-
-      const { data } = response;
-      if (data.success) {
-        dispatch(setUser({
-          username: data.username,
-          role: data.role,
-        }));
-
-        navigate('/home');
-      } else {
-        setError('Usuario o contraseña incorrectos');
-      }
-    } catch (err) {
-      setError('Error en el servidor. Inténtalo nuevamente.');
-    }
-  };*/
-
-  const handleLogin = (e) => {
+  /*const handleLogin = (e) => {
     e.preventDefault();
 
    
@@ -55,6 +32,32 @@ export const Login = () => {
       navigate('/home');
     } else {
       setError('Por favor, ingrese un usuario y contraseña válidos');
+    }
+  };*/
+  
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    setError('');
+  
+    try {
+      const loginData = {
+        username: username, 
+        password: password
+      };
+      
+      const result = await login(loginData);
+  
+     
+      if (result) {
+        dispatch(setUser({
+          username: result.username,
+          role: result.role,
+          token: result.token,  
+        }));
+        navigate('/home');
+      }
+    } catch (error) {
+      setError('Error durante el inicio de sesión');
     }
   };
 
