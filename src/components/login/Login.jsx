@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import { setUser } from '../store/userSlice';
 import '../login/styles/login.css'
 import { login } from '../../services/authService';
-import axios from 'axios'; 
+
 
 export const Login = () => {
   const [username, setUsername] = useState('');
@@ -15,7 +15,7 @@ export const Login = () => {
 
   
 
-  const handleLogin = (e) => {
+  /*const handleLogin = (e) => {
     e.preventDefault();
 
    
@@ -31,9 +31,9 @@ export const Login = () => {
     } else {
       setError('Por favor, ingrese un usuario y contraseña válidos');
     }
-  };
+  };*/
 
-  /*const handleLogin = async (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     setError('');
 
@@ -59,7 +59,7 @@ export const Login = () => {
         console.error(error); 
         setError('Error durante el inicio de sesión');
     }
-};*/
+};
 
 
 

@@ -15,13 +15,13 @@ export const Principal = ({ activeMenu }) => {
 
   return (
     <div>
-      {activeMenu === 'Registro' && userRole === 'admin' && <RegistroDeColectivo />} 
-      {activeMenu === 'Inventario' && userRole === 'admin' && <TablaDeInventario />} 
-      {activeMenu === 'RegistroMantenimiento' && userRole === 'supervisor' && <RegistroControlesRutinarios />} 
+      {activeMenu === 'Registro' && userRole === 'ADMINISTRADOR' && <RegistroDeColectivo />} 
+      {activeMenu === 'Inventario' && userRole === 'ADMINISTRADOR' && <TablaDeInventario />} 
+      {activeMenu === 'RegistroMantenimiento' && userRole === 'SUPERVISOR' && <RegistroControlesRutinarios />} 
       {activeMenu === 'Colectivos' && <TablaDeColectivos userRole={userRole} />} 
       {activeMenu === 'Mantenimientos' && <HistorialDeMantenimientos userRole={userRole} />} 
-      {activeMenu === 'AsignarTarea' && userRole === 'operador' &&  <AsignarTareas/> } 
-      {activeMenu === 'TareasAsignadas' && userRole === 'operador' &&  <TareasAsignadas/> } 
+      {activeMenu === 'AsignarTarea' && userRole === 'OPERADOR' &&  <AsignarTareas/> } 
+      {activeMenu === 'TareasAsignadas' && userRole === 'OPERADOR' &&  <TareasAsignadas/> } 
     </div>
   );
 };

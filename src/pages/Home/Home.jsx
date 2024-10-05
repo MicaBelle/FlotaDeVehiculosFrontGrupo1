@@ -17,7 +17,7 @@ export const Home = () => {
       <NavBar />
       <div className="MainContent">
         <div className="Sidebar"> 
-          {userRole === 'admin' && (
+          {userRole === 'ADMINISTRADOR' && (
             <>
               <div className="MenuItem" onClick={() => handleMenuClick('Colectivos')}>Colectivos</div>
               <div className="MenuItem" onClick={() => handleMenuClick('Registro')}>Registro de colectivo</div>
@@ -25,7 +25,7 @@ export const Home = () => {
               <div className="MenuItem" onClick={() => handleMenuClick('Mantenimientos')}>Mantenimientos</div>
             </>
           )}
-           {userRole === 'supervisor' && (
+           {userRole === 'SUPERVISOR' && (
             <>
               <div className="MenuItem" onClick={() => handleMenuClick('RegistroMantenimiento')}>Registro de mantenimiento</div>
               <div className="MenuItem" onClick={() => handleMenuClick('Colectivos')}>Colectivos</div>
