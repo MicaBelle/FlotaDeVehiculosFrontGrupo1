@@ -36,28 +36,31 @@ export const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     setError('');
-  
+
     try {
-      const loginData = {
-        username: username, 
-        password: password
-      };
-      
-      const result = await login(loginData);
-  
-     
-      if (result) {
-        dispatch(setUser({
-          username: result.username,
-          role: result.role,
-          token: result.token,  
-        }));
-        navigate('/home');
-      }
+        const loginData = {
+            username: username,
+            password: password,
+        };
+        
+        const result = await login(loginData);
+
+        if (result && result.token) { 
+            dispatch(setUser({
+                username: result.username,
+                role: result.role,
+                token: result.token,
+            }));
+            navigate('/home');
+        } else {
+            setError('Credenciales incorrectas'); 
+        }
     } catch (error) {
-      setError('Error durante el inicio de sesión');
+        console.error(error); 
+        setError('Error durante el inicio de sesión');
     }
-  };
+};
+
 
 
   return (

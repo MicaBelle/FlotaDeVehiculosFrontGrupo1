@@ -1,5 +1,5 @@
-import { executeFetch } from "./fetch";
-import { HttpMethods } from "./HttpMethods";
+import {executeFetch} from '../connection/fetch'
+import {HttpMethods} from '../connection/HttpMethods'
 
 /*
 public class LoginRequestDTO {
@@ -8,7 +8,7 @@ public class LoginRequestDTO {
 }
 */
 export const login = async (data) => {
-    const endpoint = 'localhost:8080/auth/login';
+    const endpoint = 'http://localhost:8080/auth/login';
     return await executeFetch(endpoint, data, HttpMethods.POST, null, 200);
 };
 
