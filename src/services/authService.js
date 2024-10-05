@@ -20,7 +20,7 @@ public class RegisterRequestDTO {
 }
 */ 
 export const register = async (data, token) => {
-    const endpoint = 'localhost:8080/auth/register';
+    const endpoint = 'http://localhost:8080/auth/register';
     return await executeFetch(endpoint, data, HttpMethods.POST, token, 201);
 };
 

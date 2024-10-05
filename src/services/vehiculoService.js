@@ -1,8 +1,8 @@
-import { executeFetch } from "./fetch";
-import { HttpMethods } from "./HttpMethods";
+import { executeFetch } from "../connection/fetch";
+import { HttpMethods } from "../connection/HttpMethods";
 
 export const verVehiculos = async (token) => {
-    const endpoint = 'localhost:8080/vehiculo/registrar';
+    const endpoint = 'http://localhost:8080/vehiculo/verAll';
     return await executeFetch(endpoint, null, HttpMethods.GET, token, 200);
 };
 
@@ -19,16 +19,16 @@ public class RegistarVehiculoDTO {
 }
 */
 export const registrar = async (data, token) => {
-    const endpoint = 'localhost:8080/vehiculo/registrar';
+    const endpoint = 'http://localhost:8080/vehiculo/registrar';
     return await executeFetch(endpoint, data, HttpMethods.POST, token, 201);
 };
 
 export const inhabilitar = async (id, token) => {
-    const endpoint = 'localhost:8080/vehiculo/inhabilitar/' + id;
+    const endpoint = 'http://localhost:8080/vehiculo/inhabilitar/' + id;
     return await executeFetch(endpoint, null, HttpMethods.PATCH, token, 200);
 };
 
 export const habilitar = async (id, token) => {
-    const endpoint = 'localhost:8080/vehiculo/habilitar/' + id;
+    const endpoint = 'http://localhost:8080/vehiculo/habilitar/' + id;
     return await executeFetch(endpoint, null, HttpMethods.PATCH, token, 200);
 };

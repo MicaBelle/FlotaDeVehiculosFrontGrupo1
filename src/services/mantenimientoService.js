@@ -33,7 +33,7 @@ public class AsignarMantenimientoRequestDTO {
 }
 */
 export const asignarMantenimiento = async (id, data, token) => {
-    const endpoint = 'localhost:8080/mantenimiento/asignar/' + id;
+    const endpoint = 'http://localhost:8080/mantenimiento/asignar/' + id;
     return await executeFetch(endpoint, data, HttpMethods.POST, token, 200);
 };
 
@@ -47,6 +47,6 @@ public class ItemUtilizadoRequestDTO {
 }
 */
 export const finalizarMantenimiento = async (id, data, token) => {
-    const endpoint = 'localhost:8080/mantenimiento/finalizar/' + id;
+    const endpoint = 'http://localhost:8080/mantenimiento/finalizar/' + id;
     return await executeFetch(endpoint, data, HttpMethods.POST, token, 200);
 };
