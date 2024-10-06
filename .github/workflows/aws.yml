@@ -24,10 +24,21 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: ${{ secrets.AWS_REGION }}
 
+     # Step 3: Install Dependencies and Clean Up (Optional)
+      # This step is to ensure any issues with dependencies are caught before the Docker build.
+      - name: Install dependencies and clean up
+        run: |
+          npm ci
+          rm -rf node_modules package-lock.json
+          npm install
+
+      # Step 4: Build Docker Image for Frontend
+      # Add --platform to ensure the build is for linux/amd64.
       - name: Build and tag Docker image
         run: |
-          docker build -t 778425189746.dkr.ecr.us-east-1.amazonaws.com/hola-mundo-repo:front_latest .
-   
+          docker buildx build --platform linux/amd64 -t 778425189746.dkr.ecr.us-east-1.amazonaws.com/hola-mundo-repo:front_latest .
+       
+      # Step 5: Push docker image to ECR
       - name: Push Docker image to ECR
         run: |
           docker push 778425189746.dkr.ecr.us-east-1.amazonaws.com/hola-mundo-repo:front_latest
