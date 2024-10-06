@@ -13,6 +13,9 @@ RUN npm install
 # Copy the rest of the application source code to the container
 COPY . .
 
+# List files to verify the directory structure
+RUN ls -R src/components/
+
 # Build the application
 RUN npm run build
 
