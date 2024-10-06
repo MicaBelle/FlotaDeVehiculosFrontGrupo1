@@ -23,7 +23,7 @@ RUN npm run build
 FROM nginx:alpine AS production
 
 # Copy the build output from the first stage to the default nginx public directory
-COPY --from=build /app/build /usr/share/nginx/html
+COPY --from=build /app/dist /usr/share/nginx/html
 
 
 # Expose the default HTTP port
