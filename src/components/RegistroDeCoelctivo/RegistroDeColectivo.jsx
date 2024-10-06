@@ -31,10 +31,9 @@ export const RegistroDeColectivo = () => {
     const anio = fechaRevisionFormateada.getFullYear();
     const mes = String(fechaRevisionFormateada.getMonth() + 1).padStart(2, '0'); 
     const dia = String(fechaRevisionFormateada.getDate()).padStart(2, '0');
-    const fechaRevisionString = `${anio}-${mes}-${dia}`;
+    const fechaRevisionString = `${dia}/${mes}/${anio}`;
   
     const dataToSubmit = {
-      id: 0,  
       patente: formData.patente,
       antiguedad: parseInt(formData.antiguedad),  
       kilometraje: parseInt(formData.kilometraje),  
@@ -42,7 +41,7 @@ export const RegistroDeColectivo = () => {
       modelo: formData.modelo, 
       fechaRevision: fechaRevisionString, 
     };
-  
+
     try {
       const response = await registrar(dataToSubmit, token);// hay un problema cuando la respuesta es {} 
       console.log('Registro guardado:', response);
