@@ -19,7 +19,6 @@ export function HistorialDeMantenimientos() {
   const [selectedMantenimiento, setSelectedMantenimiento] = useState(null);
   const token = useSelector((state) => state.user.token); 
 
-
   useEffect(() => {
     const cargarMantenimientos = async () => {
       try {

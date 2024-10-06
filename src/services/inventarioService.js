@@ -1,5 +1,5 @@
-import { executeFetch } from "./fetch";
-import { HttpMethods } from "./HttpMethods";
+import { executeFetch } from "../connection/fetch";
+import { HttpMethods } from "../connection/HttpMethods";
 
 /*
 public class RegistrarItemDeInventarioDTO {

@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import '../RegistroDeCoelctivo/styles/RegistroDeColectivo.css';
 import { Button } from '@nextui-org/react';
+import { registrarItem } from '../../services/inventarioService'; 
+import { useSelector } from 'react-redux';
 
 export const RegistroItemInventario = ({ onSubmit, onCancel }) => {
   const [formData, setFormData] = useState({
@@ -8,6 +10,8 @@ export const RegistroItemInventario = ({ onSubmit, onCancel }) => {
     umbral: 0,
     stock: 0,
   });
+
+  const token = useSelector((state) => state.user.token); 
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -17,11 +21,17 @@ export const RegistroItemInventario = ({ onSubmit, onCancel }) => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    onSubmit(formData);
+    try {
+      
+      const response = await registrarItem(formData, token);
+      console.log('Item registrado con éxito:', response);
+      onSubmit(formData); 
+    } catch (error) {
+      console.error('Error al registrar el item:', error);
+    }
   };
-
 
   return (
     <div className="container">
