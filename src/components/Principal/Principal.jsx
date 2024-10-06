@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux'; 
 import TablaDeColectivos from '../TablaColectivos/TablaColectivos';
-import { RegistroDeColectivo } from '../RegistroDeCoelctivo/RegistroDeColectivo';
+import { RegistroDeColectivo } from '../RegistroDeColectivo/RegistroDeColectivo';
 import { HistorialDeMantenimientos } from '../HistorialDeMantenimiento/HistorialDeMantenimientos';
 import RegistroControlesRutinarios from '../RegistroDeControlesRutinarios/RegistroDeControlesRutinarios';
 import TablaDeInventario from '../RegistroItemInventario/TablaInventario';
