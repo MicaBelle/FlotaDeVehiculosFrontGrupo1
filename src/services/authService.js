@@ -1,3 +1,4 @@
+import { backendUrl } from '../connection/backUrl';
 import {executeFetch} from '../connection/fetch'
 import {HttpMethods} from '../connection/HttpMethods'
 
@@ -8,7 +9,7 @@ public class LoginRequestDTO {
 }
 */
 export const login = async (data) => {
-    const endpoint = 'http://localhost:8080/auth/login';
+    const endpoint = backendUrl + '/auth/login';
     return await executeFetch(endpoint, data, HttpMethods.POST, null, 200);
 };
 
@@ -20,11 +21,11 @@ public class RegisterRequestDTO {
 }
 */ 
 export const register = async (data, token) => {
-    const endpoint = 'http://localhost:8080/auth/register';
+    const endpoint = backendUrl + '/auth/register';
     return await executeFetch(endpoint, data, HttpMethods.POST, token, 201);
 };
 
 export const logout = async (token) => {
-    const endpoint = 'http://localhost:8080/auth/logout';
+    const endpoint = backendUrl + '/auth/logout';
     return await executeFetch(endpoint, null, HttpMethods.POST, token, 200);
 };

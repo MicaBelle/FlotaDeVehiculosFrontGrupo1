@@ -1,3 +1,4 @@
+import { backendUrl } from "../connection/backUrl";
 import { executeFetch } from "../connection/fetch";
 import { HttpMethods } from "../connection/HttpMethods";
 
@@ -8,22 +9,22 @@ public class RegistrarMantenimientoDTO {
 }
 */
 export const cargarMantenimientoManual = async (data, token) => {
-    const endpoint = 'http://localhost:8080/mantenimiento/crearManual/';
+    const endpoint = backendUrl + '/mantenimiento/crearManual/';
     return await executeFetch(endpoint, data, HttpMethods.POST, token, 201);
 };
 
 export const verMantenimientoPorVehiculo = async (id, token) => {
-    const endpoint = 'http://localhost:8080/mantenimiento/porVehiculo/' + id;
+    const endpoint = backendUrl + '/mantenimiento/porVehiculo/' + id;
     return await executeFetch(endpoint, null, HttpMethods.GET, token, 200);
 };
 
 export const verMantenimientos = async (token) => {
-    const endpoint = 'http://localhost:8080/mantenimiento/verAll';
+    const endpoint = backendUrl + '/mantenimiento/verAll';
     return await executeFetch(endpoint, null, HttpMethods.GET, token, 200);
 };
 
 export const verMantenimientosPendientes = async (token) => {
-    const endpoint = 'http://localhost:8080/mantenimiento/pendientes';
+    const endpoint = backendUrl + '/mantenimiento/pendientes';
     return await executeFetch(endpoint, null, HttpMethods.GET, token, 200);
 };
 
@@ -33,7 +34,7 @@ public class AsignarMantenimientoRequestDTO {
 }
 */
 export const asignarMantenimiento = async (id, data, token) => {
-    const endpoint = 'http://localhost:8080/mantenimiento/asignar/' + id;
+    const endpoint = backendUrl + '/mantenimiento/asignar/' + id;
     return await executeFetch(endpoint, data, HttpMethods.POST, token, 200);
 };
 
@@ -47,6 +48,6 @@ public class ItemUtilizadoRequestDTO {
 }
 */
 export const finalizarMantenimiento = async (id, data, token) => {
-    const endpoint = 'http://localhost:8080/mantenimiento/finalizar/' + id;
+    const endpoint = backendUrl + '/mantenimiento/finalizar/' + id;
     return await executeFetch(endpoint, data, HttpMethods.POST, token, 200);
 };
