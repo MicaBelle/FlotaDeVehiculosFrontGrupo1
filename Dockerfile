@@ -7,9 +7,6 @@ WORKDIR /app
 # Copy package.json and package-lock.json first to leverage Docker caching
 COPY package*.json ./
 
-RUN ls -lR /app/src/components/RegistroDeColectivo/styles/
-RUN ls -lR /app/src || true
-
 # Install dependencies
 RUN npm install
 
@@ -26,7 +23,8 @@ RUN npm run build
 FROM nginx:alpine AS production
 
 # Copy the build output from the first stage to the default nginx public directory
-COPY --from=build /app/list /usr/share/nginx/html
+COPY --from=build /app/build /usr/share/nginx/html
+
 
 # Expose the default HTTP port
 EXPOSE 80
