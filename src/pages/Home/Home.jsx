@@ -32,7 +32,7 @@ export const Home = () => {
               <div className="MenuItem" onClick={() => handleMenuClick('Mantenimientos')}>Mantenimientos</div>
             </>
           )}
-           {userRole === 'operador' && (
+           {userRole === 'OPERADOR' && (
             <>
               <div className="MenuItem" onClick={() => handleMenuClick('AsignarTarea')}>Pendientes</div>
               <div className="MenuItem" onClick={() => handleMenuClick('TareasAsignadas')}>Mis tareas</div>

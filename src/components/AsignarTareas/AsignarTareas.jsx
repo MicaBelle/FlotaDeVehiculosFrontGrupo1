@@ -7,12 +7,14 @@ import {
   TableRow,
   TableCell,
   Button,
-  Input,
 } from "@nextui-org/react";
+import { verMantenimientosPendientes, asignarMantenimiento } from "../../services/mantenimientoService"; 
+import { useSelector } from "react-redux"; 
 
 const columns = [
   { uid: "patente", name: "Patente" },
   { uid: "asunto", name: "Asunto" },
+  { uid: "estadoMantenimiento", name: "Estado" },
   { uid: "actions", name: "Acciones" },
 ];
 
@@ -20,32 +22,49 @@ export function AsignarMantenimiento() {
   const [mantenimientos, setMantenimientos] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedMantenimiento, setSelectedMantenimiento] = useState(null);
+  const token = useSelector((state) => state.user.token);
 
   useEffect(() => {
-    const mockData = [
-      {
-        patente: "ABC123",
-        asunto: "Cambio de filtro",
-      },
-      {
-        patente: "XYZ789",
-        asunto: "Reemplazo de batería",
-      },
-      {
-        patente: "DEF456",
-        asunto: "Cambio de aceite",
-      },
-    ];
+    const fetchMantenimientosPendientes = async () => {
+      try {
+        const response = await verMantenimientosPendientes(token); 
+        setMantenimientos(response.mantenimientos); 
+      } catch (error) {
+        console.error("Error al obtener los mantenimientos pendientes:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
-    setTimeout(() => {
-      setMantenimientos(mockData);
+    fetchMantenimientosPendientes(); 
+  }, [token]); 
+
+  const handleAsignarMantenimiento = async (mantenimiento) => {
+    try {
+      setIsLoading(true);
+      
+      const data = {
+        fechaInicio: new Date().toISOString(), 
+        asunto: mantenimiento.asunto,         
+        estado: "Aprobado"                    
+      };
+      
+     
+      const response = await asignarMantenimiento(mantenimiento.id, data, token);
+
+      if (response) {
+        console.log(`Mantenimiento de patente ${mantenimiento.vehiculo.patente} asignado con éxito`);
+
+        const updatedMantenimientos = mantenimientos.map((m) =>
+          m.id === mantenimiento.id ? { ...m, estadoMantenimiento: "Aprobado" } : m
+        );
+        setMantenimientos(updatedMantenimientos);
+      }
+    } catch (error) {
+      console.error("Error al asignar el mantenimiento:", error);
+    } finally {
       setIsLoading(false);
-    }, 1000);
-  }, []);
-
-  const handleAsignarMantenimiento = (mantenimiento) => {
-    setSelectedMantenimiento(mantenimiento);
-    console.log(`Asignando mantenimiento de patente ${mantenimiento.patente}`);
+    }
   };
 
   return (
@@ -61,9 +80,10 @@ export function AsignarMantenimiento() {
           </TableHeader>
           <TableBody items={mantenimientos}>
             {(item) => (
-              <TableRow key={item.patente}>
-                <TableCell>{item.patente}</TableCell>
-                <TableCell>{item.asunto}</TableCell>
+              <TableRow key={item.id}>
+                <TableCell>{item.vehiculo.patente}</TableCell> 
+                <TableCell>{item.asunto}</TableCell> 
+                <TableCell>{item.estadoMantenimiento}</TableCell>
                 <TableCell>
                   <Button
                     color="primary"
@@ -82,65 +102,3 @@ export function AsignarMantenimiento() {
 }
 
 export default AsignarMantenimiento;
-
-
-
-
-/*useEffect(() => {
-
-    const fetchMantenimientosPendientes = async () => {
-      try {
-        const response = await fetch('/api/mantenimientos/pendientes');
-        const data = await response.json();
-        setMantenimientos(data);
-      } catch (error) {
-        console.error("Error fetching mantenimientos:", error);
-      }
-    };
-    fetchMantenimientosPendientes();
-  }, []);
-
-  const handleAsignar = (mantenimiento) => {
-    setSelectedMantenimiento(mantenimiento);
-  };
-
-  const handleGuardarAsignacion = async () => {
-    if (selectedMantenimiento && fechaInicio && asunto) {
-      const asignacion = {
-        idMantenimiento: selectedMantenimiento.id, 
-        fechaInicio,
-        asunto,
-        estado: "Aprobado"
-      };
-
-      try {
-        setIsLoading(true);
-        const response = await fetch(`/api/mantenimientos/asignar`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify(asignacion)
-        });
-
-        if (response.ok) {
-          // Actualizar el estado local si la API responde correctamente
-          const updatedMantenimientos = mantenimientos.map((mantenimiento) =>
-            mantenimiento.id === selectedMantenimiento.id
-              ? { ...mantenimiento, estado: "Aprobado", fechaInicio, asunto }
-              : mantenimiento
-          );
-          setMantenimientos(updatedMantenimientos);
-          setSelectedMantenimiento(null);
-          setFechaInicio("");
-          setAsunto("");
-        } else {
-          console.error("Error al asignar el mantenimiento");
-        }
-      } catch (error) {
-        console.error("Error en la llamada a la API:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    }
-  };*/
