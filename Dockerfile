@@ -8,7 +8,7 @@ WORKDIR /app
 COPY package*.json ./
 
 RUN ls -lR /app/src/components/RegistroDeColectivo/styles/
-
+RUN ls -lR /app/src || true
 
 # Install dependencies
 RUN npm install
