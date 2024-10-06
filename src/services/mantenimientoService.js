@@ -18,12 +18,12 @@ export const verMantenimientoPorVehiculo = async (id, token) => {
 };
 
 export const verMantenimientos = async (token) => {
-    const endpoint = 'http://localhost:8080/mantenimiento/';
+    const endpoint = 'http://localhost:8080/mantenimiento/verAll';
     return await executeFetch(endpoint, null, HttpMethods.GET, token, 200);
 };
 
 export const verMantenimientosPendientes = async (token) => {
-    const endpoint = 'http://localhost:8080/mantenimiento/';
+    const endpoint = 'http://localhost:8080/mantenimiento/pendientes';
     return await executeFetch(endpoint, null, HttpMethods.GET, token, 200);
 };
 
