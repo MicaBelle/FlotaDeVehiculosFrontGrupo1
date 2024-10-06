@@ -7,6 +7,9 @@ WORKDIR /app
 # Copy package.json and package-lock.json first to leverage Docker caching
 COPY package*.json ./
 
+RUN ls -lR /app/src/components/RegistroDeColectivo/styles/
+
+
 # Install dependencies
 RUN npm install
 
