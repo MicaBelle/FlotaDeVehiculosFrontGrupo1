@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './styles/registroDeColectivo.css';
+import './styles/RegistroDeColectivo.css';
 import { useSelector } from 'react-redux';
 import { registrar } from "../../services/vehiculoService"; 
 
