@@ -42,4 +42,32 @@ jobs:
       - name: Push Docker image to ECR
         run: |
           docker push 778425189746.dkr.ecr.us-east-1.amazonaws.com/hola-mundo-repo:front_latest
+
+    # Step 6: SSH into EC2 and Redeploy Container
+      - name: executing remote ssh commands using password
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_SSH_HOST }}
+          username: ubuntu
+          key: ${{ secrets.EC2_SSH_KEY }}
+          port: 22
+          script: |
+            aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com
+            docker pull 778425189746.dkr.ecr.us-east-1.amazonaws.com/hola-mundo-repo:front_latest
+            docker stop appFrontend || true
+            docker rm appFrontend || true
+            docker run -d --name appFrontend -p 80:80 778425189746.dkr.ecr.us-east-1.amazonaws.com/hola-mundo-repo:front_latest
     
+      - name: executing remote ssh commands using password
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_SSH_HOST_2 }}
+          username: ubuntu
+          key: ${{ secrets.EC2_SSH_KEY }}
+          port: 22
+          script: |
+            aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com
+            docker pull 778425189746.dkr.ecr.us-east-1.amazonaws.com/hola-mundo-repo:front_latest
+            docker stop appFrontend || true
+            docker rm appFrontend || true
+            docker run -d --name appFrontend -p 80:80 778425189746.dkr.ecr.us-east-1.amazonaws.com/hola-mundo-repo:front_latest
