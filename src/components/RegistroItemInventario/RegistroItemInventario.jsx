@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../RegistroDeCoelctivo/styles/RegistroDeColectivo.css';
+import '../RegistroDeColectivo/styles/RegistroDeColectivo.css';
 import { Button } from '@nextui-org/react';
 import { registrarItem } from '../../services/inventarioService'; 
 import { useSelector } from 'react-redux';
