@@ -28,8 +28,7 @@ export const Home = () => {
            {userRole === 'SUPERVISOR' && (
             <>
               <div className="MenuItem" onClick={() => handleMenuClick('RegistroMantenimiento')}>Registro de mantenimiento</div>
-              <div className="MenuItem" onClick={() => handleMenuClick('Colectivos')}>Colectivos</div>
-              <div className="MenuItem" onClick={() => handleMenuClick('Mantenimientos')}>Mantenimientos</div>
+              <div className="MenuItem" onClick={() => handleMenuClick('Inventario')}>Inventario</div>
             </>
           )}
            {userRole === 'OPERADOR' && (

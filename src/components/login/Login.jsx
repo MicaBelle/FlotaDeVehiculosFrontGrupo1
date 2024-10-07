@@ -13,33 +13,13 @@ export const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  
-
-  /*const handleLogin = (e) => {
-    e.preventDefault();
-
-   
-    const mockUserData = {
-      username: username || 'mockUser', 
-      role: 'operador', 
-    };
-
-    
-    if (username && password) {
-      dispatch(setUser(mockUserData));
-      navigate('/home');
-    } else {
-      setError('Por favor, ingrese un usuario y contraseña válidos');
-    }
-  };*/
-
   const handleLogin = async (e) => {
     e.preventDefault();
     setError('');
 
     try {
         const loginData = {
-            username: username,
+            username: username.toLowerCase(),
             password: password,
         };
         
