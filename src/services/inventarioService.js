@@ -3,10 +3,11 @@ import { executeFetch } from "../connection/fetch";
 import { HttpMethods } from "../connection/HttpMethods";
 
 /*
-public class RegistrarItemDeInventarioDTO {
+public class ItemDeInventarioDTO {
     private String nombre;
     private Integer umbral;
     private Integer stock;
+    private Integer cantCompraAutomatica;
 }
 */
 export const registrarItem = async (data, token) => {
