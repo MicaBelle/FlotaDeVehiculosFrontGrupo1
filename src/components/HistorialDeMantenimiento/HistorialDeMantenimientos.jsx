@@ -59,7 +59,7 @@ export function HistorialDeMantenimientos() {
 
   const filteredMantenimientos = useMemo(() => {
     return mantenimientos.filter((mantenimiento) =>
-      mantenimiento.realizadoPor.toLowerCase().includes(filterValue.toLowerCase())
+      mantenimiento.patente.toLowerCase().includes(filterValue.toLowerCase())
     );
   }, [mantenimientos, filterValue]);
 
@@ -68,7 +68,7 @@ export function HistorialDeMantenimientos() {
       <Input
         isClearable
         className="w-full sm:max-w-[44%]"
-        placeholder="Buscar por quien lo realizó..."
+        placeholder="Buscar por patente..."
         value={filterValue}
         onClear={() => setFilterValue("")}
         onValueChange={setFilterValue}
