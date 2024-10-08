@@ -1,163 +1,85 @@
-import React, { useState } from "react";
-import '../RegistroDeControlesRutinarios/styles/RegistroControlesRutinarios.css'; 
-import imagen from '../../assets/Images/LogoNavBar.jpeg'
+import React, { useState } from 'react';
+import { cargarMantenimientoManual } from '../../services/mantenimientoService'; 
+import { useSelector } from 'react-redux';
+import { Button } from '@nextui-org/react';
+import '../RegistroDeControlesRutinarios/styles/RegistroControlesRutinarios.css'
 
-const RegistroControlesRutinarios = () => {
+const RegistrarMantenimiento = () => {
   const [formData, setFormData] = useState({
-    vehicleId: "",
-    engineStatus: "",
-    fluidLevels: "",
-    tiresCondition: "",
-    lightsAndBrakes: "",
-    visualInspection: "",
+    asunto: '',
+    vehiculo_id: '',
   });
+  const [successMessage, setSuccessMessage] = useState(false); 
+  const token = useSelector((state) => state.user.token); 
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    /* fetch("/api/controles-rutinarios", {
-   method: "POST",
-  headers: {
-    "Content-Type": "application/json",
-   },
-   body: JSON.stringify(formData),
- })
-   .then((response) => response.json())
-   .then((data) => {
-     console.log("Datos guardados:", data);
-  })
-  .catch((error) => {
-    console.error("Error al enviar los datos:", error);
-   });*/
-    console.log("Datos enviados:", formData);
-   
+    
+    try {
+      const response = await cargarMantenimientoManual(formData, token);
+      console.log('Mantenimiento registrado:', response);
+
+      
+      setSuccessMessage(true);
+      setTimeout(() => setSuccessMessage(false), 3000); 
+      
+      
+      setFormData({
+        asunto: '',
+        vehiculo_id: '',
+      });
+      
+    } catch (error) {
+      console.error('Error al registrar el mantenimiento:', error);
+    }
   };
 
   return (
-    <div className="card">
-     
-      <div className="card-header">
-        <img
-          alt="vehículo"
-          className="header-image"
-          src={imagen}
-        />
-        <div className="header-text">
-          <h3>Revisión de Controles Rutinarios</h3>
-          <p>ID del vehículo: {formData.vehicleId || "No asignado"}</p>
+    <div className="container">
+      <h2>Registrar Mantenimiento Manual</h2>
+
+      {successMessage && (
+        <div className="success-message" style={{ color: 'green', marginBottom: '15px' }}>
+          ¡Mantenimiento registrado con éxito!
         </div>
-      </div>
+      )}
 
-      <hr />
-
-      
-      <form onSubmit={handleSubmit} className="card-body">
+      <form onSubmit={handleSubmit}>
         <div className="form-group">
-          <label htmlFor="vehicleId">ID del Vehículo</label>
-          <input
-            type="text"
-            id="vehicleId"
-            name="vehicleId"
-            value={formData.vehicleId}
-            onChange={handleChange}
-            placeholder="Ingrese el ID del vehículo"
-            required
-          />
+          <label>
+            Asunto:
+            <input
+              type="text"
+              name="asunto"
+              value={formData.asunto}
+              onChange={handleChange}
+              required
+            />
+          </label>
         </div>
 
         <div className="form-group">
-          <label htmlFor="engineStatus">Estado del Motor</label>
-          <select
-            id="engineStatus"
-            name="engineStatus"
-            value={formData.engineStatus}
-            onChange={handleChange}
-            required
-          >
-            <option value="" disabled>Seleccione</option>
-            <option value="Bueno">Bueno</option>
-            <option value="Regular">Regular</option>
-            <option value="Malo">Malo</option>
-          </select>
+          <label>
+            ID del Vehículo:
+            <input
+              type="number"
+              name="vehiculo_id"
+              value={formData.vehiculo_id}
+              onChange={handleChange}
+              required
+            />
+          </label>
         </div>
 
-        <div className="form-group">
-          <label htmlFor="fluidLevels">Niveles de Fluidos</label>
-          <select
-            id="fluidLevels"
-            name="fluidLevels"
-            value={formData.fluidLevels}
-            onChange={handleChange}
-            required
-          >
-            <option value="" disabled>Seleccione</option>
-            <option value="Correctos">Correctos</option>
-            <option value="Bajos">Bajos</option>
-            <option value="Críticos">Críticos</option>
-          </select>
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="tiresCondition">Condición de Neumáticos</label>
-          <select
-            id="tiresCondition"
-            name="tiresCondition"
-            value={formData.tiresCondition}
-            onChange={handleChange}
-            required
-          >
-            <option value="" disabled>Seleccione</option>
-            <option value="Bueno">Bueno</option>
-            <option value="Desgaste">Desgaste</option>
-            <option value="Críticos">Críticos</option>
-          </select>
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="lightsAndBrakes">Luces y Frenos</label>
-          <select
-            id="lightsAndBrakes"
-            name="lightsAndBrakes"
-            value={formData.lightsAndBrakes}
-            onChange={handleChange}
-            required
-          >
-            <option value="" disabled>Seleccione</option>
-            <option value="Funcionan">Funcionan</option>
-            <option value="Problemas">Problemas</option>
-            <option value="No funcionan">No funcionan</option>
-          </select>
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="visualInspection">Inspección Visual</label>
-          <select
-            id="visualInspection"
-            name="visualInspection"
-            value={formData.visualInspection}
-            onChange={handleChange}
-            required
-          >
-            <option value="" disabled>Seleccione</option>
-            <option value="Sin daños">Sin daños</option>
-            <option value="Daños menores">Daños menores</option>
-            <option value="Daños graves">Daños graves</option>
-          </select>
-        </div>
-
-        <hr />
-
-        <button type="submit" className="submit-button">Registrar Control</button>
+        <Button color="success" type="submit">Registrar Mantenimiento</Button>
       </form>
     </div>
   );
 };
 
-export default RegistroControlesRutinarios;
-
-
-
+export default RegistrarMantenimiento;
