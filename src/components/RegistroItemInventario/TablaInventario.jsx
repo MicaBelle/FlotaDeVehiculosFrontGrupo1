@@ -10,35 +10,42 @@ import {
   Button,
 } from "@nextui-org/react";
 import { RegistroItemInventario } from "./RegistroItemInventario";
-
+import { obtenerItems } from '../../services/inventarioService'; 
+import { useSelector } from "react-redux";
 
 const columns = [
   { uid: "nombre", name: "NOMBRE" },
   { uid: "stock", name: "STOCK" },
   { uid: "umbral", name: "UMBRAL" },
+  { uid: "cantCompraAutomatica", name: "CANT. COMPRA AUTOMÁTICA" }, 
 ];
 
 export function TablaDeInventario() {
   const [filas, setFilas] = useState([]);
   const [filterValue, setFilterValue] = useState("");
   const [showRegistro, setShowRegistro] = useState(false);
+  const token = useSelector((state) => state.user.token); 
 
   useEffect(() => {
-    const mockData = [
-      { nombre: "Aceite", stock: 150, umbral: 50 },
-      { nombre: "Rueda", stock: 80, umbral: 30 },
-      { nombre: "Luces", stock: 200, umbral: 100 },
-      { nombre: "Filtro", stock: 60, umbral: 20 },
-      { nombre: "Espejito", stock: 120, umbral: 40 },
-    ];
+    const fetchItems = async () => {
+      try {
+        const items = await obtenerItems(token);
+        
+        const mappedRows = items.map((item, index) => ({
+          key: index.toString(),
+          nombre: item.nombre,
+          stock: item.stock,
+          umbral: item.umbral,
+          cantCompraAutomatica: item.cantCompraAutomatica, 
+        }));
+        setFilas(mappedRows);
+      } catch (error) {
+        console.error("Error al obtener los artículos:", error);
+      }
+    };
 
-    const mappedRows = mockData.map((item, index) => ({
-      key: index.toString(),
-      ...item,
-    }));
-
-    setFilas(mappedRows);
-  }, []);
+    fetchItems();
+  }, [token]); 
 
   const filteredRows = useMemo(() => {
     return filas.filter((row) =>
@@ -63,7 +70,6 @@ export function TablaDeInventario() {
   );
 
   const handleRegistroSubmit = (nuevoItem) => {
-
     setFilas((prevFilas) => [
       ...prevFilas,
       {
@@ -71,7 +77,7 @@ export function TablaDeInventario() {
         ...nuevoItem,
       },
     ]);
-    setShowRegistro(false); 
+    setShowRegistro(false);
   };
 
   const renderCell = (item, columnKey) => {

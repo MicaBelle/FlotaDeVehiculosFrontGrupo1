@@ -21,6 +21,6 @@ export const utilizarItem = async (id, token) => {
 };
 
 export const obtenerItems = async (token) => {
-    const endpoint = backendUrl + '/inventario/utilizarItem';
+    const endpoint = backendUrl + '/inventario/obtenerItems';
     return await executeFetch(endpoint, null, HttpMethods.GET, token, 200);
 };
