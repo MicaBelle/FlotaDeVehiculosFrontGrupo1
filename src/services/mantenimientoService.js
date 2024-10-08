@@ -53,6 +53,6 @@ export const finalizarMantenimiento = async (id, data, token) => {
 };
 
 export const verMisMantenimientos = async (token) => {
-    const endpoint = backendUrl + '/mantenimiento/finalizar/' + id;
+    const endpoint = backendUrl + '/mantenimiento/finalizar';
     return await executeFetch(endpoint, null, HttpMethods.GET, token, 200);
 };
