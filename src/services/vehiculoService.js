@@ -9,7 +9,6 @@ export const verVehiculos = async (token) => {
 
 /*
 public class RegistarVehiculoDTO {
-    private Integer id;
     private String patente;
     private Integer antiguedad;
     private Integer kilometraje;

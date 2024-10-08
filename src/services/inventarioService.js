@@ -18,3 +18,8 @@ export const utilizarItem = async (id, token) => {
     const endpoint = backendUrl + '/inventario/utilizarItem/' + id;
     return await executeFetch(endpoint, null, HttpMethods.PATCH, token, 200);
 };
+
+export const obtenerItems = async (token) => {
+    const endpoint = backendUrl + '/inventario/utilizarItem';
+    return await executeFetch(endpoint, null, HttpMethods.GET, token, 200);
+};
