@@ -132,6 +132,9 @@ export function TablaDeColectivos({ userRole }) {
                 {item.estado === "HABILITADO" ? "Inhabilitar" : "Habilitar"}
               </Button>
             )}
+            {userRole === "SUPERVISOR" && (
+              <Button color="danger">Registrar mantenimeinto</Button>
+            )}
           </div>
         );
       default:
