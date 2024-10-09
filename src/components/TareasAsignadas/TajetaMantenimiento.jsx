@@ -1,10 +1,14 @@
 import React, { useState } from 'react';
-import { Card, CardHeader, CardBody, CardFooter, Divider, Image, Button, Input } from "@nextui-org/react";
+import { Card, CardHeader, CardBody, CardFooter, Divider, Image, Button } from "@nextui-org/react";
 import mantenimientoImagen from '../../assets/Images/LogoNavBar.jpeg';
 import { finalizarMantenimiento } from '../../services/mantenimientoService'; 
+import TablaDeInventario from '../RegistroItemInventario/TablaInventario';
+
 
 const TarjetaMantenimiento = ({ tarea, token, onTareaFinalizada }) => {
   const [itemUsado, setItemUsado] = useState('');
+  const [mostrarInventario, setMostrarInventario] = useState(false); 
+  const [repuestoSeleccionado, setRepuestoSeleccionado] = useState('');
 
   const handleFinalizarTarea = async () => {
     try {
@@ -29,6 +33,12 @@ const TarjetaMantenimiento = ({ tarea, token, onTareaFinalizada }) => {
     }
   };
 
+  const handleItemSeleccionado = (id, nombre) => {
+    setItemUsado(id); 
+    setRepuestoSeleccionado(nombre); 
+    setMostrarInventario(false); 
+  };
+
   return (
     <Card className="max-w-[400px]" key={tarea.id}>
       <CardHeader className="flex gap-3">
@@ -49,6 +59,21 @@ const TarjetaMantenimiento = ({ tarea, token, onTareaFinalizada }) => {
         <p>Operador: {tarea.operador.usuario}</p> 
         <p>Vehículo: {tarea.vehiculo.patente}</p>
         <p>Asunto: {tarea.asunto}</p>
+        {repuestoSeleccionado && ( 
+          <p className="mt-4">Repuesto a utilizar: {repuestoSeleccionado}</p>
+        )}
+        
+        <Button 
+          color="primary" 
+          onClick={() => setMostrarInventario(true)} 
+        >
+          Seleccionar Repuesto
+        </Button>
+        
+        {mostrarInventario && ( 
+          <TablaDeInventario userRole="OPERADOR" onItemSeleccionado={handleItemSeleccionado} />
+        )}
+        
       </CardBody>
       <Divider />
       <CardFooter>

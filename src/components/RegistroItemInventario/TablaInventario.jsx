@@ -12,18 +12,22 @@ import {
 import { RegistroItemInventario } from "./RegistroItemInventario";
 import { obtenerItems } from '../../services/inventarioService'; 
 import { useSelector } from "react-redux";
+import TarjetaMantenimiento from "../TareasAsignadas/TajetaMantenimiento";
+
 
 const columns = [
   { uid: "nombre", name: "NOMBRE" },
   { uid: "umbral", name: "UMBRAL" },
   { uid: "stock", name: "STOCK" },
-  { uid: "cantCompraAutomatica", name: "CANT. COMPRA AUTOMÁTICA" }, 
+  { uid: "cantCompraAutomatica", name: "CANT. COMPRA AUTOMÁTICA" },
+  { uid: "acciones", name: "ACCIONES" }, 
 ];
 
-export function TablaDeInventario( {userRole} ) {
+export function TablaDeInventario({ userRole,onItemSeleccionado }) {
   const [filas, setFilas] = useState([]);
   const [filterValue, setFilterValue] = useState("");
   const [showRegistro, setShowRegistro] = useState(false);
+  const [itemSeleccionado, setItemSeleccionado] = useState(null);
   const token = useSelector((state) => state.user.token); 
 
   useEffect(() => {
@@ -33,6 +37,7 @@ export function TablaDeInventario( {userRole} ) {
         
         const mappedRows = items.map((item, index) => ({
           key: index.toString(),
+          id: item.id, 
           nombre: item.nombre,
           umbral: item.umbral,
           stock: item.stock,
@@ -63,9 +68,11 @@ export function TablaDeInventario( {userRole} ) {
         onClear={() => setFilterValue("")}
         onValueChange={setFilterValue}
       />
-      <Button color="primary" onClick={() => setShowRegistro(true)}>
-        Agregar Item
-      </Button>
+      {userRole === "ADMINISTRADOR" && (
+        <Button color="primary" onClick={() => setShowRegistro(true)}>
+          Agregar Item
+        </Button>
+      )}
     </div>
   );
 
@@ -80,19 +87,30 @@ export function TablaDeInventario( {userRole} ) {
     setShowRegistro(false);
   };
 
+  const handleUtilizarClick = (itemId, itemNombre) => {
+    onItemSeleccionado(itemId, itemNombre);
+  };
+
   const renderCell = (item, columnKey) => {
+    if (columnKey === 'acciones' && userRole === "OPERADOR") {
+      return (
+        <Button onClick={() => handleUtilizarClick(item.id, item.nombre)} color="success">
+          Utilizar
+        </Button>
+      );
+    }
     return item[columnKey];
   };
 
   return (
     <div>
-      {showRegistro ? (
+      {showRegistro && userRole === "ADMINISTRADOR" ? (
         <RegistroItemInventario onSubmit={handleRegistroSubmit} onCancel={() => setShowRegistro(false)} />
       ) : (
         <Table aria-label="Tabla de Inventario" isHeaderSticky topContent={topContent}>
           <TableHeader columns={columns}>
             {(column) => (
-              <TableColumn key={column.uid} align={column.uid === "actions" ? "center" : "start"}>
+              <TableColumn key={column.uid} align={column.uid === "acciones" ? "center" : "start"}>
                 {column.name}
               </TableColumn>
             )}
@@ -105,6 +123,12 @@ export function TablaDeInventario( {userRole} ) {
             )}
           </TableBody>
         </Table>
+      )}
+      {itemSeleccionado && ( 
+        <TarjetaMantenimiento 
+          itemId={itemSeleccionado} 
+          onClose={() => setItemSeleccionado(null)} 
+        />
       )}
     </div>
   );

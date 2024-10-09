@@ -16,7 +16,7 @@ export const Principal = ({ activeMenu }) => {
   return (
     <div>
       {activeMenu === 'Registro' && userRole === 'ADMINISTRADOR' && <RegistroDeColectivo />} 
-      {activeMenu === 'Inventario' && (userRole === 'ADMINISTRADOR' || userRole === 'SUPERVISOR' ) && <TablaDeInventario userRole={userRole} />} 
+      {activeMenu === 'Inventario' && (userRole === 'ADMINISTRADOR' || userRole === 'SUPERVISOR' || userRole === 'OPERADOR' ) && <TablaDeInventario userRole={userRole} />} 
       {activeMenu === 'RegistroMantenimiento' && userRole === 'SUPERVISOR' && <RegistroControlesRutinarios />} 
       {activeMenu === 'Colectivos' && <TablaDeColectivos userRole={userRole} />} 
       {activeMenu === 'Mantenimientos' && <HistorialDeMantenimientos userRole={userRole} />} 
