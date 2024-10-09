@@ -2,40 +2,35 @@ import React, { useEffect, useState } from 'react';
 import { Card, CardHeader, CardBody, CardFooter, Divider, Image, Button, Input } from "@nextui-org/react";
 import { useSelector } from 'react-redux';
 import mantenimientoImagen from '../../assets/Images/LogoNavBar.jpeg';
-import { verMisMantenimientos } from '../../services/mantenimientoService'; // Asegúrate de que la ruta sea correcta
-import { obtenerItems } from '../../services/inventarioService'; // Asegúrate de que la ruta sea correcta
+import { verMisMantenimientos } from '../../services/mantenimientoService'; 
 
 export const TareasAsignadas = () => {
   const [tareas, setTareas] = useState([]);
   const [itemUsado, setItemUsado] = useState('');
-  const [itemsDisponibles, setItemsDisponibles] = useState([]); // Para guardar los items obtenidos
-  const username = useSelector((state) => state.user.username);
-  const token = useSelector((state) => state.user.token); // Obtén el token desde el estado
+  const token = useSelector((state) => state.user.token); 
 
   useEffect(() => {
     const fetchTareas = async () => {
       try {
-        const response = await verMisMantenimientos(token); // Llamada a la API para obtener las tareas
-        setTareas(response); // Asegúrate de que la respuesta sea el formato correcto
+        const response = await verMisMantenimientos(token); 
+        console.log("Respuesta de la API:", response); 
+        
+        
+        if (response && Array.isArray(response.mantenimientos)) {
+          setTareas(response.mantenimientos);
+        } else {
+          console.error("La respuesta no contiene un array de mantenimientos:", response);
+          setTareas([]); 
+        }
       } catch (error) {
         console.error("Error al obtener las tareas: ", error);
       }
     };
 
-    const fetchItems = async () => {
-      try {
-        const itemsResponse = await obtenerItems(token); // Llamada a la API para obtener los items
-        setItemsDisponibles(itemsResponse); // Almacena los items en el estado
-      } catch (error) {
-        console.error("Error al obtener los ítems: ", error);
-      }
-    };
-
-    if (username) {
-      fetchTareas();
-      fetchItems(); // Llama a la API para obtener los ítems
+    if (token) {
+      fetchTareas(); 
     }
-  }, [username, token]);
+  }, [token]);
 
   const handleFinalizarTarea = async (tareaId) => {
     try {
@@ -43,9 +38,7 @@ export const TareasAsignadas = () => {
         alert("Por favor, ingrese un ítem para descontar del stock");
         return;
       }
-      // Lógica para descontar un ítem del stock aquí
-      // ...
-
+      
       console.log('Tarea finalizada y item descontado del stock');
       alert("Tarea finalizada y el ítem ha sido descontado del stock.");
     } catch (error) {
@@ -70,12 +63,14 @@ export const TareasAsignadas = () => {
                 width={40}
               />
               <div className="flex flex-col">
-                <p className="text-md font-bold">{tarea.nombre}</p>
+                <p className="text-md font-bold">{tarea.asunto}</p>
               </div>
             </CardHeader>
             <Divider />
             <CardBody>
-              <p>{tarea.descripcion}</p>
+              <p>Estado: {tarea.estadoMantenimiento}</p>
+              <p>Operador: {tarea.operador.usuario}</p> 
+              <p>Vehículo: {tarea.vehiculo.patente}</p>
               <Input
                 fullWidth
                 placeholder="Ingrese el ítem usado para descontar"
