@@ -6,22 +6,28 @@ import TablaDeInventario from '../RegistroItemInventario/TablaInventario';
 
 
 const TarjetaMantenimiento = ({ tarea, token, onTareaFinalizada }) => {
-  const [itemUsado, setItemUsado] = useState('');
+  const [itemUsado, setItemUsado] = useState(null); 
   const [mostrarInventario, setMostrarInventario] = useState(false); 
-  const [repuestoSeleccionado, setRepuestoSeleccionado] = useState('');
+  const [cantidad, setCantidad] = useState(1); 
+  const [repuestoSeleccionado, setRepuestoSeleccionado] = useState(''); 
 
   const handleFinalizarTarea = async () => {
     try {
       if (!itemUsado) {
-        alert("Por favor, ingrese un ítem para descontar del stock");
+        alert("Por favor, seleccione un ítem para descontar del stock");
         return;
       }
 
-      const fechaFinalizacion = new Date().toISOString(); 
       const data = {
-        fechaFinalizacion,
-        itemUsado, 
+        items: [
+          {
+            idItem: tarea.id, 
+            cantidad: cantidad, 
+          },
+        ],
       };
+      console.log(data);
+
 
       await finalizarMantenimiento(tarea.id, data, token);
 
@@ -34,7 +40,7 @@ const TarjetaMantenimiento = ({ tarea, token, onTareaFinalizada }) => {
   };
 
   const handleItemSeleccionado = (id, nombre) => {
-    setItemUsado(id); 
+    setItemUsado({ id, nombre }); 
     setRepuestoSeleccionado(nombre); 
     setMostrarInventario(false); 
   };
@@ -59,9 +65,6 @@ const TarjetaMantenimiento = ({ tarea, token, onTareaFinalizada }) => {
         <p>Operador: {tarea.operador.usuario}</p> 
         <p>Vehículo: {tarea.vehiculo.patente}</p>
         <p>Asunto: {tarea.asunto}</p>
-        {repuestoSeleccionado && ( 
-          <p className="mt-4">Repuesto a utilizar: {repuestoSeleccionado}</p>
-        )}
         
         <Button 
           color="primary" 
@@ -74,6 +77,22 @@ const TarjetaMantenimiento = ({ tarea, token, onTareaFinalizada }) => {
           <TablaDeInventario userRole="OPERADOR" onItemSeleccionado={handleItemSeleccionado} />
         )}
         
+        {repuestoSeleccionado && ( 
+          <p className="mt-4">Repuesto a utilizar: {repuestoSeleccionado}</p>
+        )}
+        
+        {itemUsado && ( 
+          <div>
+            <label htmlFor="cantidad">Cantidad:</label>
+            <input
+              type="number"
+              id="cantidad"
+              value={cantidad}
+              onChange={(e) => setCantidad(e.target.value)} 
+              min="1"
+            />
+          </div>
+        )}
       </CardBody>
       <Divider />
       <CardFooter>
