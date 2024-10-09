@@ -40,25 +40,27 @@ export function AsignarMantenimiento() {
 
   const handleAsignarMantenimiento = async (mantenimiento) => {
     try {
-        setIsLoading(true);
-
-        const response = await asignarMantenimiento(mantenimiento.id, token);
-
-        if (response) {
-            console.log(`Mantenimiento de patente ${mantenimiento.vehiculo.patente} asignado con éxito`);
-
-            const updatedMantenimientos = mantenimientos.map((m) =>
-                m.id === mantenimiento.id ? { ...m, estadoMantenimiento: "Aprobado" } : m
-            );
-            setMantenimientos(updatedMantenimientos);
-        }
+      setIsLoading(true);
+  
+      
+      await asignarMantenimiento(mantenimiento.id, token);
+  
+    
+      const updatedMantenimientos = mantenimientos.map((m) =>
+        m.id === mantenimiento.id ? { ...m, estadoMantenimiento: "Aprobado" } : m
+      );
+  
+      setMantenimientos(updatedMantenimientos); 
+  
+      console.log(`Mantenimiento de patente ${mantenimiento.vehiculo.patente} asignado con éxito`);
     } catch (error) {
-        console.error("Error al asignar el mantenimiento:", error);
+      console.error("Error al asignar el mantenimiento:", error);
     } finally {
-        setIsLoading(false);
+      setIsLoading(false);
     }
-};
-
+  };
+  
+  
 
   return (
     <div>
