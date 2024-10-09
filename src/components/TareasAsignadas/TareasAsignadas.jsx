@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Card, CardHeader, CardBody, CardFooter, Divider, Image, Button, Input } from "@nextui-org/react";
 import { useSelector } from 'react-redux';
-import mantenimientoImagen from '../../assets/Images/LogoNavBar.jpeg';
-import { verMisMantenimientos } from '../../services/mantenimientoService'; 
+import { verMisMantenimientos } from '../../services/mantenimientoService';
+import TarjetaMantenimiento from './TajetaMantenimiento';
+
 
 export const TareasAsignadas = () => {
   const [tareas, setTareas] = useState([]);
-  const [itemUsado, setItemUsado] = useState('');
   const token = useSelector((state) => state.user.token); 
 
   useEffect(() => {
@@ -29,19 +28,8 @@ export const TareasAsignadas = () => {
     }
   }, [token]);
 
-  const handleFinalizarTarea = async (tareaId) => {
-    try {
-      if (!itemUsado) {
-        alert("Por favor, ingrese un ítem para descontar del stock");
-        return;
-      }
-      
-      console.log('Tarea finalizada y item descontado del stock');
-      alert("Tarea finalizada y el ítem ha sido descontado del stock.");
-    } catch (error) {
-      console.error("Error al finalizar la tarea: ", error);
-      alert("Error al finalizar la tarea.");
-    }
+  const handleTareaFinalizada = (tareaId) => {
+    setTareas((prevTareas) => prevTareas.filter(tarea => tarea.id !== tareaId));
   };
 
   return (
@@ -50,41 +38,12 @@ export const TareasAsignadas = () => {
         <p>No hay tareas asignadas</p>
       ) : (
         tareas.map((tarea) => (
-          <Card className="max-w-[400px]" key={tarea.id}>
-            <CardHeader className="flex gap-3">
-              <Image
-                alt="Imagen de la tarea"
-                height={40}
-                radius="sm"
-                src={mantenimientoImagen}
-                width={40}
-              />
-              <div className="flex flex-col">
-                <p className="text-md font-bold">{tarea.asunto}</p>
-              </div>
-            </CardHeader>
-            <Divider />
-            <CardBody>
-              <p>Estado: {tarea.estadoMantenimiento}</p>
-              <p>Operador: {tarea.operador.usuario}</p> 
-              <p>Vehículo: {tarea.vehiculo.patente}</p>
-              <Input
-                fullWidth
-                placeholder="Ingrese el ítem usado para descontar"
-                value={itemUsado}
-                onChange={(e) => setItemUsado(e.target.value)}
-              />
-            </CardBody>
-            <Divider />
-            <CardFooter>
-              <Button
-                color="secondary"
-                onClick={() => handleFinalizarTarea(tarea.id)}
-              >
-                Finalizar Tarea
-              </Button>
-            </CardFooter>
-          </Card>
+          <TarjetaMantenimiento 
+            key={tarea.id} 
+            tarea={tarea} 
+            token={token} 
+            onTareaFinalizada={handleTareaFinalizada}
+          />
         ))
       )}
     </div>

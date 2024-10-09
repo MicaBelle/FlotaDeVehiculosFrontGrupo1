@@ -23,34 +23,29 @@ export function AsignarMantenimiento() {
   const [isLoading, setIsLoading] = useState(true);
   const token = useSelector((state) => state.user.token);
 
-  useEffect(() => {
-    const fetchMantenimientosPendientes = async () => {
-      try {
-        const response = await verMantenimientosPendientes(token); 
-        setMantenimientos(response.mantenimientos); 
-      } catch (error) {
-        console.error("Error al obtener los mantenimientos pendientes:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
+  const fetchMantenimientosPendientes = async () => {
+    try {
+      const response = await verMantenimientosPendientes(token); 
+      setMantenimientos(response.mantenimientos); 
+    } catch (error) {
+      console.error("Error al obtener los mantenimientos pendientes:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
+  useEffect(() => {
     fetchMantenimientosPendientes(); 
   }, [token]); 
 
   const handleAsignarMantenimiento = async (mantenimiento) => {
     try {
       setIsLoading(true);
-  
       
       await asignarMantenimiento(mantenimiento.id, token);
-  
-    
-      const updatedMantenimientos = mantenimientos.map((m) =>
-        m.id === mantenimiento.id ? { ...m, estadoMantenimiento: "Aprobado" } : m
-      );
-  
-      setMantenimientos(updatedMantenimientos); 
+      
+      
+      await fetchMantenimientosPendientes();
   
       console.log(`Mantenimiento de patente ${mantenimiento.vehiculo.patente} asignado con éxito`);
     } catch (error) {
@@ -59,8 +54,6 @@ export function AsignarMantenimiento() {
       setIsLoading(false);
     }
   };
-  
-  
 
   return (
     <div>

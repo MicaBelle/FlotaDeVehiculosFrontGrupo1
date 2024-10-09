@@ -1,53 +1,53 @@
-/* Navbar Styles */
+
 .navbar {
-    background-color: #1e1e2f; /* Fondo oscuro para el Navbar */
+    background-color: #1e1e2f; 
   }
   
-  /* Navbar Content */
+ 
   .navbar-content {
     display: flex;
     justify-content: space-between;
     align-items: center;
   }
   
-  /* Role Text */
+  
   .role-text {
-    color: #ffffff; /* Texto blanco para el rol */
-    font-size: 0.875rem; /* Tamaño de fuente para rol */
+    color: #ffffff; 
+    font-size: 0.875rem;
   }
   
-  /* Dropdown Menu Styles */
+  
   .dropdown-menu {
-    background-color: #1e1e2f; /* Color de fondo oscuro */
-    color: #ffffff; /* Texto blanco */
-    z-index: 2000; /* Asegúrate de que esté en frente */
+    background-color: #1e1e2f; 
+    color: #ffffff; 
+    z-index: 2000; 
   }
   
-  /* Dropdown Item Styles */
+
   .dropdown-item {
-    color: #ffffff; /* Color blanco para el texto */
-    padding: 1rem; /* Espaciado interno */
+    color: #ffffff; 
+    padding: 1rem; 
   }
   
-  /* Dropdown Item Hover Effect */
+  
   .dropdown-item:hover {
-    background-color: #27293d; /* Color al pasar el ratón */
+    background-color: #27293d; 
   }
   
-  /* Avatar Style */
+ 
   .avatar {
-    cursor: pointer; /* Cambia el cursor a pointer */
+    cursor: pointer; 
   }
   
-  /* Responsive Styles */
+
   @media (max-width: 768px) {
     .navbar-content {
-      flex-direction: column; /* Cambia a columna en pantallas pequeñas */
-      align-items: flex-start; /* Alinear a la izquierda */
+      flex-direction: column; 
+      align-items: flex-start; 
     }
   
     .role-text {
-      font-size: 0.75rem; /* Tamaño de fuente más pequeño */
+      font-size: 0.75rem; 
     }
   }
   
