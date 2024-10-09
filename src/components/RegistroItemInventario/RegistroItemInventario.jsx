@@ -9,6 +9,7 @@ export const RegistroItemInventario = ({ onSubmit, onCancel }) => {
     nombre: '',
     umbral: 0,
     stock: 0,
+    cantCompraAutomatica: 0,
   });
 
   const token = useSelector((state) => state.user.token); 
@@ -70,6 +71,19 @@ export const RegistroItemInventario = ({ onSubmit, onCancel }) => {
               type="number"
               name="stock"
               value={formData.stock}
+              onChange={handleChange}
+              required
+              className="input-field"
+            />
+          </label>
+        </div>
+        <div className="form-group">
+          <label className="label">
+          cantCompraAutomatica
+            <input
+              type="number"
+              name="cantCompraAutomatica"
+              value={formData.cantCompraAutomatica}
               onChange={handleChange}
               required
               className="input-field"

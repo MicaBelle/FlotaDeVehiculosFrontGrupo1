@@ -15,8 +15,8 @@ import { useSelector } from "react-redux";
 
 const columns = [
   { uid: "nombre", name: "NOMBRE" },
-  { uid: "stock", name: "STOCK" },
   { uid: "umbral", name: "UMBRAL" },
+  { uid: "stock", name: "STOCK" },
   { uid: "cantCompraAutomatica", name: "CANT. COMPRA AUTOMÁTICA" }, 
 ];
 
@@ -34,8 +34,8 @@ export function TablaDeInventario( {userRole} ) {
         const mappedRows = items.map((item, index) => ({
           key: index.toString(),
           nombre: item.nombre,
-          stock: item.stock,
           umbral: item.umbral,
+          stock: item.stock,
           cantCompraAutomatica: item.cantCompraAutomatica, 
         }));
         setFilas(mappedRows);
