@@ -13,9 +13,6 @@ export const TareasAsignadas = () => {
     const fetchTareas = async () => {
       try {
         const response = await verMisMantenimientos(token); 
-        console.log("Respuesta de la API:", response); 
-        
-        
         if (response && Array.isArray(response.mantenimientos)) {
           setTareas(response.mantenimientos);
         } else {
