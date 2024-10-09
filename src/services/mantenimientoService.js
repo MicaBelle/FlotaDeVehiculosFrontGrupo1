@@ -28,14 +28,9 @@ export const verMantenimientosPendientes = async (token) => {
     return await executeFetch(endpoint, null, HttpMethods.GET, token, 200);
 };
 
-/*
-public class AsignarMantenimientoRequestDTO {
-    private int operadorId;
-}
-*/
-export const asignarMantenimiento = async (id, data, token) => {
+export const asignarMantenimiento = async (id, token) => {
     const endpoint = backendUrl + '/mantenimiento/asignar/' + id;
-    return await executeFetch(endpoint, data, HttpMethods.POST, token, 200);
+    return await executeFetch(endpoint, null, HttpMethods.POST, token, 200);
 };
 
 /*
