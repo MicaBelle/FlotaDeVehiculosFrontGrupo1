@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { verMisMantenimientos } from '../../services/mantenimientoService';
+import '../TareasAsignadas/styles/TareasAsignadas.css'
 import TarjetaMantenimiento from './TajetaMantenimiento';
-
 
 export const TareasAsignadas = () => {
   const [tareas, setTareas] = useState([]);
@@ -33,7 +33,7 @@ export const TareasAsignadas = () => {
   };
 
   return (
-    <div>
+    <div className="tarjeta-container">
       {tareas.length === 0 ? (
         <p>No hay tareas asignadas</p>
       ) : (

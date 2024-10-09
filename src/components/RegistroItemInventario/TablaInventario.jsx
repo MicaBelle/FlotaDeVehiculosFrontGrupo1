@@ -20,7 +20,7 @@ const columns = [
   { uid: "cantCompraAutomatica", name: "CANT. COMPRA AUTOMÁTICA" }, 
 ];
 
-export function TablaDeInventario() {
+export function TablaDeInventario( {userRole} ) {
   const [filas, setFilas] = useState([]);
   const [filterValue, setFilterValue] = useState("");
   const [showRegistro, setShowRegistro] = useState(false);
