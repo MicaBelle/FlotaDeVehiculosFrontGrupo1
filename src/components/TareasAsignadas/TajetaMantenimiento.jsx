@@ -4,35 +4,29 @@ import mantenimientoImagen from '../../assets/Images/LogoNavBar.jpeg';
 import { finalizarMantenimiento } from '../../services/mantenimientoService'; 
 import TablaDeInventario from '../RegistroItemInventario/TablaInventario';
 
-
 const TarjetaMantenimiento = ({ tarea, token, onTareaFinalizada }) => {
-  const [itemUsado, setItemUsado] = useState(null); 
+  const [itemsUsados, setItemsUsados] = useState([]); 
   const [mostrarInventario, setMostrarInventario] = useState(false); 
-  const [cantidad, setCantidad] = useState(1); 
-  const [repuestoSeleccionado, setRepuestoSeleccionado] = useState(''); 
 
   const handleFinalizarTarea = async () => {
     try {
-      if (!itemUsado) {
-        alert("Por favor, seleccione un ítem para descontar del stock");
+      if (itemsUsados.length === 0) {
+        alert("Por favor, seleccione al menos un ítem para descontar del stock");
         return;
       }
 
       const data = {
-        items: [
-          {
-            idItem: tarea.id, 
-            cantidad: cantidad, 
-          },
-        ],
+        items: itemsUsados.map(item => ({
+          idItem: item.id,
+          cantidad: item.cantidad,
+        })),
       };
       console.log(data);
 
-
       await finalizarMantenimiento(tarea.id, data, token);
 
-      alert("Tarea finalizada y el ítem ha sido descontado del stock.");
-      onTareaFinalizada(tarea.id); 
+      alert("Tarea finalizada y los ítems han sido descontados del stock.");
+      onTareaFinalizada(tarea.id);
 
     } catch (error) {
       alert("Error al finalizar la tarea.");
@@ -40,9 +34,22 @@ const TarjetaMantenimiento = ({ tarea, token, onTareaFinalizada }) => {
   };
 
   const handleItemSeleccionado = (id, nombre) => {
-    setItemUsado({ id, nombre }); 
-    setRepuestoSeleccionado(nombre); 
+    const existe = itemsUsados.find(item => item.id === id);
+    if (existe) {
+      alert("Este ítem ya ha sido seleccionado.");
+      return;
+    }
+
+    setItemsUsados([...itemsUsados, { id, nombre, cantidad: 1 }]); 
     setMostrarInventario(false); 
+  };
+
+  const handleCantidadChange = (id, nuevaCantidad) => {
+    setItemsUsados(prevItems => 
+      prevItems.map(item =>
+        item.id === id ? { ...item, cantidad: nuevaCantidad } : item
+      )
+    );
   };
 
   return (
@@ -73,24 +80,26 @@ const TarjetaMantenimiento = ({ tarea, token, onTareaFinalizada }) => {
           Seleccionar Repuesto
         </Button>
         
-        {mostrarInventario && ( 
+        {mostrarInventario && (
           <TablaDeInventario userRole="OPERADOR" onItemSeleccionado={handleItemSeleccionado} />
         )}
-        
-        {repuestoSeleccionado && ( 
-          <p className="mt-4">Repuesto a utilizar: {repuestoSeleccionado}</p>
-        )}
-        
-        {itemUsado && ( 
-          <div>
-            <label htmlFor="cantidad">Cantidad:</label>
-            <input
-              type="number"
-              id="cantidad"
-              value={cantidad}
-              onChange={(e) => setCantidad(e.target.value)} 
-              min="1"
-            />
+
+        {itemsUsados.length > 0 && (
+          <div className="mt-4">
+            <h4>Repuestos seleccionados:</h4>
+            {itemsUsados.map(item => (
+              <div key={item.id} className="mb-2">
+                <p>Repuesto: {item.nombre}</p>
+                <label htmlFor={`cantidad-${item.id}`}>Cantidad:</label>
+                <input
+                  type="number"
+                  id={`cantidad-${item.id}`}
+                  value={item.cantidad}
+                  onChange={(e) => handleCantidadChange(item.id, e.target.value)}
+                  min="1"
+                />
+              </div>
+            ))}
           </div>
         )}
       </CardBody>
@@ -105,6 +114,6 @@ const TarjetaMantenimiento = ({ tarea, token, onTareaFinalizada }) => {
       </CardFooter>
     </Card>
   );
-}
+};
 
 export default TarjetaMantenimiento;
