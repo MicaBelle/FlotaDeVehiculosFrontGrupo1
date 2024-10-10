@@ -7,7 +7,7 @@ import '../RegistroDeControlesRutinarios/styles/RegistroControlesRutinarios.css'
 const RegistrarMantenimiento = ({ vehiculoId }) => {
   const [formData, setFormData] = useState({
     asunto: '',
-    vehiculo_id: '',
+    vehiculo_id: vehiculoId,
   });
   
   const [successMessage, setSuccessMessage] = useState(false); 

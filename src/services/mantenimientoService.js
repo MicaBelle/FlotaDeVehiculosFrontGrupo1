@@ -9,7 +9,7 @@ public class RegistrarMantenimientoDTO {
 }
 */
 export const cargarMantenimientoManual = async (data, token) => {
-    const endpoint = backendUrl + '/mantenimiento/crearManual/';
+    const endpoint = backendUrl + '/mantenimiento/crearManual';
     return await executeFetch(endpoint, data, HttpMethods.POST, token, 201);
 };
 
