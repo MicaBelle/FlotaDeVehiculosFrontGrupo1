@@ -24,17 +24,46 @@ export const RegistroDeColectivo = () => {
     }));
   };
 
+  const validateFormData = () => {
+    const { patente, antiguedad, kilometraje, fechaRevision } = formData;
+
+    const patenteRegex = /^(?:[A-Z]{2}\d{3}[A-Z]{2}|[A-Z]{3}\d{3})$/;
+    if (!patenteRegex.test(patente)) {
+      alert("Formato de patente inválido. Debe ser '11AAA11' o 'AAA111'.");
+      return false;
+    }
+
+   
+    if (antiguedad < 0 || kilometraje < 0) {
+      alert("Antigüedad y kilometraje no pueden ser negativos.");
+      return false;
+    }
+
+   
+    if (new Date(fechaRevision) < new Date()) {
+      alert("La fecha de revisión no puede ser anterior a la fecha actual.");
+      return false;
+    }
+
+    return true;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
+ 
+    if (!validateFormData()) {
+      return; 
+    }
+
     const fechaRevisionFormateada = new Date(formData.fechaRevision);
     const anio = fechaRevisionFormateada.getFullYear();
     const mes = String(fechaRevisionFormateada.getMonth() + 1).padStart(2, '0'); 
     const dia = String(fechaRevisionFormateada.getDate()).padStart(2, '0');
     const fechaRevisionString = `${dia}/${mes}/${anio}`;
-  
+
     const dataToSubmit = {
-      patente: formData.patente,
+      patente: formData.patente.toUpperCase(),
       antiguedad: parseInt(formData.antiguedad),  
       kilometraje: parseInt(formData.kilometraje),  
       litrosDeTanque: formData.litrosDeTanque,
@@ -43,15 +72,23 @@ export const RegistroDeColectivo = () => {
     };
 
     try {
-      const response = await registrar(dataToSubmit, token);// hay un problema cuando la respuesta es {} 
-      console.log('Registro guardado:', response);
+      const response = await registrar(dataToSubmit, token);
+      setFormData({
+        patente: '',
+        chasis: '',
+        antiguedad: '',
+        kilometraje: '',
+        litrosDeTanque: 800,
+        modelo: '',  
+        fechaRevision: '',  
+      });
+
+      alert("Colectivo registrado con éxito.");
     } catch (error) {
       console.error("Error al registrar el colectivo:", error);
       alert("Error al registrar el colectivo. Por favor, intente nuevamente.");
     }
   };
-  
-
 
   return (
     <div className="container">
@@ -93,6 +130,7 @@ export const RegistroDeColectivo = () => {
               onChange={handleChange}
               required
               className="input-field"
+              min="0"
             />
           </label>
         </div>
@@ -106,6 +144,7 @@ export const RegistroDeColectivo = () => {
               onChange={handleChange}
               required
               className="input-field"
+              min="0"
             />
           </label>
         </div>
