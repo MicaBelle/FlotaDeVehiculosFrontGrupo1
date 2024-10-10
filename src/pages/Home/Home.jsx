@@ -1,12 +1,27 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import Principal from '../../components/Principal/Principal';
 import NavBar from '../../components/NavBar/NavBar';
-import '../Home/Styles/home.css'
+import '../Home/Styles/home.css';
 
 export const Home = () => {
-  const [activeMenu, setActiveMenu] = useState('Home');
-  const userRole = useSelector((state) => state.user.role); 
+  const userRole = useSelector((state) => state.user.role);
+
+
+  const getDefaultMenu = (role) => {
+    switch (role) {
+      case 'ADMINISTRADOR':
+        return 'Colectivos'; 
+      case 'SUPERVISOR':
+        return 'Colectivos'; 
+      case 'OPERADOR':
+        return 'TareasAsignadas'; 
+      default:
+        return 'Home'; 
+    }
+  };
+
+  const [activeMenu, setActiveMenu] = useState(getDefaultMenu(userRole)); 
 
   const handleMenuClick = (menu) => {
     setActiveMenu(menu);
@@ -19,27 +34,24 @@ export const Home = () => {
         <div className="Sidebar"> 
           {userRole === 'ADMINISTRADOR' && (
             <>
-              <div className="MenuItem" onClick={() => handleMenuClick('Colectivos')}>Colectivos</div>
-              <div className="MenuItem" onClick={() => handleMenuClick('Registro')}>Registro de colectivo</div>
-              <div className="MenuItem" onClick={() => handleMenuClick('Inventario')}>Inventario</div>
-              <div className="MenuItem" onClick={() => handleMenuClick('Mantenimientos')}>Mantenimientos</div>
+              <div className={`MenuItem ${activeMenu === 'Colectivos' ? 'active' : ''}`} onClick={() => handleMenuClick('Colectivos')}>Colectivos</div>
+              <div className={`MenuItem ${activeMenu === 'Registro' ? 'active' : ''}`} onClick={() => handleMenuClick('Registro')}>Registro de colectivo</div>
+              <div className={`MenuItem ${activeMenu === 'Inventario' ? 'active' : ''}`} onClick={() => handleMenuClick('Inventario')}>Inventario</div>
+              <div className={`MenuItem ${activeMenu === 'Mantenimientos' ? 'active' : ''}`} onClick={() => handleMenuClick('Mantenimientos')}>Mantenimientos</div>
             </>
           )}
-           {userRole === 'SUPERVISOR' && (
+          {userRole === 'SUPERVISOR' && (
             <>
-              <div className="MenuItem" onClick={() => handleMenuClick('Colectivos')}>Colectivos</div>
-              <div className="MenuItem" onClick={() => handleMenuClick('Inventario')}>Inventario</div>
+              <div className={`MenuItem ${activeMenu === 'Colectivos' ? 'active' : ''}`} onClick={() => handleMenuClick('Colectivos')}>Colectivos</div>
+              <div className={`MenuItem ${activeMenu === 'Inventario' ? 'active' : ''}`} onClick={() => handleMenuClick('Inventario')}>Inventario</div>
             </>
           )}
-           {userRole === 'OPERADOR' && (
+          {userRole === 'OPERADOR' && (
             <>
-              <div className="MenuItem" onClick={() => handleMenuClick('AsignarTarea')}>Pendientes</div>
-              <div className="MenuItem" onClick={() => handleMenuClick('TareasAsignadas')}>Mis tareas</div>
-          
-              
+              <div className={`MenuItem ${activeMenu === 'AsignarTarea' ? 'active' : ''}`} onClick={() => handleMenuClick('AsignarTarea')}>Pendientes</div>
+              <div className={`MenuItem ${activeMenu === 'TareasAsignadas' ? 'active' : ''}`} onClick={() => handleMenuClick('TareasAsignadas')}>Mis tareas</div>
             </>
           )}
-          
         </div>
         <div className="ContentArea"> 
           <Principal activeMenu={activeMenu} />
@@ -48,4 +60,5 @@ export const Home = () => {
     </div>
   );
 };
+
 export default Home;
