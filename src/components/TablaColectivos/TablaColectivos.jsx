@@ -12,6 +12,8 @@ import {
 } from "@nextui-org/react";
 import { useSelector } from 'react-redux';
 import { habilitar, inhabilitar, verVehiculos } from "../../services/vehiculoService";
+import RegistrarMantenimiento from "../RegistroDeControlesRutinarios/RegistroDeControlesRutinarios";
+
 
 const columns = [
   { uid: "patente", name: "PATENTE" },
@@ -27,6 +29,8 @@ export function TablaDeColectivos({ userRole }) {
   const [filas, setFilas] = useState([]);
   const [filterValue, setFilterValue] = useState("");
   const [filterStatus, setFilterStatus] = useState("all");
+  const [mostrarRegistroControles, setMostrarRegistroControles] = useState(false); 
+  const [vehiculoSeleccionado, setVehiculoSeleccionado] = useState(null); 
 
   const token = useSelector((state) => state.user.token);
 
@@ -81,6 +85,11 @@ export function TablaDeColectivos({ userRole }) {
     }
   };
 
+  const handleRegistrarMantenimiento = (id) => {
+    setVehiculoSeleccionado(id); 
+    setMostrarRegistroControles(true); 
+  };
+
   const filteredRows = useMemo(() => {
     return filas.filter((row) =>
       (filterStatus === "all" || row.estado === filterStatus) &&
@@ -133,7 +142,9 @@ export function TablaDeColectivos({ userRole }) {
               </Button>
             )}
             {userRole === "SUPERVISOR" && (
-              <Button color="danger">Registrar mantenimeinto</Button>
+              <Button color="danger" onClick={() => handleRegistrarMantenimiento(item.id)}>
+                Registrar mantenimiento
+              </Button>
             )}
           </div>
         );
@@ -144,29 +155,35 @@ export function TablaDeColectivos({ userRole }) {
 
   return (
     <div>
-      <Table
-        aria-label="Tabla de Colectivos"
-        isHeaderSticky
-        topContent={topContent}
-      >
-        <TableHeader columns={columns}>
-          {(column) => (
-            <TableColumn
-              key={column.uid}
-              align={column.uid === "actions" ? "center" : "start"}
-            >
-              {column.name}
-            </TableColumn>
-          )}
-        </TableHeader>
-        <TableBody emptyContent={"No hay colectivos encontrados"} items={filteredRows}>
-          {(item) => (
-            <TableRow key={item.key}>
-              {(columnKey) => <TableCell>{renderCell(item, columnKey)}</TableCell>}
-            </TableRow>
-          )}
-        </TableBody>
-      </Table>
+      {!mostrarRegistroControles ? (
+        <>
+          <Table
+            aria-label="Tabla de Colectivos"
+            isHeaderSticky
+            topContent={topContent}
+          >
+            <TableHeader columns={columns}>
+              {(column) => (
+                <TableColumn
+                  key={column.uid}
+                  align={column.uid === "actions" ? "center" : "start"}
+                >
+                  {column.name}
+                </TableColumn>
+              )}
+            </TableHeader>
+            <TableBody emptyContent={"No hay colectivos encontrados"} items={filteredRows}>
+              {(item) => (
+                <TableRow key={item.key}>
+                  {(columnKey) => <TableCell>{renderCell(item, columnKey)}</TableCell>}
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </>
+      ) : (
+        <RegistrarMantenimiento vehiculoId={vehiculoSeleccionado} />
+      )}
     </div>
   );
 }

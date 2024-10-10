@@ -4,11 +4,12 @@ import { useSelector } from 'react-redux';
 import { Button } from '@nextui-org/react';
 import '../RegistroDeControlesRutinarios/styles/RegistroControlesRutinarios.css'
 
-const RegistrarMantenimiento = () => {
+const RegistrarMantenimiento = ({ vehiculoId }) => {
   const [formData, setFormData] = useState({
     asunto: '',
     vehiculo_id: '',
   });
+  
   const [successMessage, setSuccessMessage] = useState(false); 
   const token = useSelector((state) => state.user.token); 
 
@@ -22,16 +23,13 @@ const RegistrarMantenimiento = () => {
     
     try {
       const response = await cargarMantenimientoManual(formData, token);
-      console.log('Mantenimiento registrado:', response);
-
-      
+     
       setSuccessMessage(true);
       setTimeout(() => setSuccessMessage(false), 3000); 
       
-      
       setFormData({
         asunto: '',
-        vehiculo_id: '',
+        vehiculoId:vehiculoId,
       });
       
     } catch (error) {
@@ -62,20 +60,6 @@ const RegistrarMantenimiento = () => {
             />
           </label>
         </div>
-
-        <div className="form-group">
-          <label>
-            ID del Vehículo:
-            <input
-              type="number"
-              name="vehiculo_id"
-              value={formData.vehiculo_id}
-              onChange={handleChange}
-              required
-            />
-          </label>
-        </div>
-
         <Button color="success" type="submit">Registrar Mantenimiento</Button>
       </form>
     </div>
