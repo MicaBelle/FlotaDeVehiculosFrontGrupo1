@@ -16,6 +16,13 @@ export const RegistroItemInventario = ({ onSubmit, onCancel }) => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+
+    
+    if (name !== 'nombre' && value < 0) {
+      alert('No se permiten valores negativos');
+      return;
+    }
+
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
@@ -24,8 +31,8 @@ export const RegistroItemInventario = ({ onSubmit, onCancel }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     try {
-      
       const response = await registrarItem(formData, token);
       console.log('Item registrado con éxito:', response);
       onSubmit(formData); 
@@ -59,6 +66,7 @@ export const RegistroItemInventario = ({ onSubmit, onCancel }) => {
               name="umbral"
               value={formData.umbral}
               onChange={handleChange}
+              min="0"  
               required
               className="input-field"
             />
@@ -72,6 +80,7 @@ export const RegistroItemInventario = ({ onSubmit, onCancel }) => {
               name="stock"
               value={formData.stock}
               onChange={handleChange}
+              min="0"  
               required
               className="input-field"
             />
@@ -79,12 +88,13 @@ export const RegistroItemInventario = ({ onSubmit, onCancel }) => {
         </div>
         <div className="form-group">
           <label className="label">
-          cantCompraAutomatica
+            Cantidad para Compra Automática:
             <input
               type="number"
               name="cantCompraAutomatica"
               value={formData.cantCompraAutomatica}
               onChange={handleChange}
+              min="0" 
               required
               className="input-field"
             />
