@@ -23,7 +23,7 @@ const columns = [
   { uid: "acciones", name: "ACCIONES" }, 
 ];
 
-export function TablaDeInventario({ userRole,onItemSeleccionado }) {
+export function TablaDeInventario({ userRole, onItemSeleccionado }) {
   const [filas, setFilas] = useState([]);
   const [filterValue, setFilterValue] = useState("");
   const [showRegistro, setShowRegistro] = useState(false);
@@ -58,6 +58,7 @@ export function TablaDeInventario({ userRole,onItemSeleccionado }) {
     );
   }, [filas, filterValue]);
 
+ 
   const topContent = (
     <div className="flex justify-between items-end mb-4">
       <Input
@@ -102,13 +103,18 @@ export function TablaDeInventario({ userRole,onItemSeleccionado }) {
     return item[columnKey];
   };
 
+  
+  const filteredColumns =( userRole === "ADMINISTRADOR" || userRole === "SUPERVISOR" )
+    ? columns.filter(col => col.uid !== "acciones") 
+    : columns;
+
   return (
     <div>
       {showRegistro && userRole === "ADMINISTRADOR" ? (
         <RegistroItemInventario onSubmit={handleRegistroSubmit} onCancel={() => setShowRegistro(false)} />
       ) : (
         <Table aria-label="Tabla de Inventario" isHeaderSticky topContent={topContent}>
-          <TableHeader columns={columns}>
+          <TableHeader columns={filteredColumns}>
             {(column) => (
               <TableColumn key={column.uid} align={column.uid === "acciones" ? "center" : "start"}>
                 {column.name}
