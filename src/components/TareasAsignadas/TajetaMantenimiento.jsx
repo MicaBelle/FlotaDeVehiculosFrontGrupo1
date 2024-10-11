@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
 import { Card, CardHeader, CardBody, CardFooter, Divider, Image, Button } from "@nextui-org/react";
 import mantenimientoImagen from '../../assets/Images/LogoNavBar.jpeg';
-import { finalizarMantenimiento } from '../../services/mantenimientoService';
+import { finalizarMantenimiento } from '../../services/mantenimientoService'; 
 import TablaDeInventario from '../RegistroItemInventario/TablaInventario';
 
 const TarjetaMantenimiento = ({ tarea, token, onTareaFinalizada }) => {
-  const [itemsUsados, setItemsUsados] = useState([]);
-  const [mostrarInventario, setMostrarInventario] = useState(false);
+  const [itemsUsados, setItemsUsados] = useState([]); 
+  const [mostrarInventario, setMostrarInventario] = useState(false); 
 
   const handleFinalizarTarea = async () => {
     try {
       if (itemsUsados.length === 0) {
-        alert("Por favor, seleccione al menos un ítem para descontar del stock.");
+        alert("Por favor, seleccione al menos un ítem para descontar del stock");
         return;
       }
 
@@ -21,10 +21,13 @@ const TarjetaMantenimiento = ({ tarea, token, onTareaFinalizada }) => {
           cantidad: item.cantidad,
         })),
       };
+      console.log(data);
 
       await finalizarMantenimiento(tarea.id, data, token);
+
       alert("Tarea finalizada y los ítems han sido descontados del stock.");
       onTareaFinalizada(tarea.id);
+
     } catch (error) {
       alert("Error al finalizar la tarea.");
     }
@@ -37,16 +40,21 @@ const TarjetaMantenimiento = ({ tarea, token, onTareaFinalizada }) => {
       return;
     }
 
-    setItemsUsados([...itemsUsados, { id, nombre, cantidad: 1 }]);
-    setMostrarInventario(false);
+    setItemsUsados([...itemsUsados, { id, nombre, cantidad: 1 }]); 
+    setMostrarInventario(false); 
   };
 
   const handleCantidadChange = (id, nuevaCantidad) => {
-    setItemsUsados(prevItems =>
+    setItemsUsados(prevItems => 
       prevItems.map(item =>
         item.id === id ? { ...item, cantidad: nuevaCantidad } : item
       )
     );
+  };
+
+  const handleOcultarInventario = () => {
+    setMostrarInventario(false);
+    setItemsUsados([]); 
   };
 
   return (
@@ -66,7 +74,7 @@ const TarjetaMantenimiento = ({ tarea, token, onTareaFinalizada }) => {
       <Divider />
       <CardBody>
         <p><strong>Estado:</strong> {tarea.estadoMantenimiento}</p>
-        <p><strong>Operador:</strong> {tarea.operador.usuario}</p>
+        <p><strong>Operador:</strong> {tarea.operador.usuario}</p> 
         <p><strong>Vehículo:</strong> {tarea.vehiculo.patente}</p>
         <p><strong>Modelo:</strong> {tarea.vehiculo.modelo}</p>
         <p><strong>Antigüedad:</strong> {tarea.vehiculo.antiguedad} años</p>
@@ -75,16 +83,21 @@ const TarjetaMantenimiento = ({ tarea, token, onTareaFinalizada }) => {
         <p><strong>Fecha de Inicio:</strong> {tarea.fechaInicio}</p>
         <p><strong>Fecha de Finalización:</strong> {tarea.fechaFinalizacion}</p>
         <p><strong>Asunto:</strong> {tarea.asunto}</p>
-
-        <Button
-          color="primary"
-          onClick={() => setMostrarInventario(true)}
+        
+        <Button 
+          color="primary" 
+          onClick={() => setMostrarInventario(true)} 
         >
           Seleccionar Repuesto
         </Button>
-
+        
         {mostrarInventario && (
-          <TablaDeInventario userRole="OPERADOR" onItemSeleccionado={handleItemSeleccionado} />
+          <>
+            <TablaDeInventario userRole="OPERADOR" onItemSeleccionado={handleItemSeleccionado} />
+            <Button color="danger" onClick={handleOcultarInventario}>
+              Cancelar
+            </Button>
+          </>
         )}
 
         {itemsUsados.length > 0 && (
