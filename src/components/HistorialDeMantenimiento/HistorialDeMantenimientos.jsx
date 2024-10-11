@@ -30,8 +30,8 @@ export function HistorialDeMantenimientos() {
             key: index.toString(),
             patente: item.vehiculo.patente,
             fecha: item.fechaInicio,
-            repuesto: item.itemUtilizado.map((utilizado) => utilizado.item).join(", "),
-            realizadoPor: item.operador.usuario,
+            repuesto: item.itemUtilizado?.map((utilizado) => utilizado.item).join(", ") || "No especificado",
+            realizadoPor: item.operador?.usuario || "Operador no especificado",
             idVehiculo: item.vehiculo.id,
           }));
           setMantenimientos(mappedRows); 
