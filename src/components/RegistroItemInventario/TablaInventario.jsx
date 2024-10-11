@@ -14,7 +14,6 @@ import { obtenerItems } from '../../services/inventarioService';
 import { useSelector } from "react-redux";
 import TarjetaMantenimiento from "../TareasAsignadas/TajetaMantenimiento";
 
-
 const columns = [
   { uid: "nombre", name: "NOMBRE" },
   { uid: "umbral", name: "UMBRAL" },
@@ -58,7 +57,6 @@ export function TablaDeInventario({ userRole, onItemSeleccionado }) {
     );
   }, [filas, filterValue]);
 
- 
   const topContent = (
     <div className="flex justify-between items-end mb-4">
       <Input
@@ -103,10 +101,13 @@ export function TablaDeInventario({ userRole, onItemSeleccionado }) {
     return item[columnKey];
   };
 
-  
-  const filteredColumns =( userRole === "ADMINISTRADOR" || userRole === "SUPERVISOR" )
-    ? columns.filter(col => col.uid !== "acciones") 
-    : columns;
+
+  const filteredColumns = useMemo(() => {
+    if (userRole === "OPERADOR") {
+      return columns.filter(col => col.uid !== "cantCompraAutomatica"); 
+    }
+    return columns;
+  }, [userRole]);
 
   return (
     <div>
