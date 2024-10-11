@@ -46,7 +46,7 @@ export function TablaDeColectivos({ userRole }) {
             patente: item.patente,
             antiguedad: item.antiguedad,
             kilometraje: item.kilometraje,
-            litrosTanque: item.litrosDeTanque || 800,
+            litrosDeTanque: item.litrosDeTanque || 800,
             estado: item.estadoDeHabilitacion || "Desconocido",
             fechaDeRevision: item.fechaVencimiento || "Sin fecha",
           }));
