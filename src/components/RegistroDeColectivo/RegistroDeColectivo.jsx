@@ -6,7 +6,6 @@ import { registrar } from "../../services/vehiculoService";
 export const RegistroDeColectivo = () => {
   const [formData, setFormData] = useState({
     patente: '',
-    chasis: '',
     antiguedad: '',
     kilometraje: '',
     litrosDeTanque: 800,
@@ -75,7 +74,6 @@ export const RegistroDeColectivo = () => {
       const response = await registrar(dataToSubmit, token);
       setFormData({
         patente: '',
-        chasis: '',
         antiguedad: '',
         kilometraje: '',
         litrosDeTanque: 800,
@@ -101,19 +99,6 @@ export const RegistroDeColectivo = () => {
               type="text"
               name="patente"
               value={formData.patente}
-              onChange={handleChange}
-              required
-              className="input-field"
-            />
-          </label>
-        </div>
-        <div className="form-group">
-          <label className="label">
-            Chasis:
-            <input
-              type="text"
-              name="chasis"
-              value={formData.chasis}
               onChange={handleChange}
               required
               className="input-field"
