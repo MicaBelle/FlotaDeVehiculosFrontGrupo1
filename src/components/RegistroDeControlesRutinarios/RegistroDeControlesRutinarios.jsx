@@ -23,9 +23,7 @@ const RegistrarMantenimiento = ({ vehiculoId, irAtras }) => {
     
     try {
       await cargarMantenimientoManual(formData, token);
-     
       setSuccessMessage(true);
-      
       
       setTimeout(() => {
         setSuccessMessage(false);
@@ -34,7 +32,7 @@ const RegistrarMantenimiento = ({ vehiculoId, irAtras }) => {
       
       setFormData({
         asunto: '',
-        vehiculoId: vehiculoId,
+        vehiculo_id: vehiculoId,
       });
       
     } catch (error) {
@@ -52,6 +50,7 @@ const RegistrarMantenimiento = ({ vehiculoId, irAtras }) => {
         </div>
       )}
 
+
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label>
@@ -66,6 +65,9 @@ const RegistrarMantenimiento = ({ vehiculoId, irAtras }) => {
           </label>
         </div>
         <Button color="success" type="submit">Registrar Mantenimiento</Button>
+      <Button color="danger" onClick={irAtras} style={{ marginBottom: '15px' }}>
+       Cancelar
+      </Button>
       </form>
     </div>
   );

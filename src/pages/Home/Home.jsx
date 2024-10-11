@@ -48,8 +48,8 @@ export const Home = () => {
           )}
           {userRole === 'OPERADOR' && (
             <>
-              <div className={`MenuItem ${activeMenu === 'AsignarTarea' ? 'active' : ''}`} onClick={() => handleMenuClick('AsignarTarea')}>Pendientes</div>
               <div className={`MenuItem ${activeMenu === 'TareasAsignadas' ? 'active' : ''}`} onClick={() => handleMenuClick('TareasAsignadas')}>Mis tareas</div>
+              <div className={`MenuItem ${activeMenu === 'AsignarTarea' ? 'active' : ''}`} onClick={() => handleMenuClick('AsignarTarea')}>Pendientes</div>
             </>
           )}
         </div>
