@@ -90,6 +90,10 @@ export function TablaDeColectivos({ userRole }) {
     setMostrarRegistroControles(true); 
   };
 
+  const irAtras = () => {
+    setMostrarRegistroControles(false); 
+  };
+
   const filteredRows = useMemo(() => {
     return filas.filter((row) =>
       (filterStatus === "all" || row.estado === filterStatus) &&
@@ -182,7 +186,7 @@ export function TablaDeColectivos({ userRole }) {
           </Table>
         </>
       ) : (
-        <RegistrarMantenimiento vehiculoId={vehiculoSeleccionado} />
+        <RegistrarMantenimiento vehiculoId={vehiculoSeleccionado} irAtras={irAtras}/>
       )}
     </div>
   );

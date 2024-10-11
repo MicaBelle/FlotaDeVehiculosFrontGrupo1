@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { cargarMantenimientoManual } from '../../services/mantenimientoService'; 
 import { useSelector } from 'react-redux';
 import { Button } from '@nextui-org/react';
-import '../RegistroDeControlesRutinarios/styles/RegistroControlesRutinarios.css'
+import '../RegistroDeControlesRutinarios/styles/RegistroControlesRutinarios.css';
 
-const RegistrarMantenimiento = ({ vehiculoId }) => {
+const RegistrarMantenimiento = ({ vehiculoId, irAtras }) => { 
   const [formData, setFormData] = useState({
     asunto: '',
     vehiculo_id: vehiculoId,
@@ -22,14 +22,19 @@ const RegistrarMantenimiento = ({ vehiculoId }) => {
     e.preventDefault();
     
     try {
-      const response = await cargarMantenimientoManual(formData, token);
+      await cargarMantenimientoManual(formData, token);
      
       setSuccessMessage(true);
-      setTimeout(() => setSuccessMessage(false), 3000); 
+      
+      
+      setTimeout(() => {
+        setSuccessMessage(false);
+        irAtras(); 
+      }, 2000); 
       
       setFormData({
         asunto: '',
-        vehiculoId:vehiculoId,
+        vehiculoId: vehiculoId,
       });
       
     } catch (error) {
