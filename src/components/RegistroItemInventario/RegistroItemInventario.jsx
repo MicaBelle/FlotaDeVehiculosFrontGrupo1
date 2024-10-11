@@ -100,8 +100,10 @@ export const RegistroItemInventario = ({ onSubmit, onCancel }) => {
             />
           </label>
         </div>
+        <div className='button-group'>
         <Button color='success' type="submit">Registrar Item</Button>
         <Button color='danger' type="button" onClick={onCancel}>Cancelar</Button>
+        </div>
       </form>
     </div>
   );
