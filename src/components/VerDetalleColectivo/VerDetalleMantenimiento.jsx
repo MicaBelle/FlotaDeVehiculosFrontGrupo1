@@ -56,12 +56,20 @@ export const VerDetalleMantenimiento = ({ idVehiculo, token, irAtras }) => {
       </CardHeader>
       <Divider />
       <CardBody>
+        <p><strong>Detalles del Vehículo:</strong></p>
         <p><strong>Patente:</strong> {mantenimiento.vehiculo.patente}</p>
+        <p><strong>Antigüedad:</strong> {mantenimiento.vehiculo.antiguedad} años</p>
+        <p><strong>Kilometraje:</strong> {mantenimiento.vehiculo.kilometraje} km</p>
+        <p><strong>Estado de Habilitación:</strong> {mantenimiento.vehiculo.estadoDeHabilitacion}</p>
+        <Divider />
+        <p><strong>Fechas de Mantenimiento:</strong></p>
         <p><strong>Fecha de Inicio:</strong> {mantenimiento.fechaInicio}</p>
         <p><strong>Fecha de Finalización:</strong> {mantenimiento.fechaFinalizacion}</p>
+        <Divider />
         <p><strong>Asunto:</strong> {mantenimiento.asunto}</p>
-        <p><strong>Repuesto Utilizado:</strong> {mantenimiento.itemUtilizado.map(item => item.item).join(', ')}</p>
-        <p><strong>Descripción:</strong> Aquí va una descripción del mantenimiento</p>
+        <p><strong>Repuestos Utilizados:</strong> {mantenimiento.itemUtilizado.map(item => item.item).join(', ')}</p>
+        <Divider />
+        <p><strong>Estado del Mantenimiento:</strong> {mantenimiento.estadoMantenimiento}</p>
       </CardBody>
       <Divider />
       <CardFooter>
