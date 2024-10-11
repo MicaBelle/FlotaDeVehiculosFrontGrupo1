@@ -48,7 +48,7 @@ export function TablaDeColectivos({ userRole }) {
             kilometraje: item.kilometraje,
             litrosDeTanque: item.litrosDeTanque || 800,
             estado: item.estadoDeHabilitacion || "Desconocido",
-            fechaDeRevision: item.fechaVencimiento || "Sin fecha",
+            fechaDeRevision: item.fechaVencimiento ? new Intl.DateTimeFormat('es-ES', { year: 'numeric', month: 'long', day: 'numeric' }).format(new Date(item.fechaVencimiento)) : "Sin fecha",
           }));
           setFilas(mappedRows);
         }
