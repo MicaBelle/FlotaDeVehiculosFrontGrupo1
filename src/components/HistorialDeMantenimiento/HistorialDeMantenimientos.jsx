@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Input, Button } from "@nextui-org/react";
 import VerDetalleMantenimiento from "../VerDetalleColectivo/VerDetalleMantenimiento";
-import { verMantenimientos } from "../../services/mantenimientoService";
+import { verMantenimientos } from "../../services/mantenimientoService"; 
 import { useSelector } from "react-redux";
 
 const columns = [
@@ -13,31 +13,46 @@ const columns = [
 ];
 
 export function HistorialDeMantenimientos() {
-  const [mantenimientos, setMantenimientos] = useState([]);
+  const [mantenimientos, setMantenimientos] = useState([]); 
   const [isLoading, setIsLoading] = useState(true);
   const [filterValue, setFilterValue] = useState("");
   const [selectedMantenimiento, setSelectedMantenimiento] = useState(null);
-  const token = useSelector((state) => state.user.token);
+  const token = useSelector((state) => state.user.token); 
+
+
+  const agruparItems = (items) => {
+    const itemsMap = {};
+
+    items.forEach((utilizado) => {
+      if (itemsMap[utilizado.item]) {
+        itemsMap[utilizado.item] += utilizado.cantidad;
+      } else {
+        itemsMap[utilizado.item] = utilizado.cantidad;
+      }
+    });
+
+    return Object.entries(itemsMap).map(([item, cantidad]) => `${item} (Cantidad: ${cantidad})`);
+  };
 
   useEffect(() => {
     const cargarMantenimientos = async () => {
       try {
         const response = await verMantenimientos(token);
-
+      
         if (response && Array.isArray(response.mantenimientos)) {
           const mappedRows = response.mantenimientos.map((item, index) => ({
             key: index.toString(),
             patente: item.vehiculo.patente,
             fecha: item.fechaInicio,
-            repuesto: item.itemUtilizado
-              ?.map((utilizado) => `${utilizado.item} (Cantidad: ${utilizado.cantidad})`)
-              .join(", ") || "No especificado", // Mostrar ítem y cantidad
+            repuesto: item.itemUtilizado?.length
+              ? agruparItems(item.itemUtilizado).join(", ")
+              : "No especificado",
             realizadoPor: item.operador?.usuario || "Operador no especificado",
             idVehiculo: item.vehiculo.id,
           }));
-          setMantenimientos(mappedRows);
+          setMantenimientos(mappedRows); 
         } else {
-          setMantenimientos([]);
+          setMantenimientos([]); 
         }
       } catch (error) {
         console.error("Error al cargar los mantenimientos:", error);
@@ -102,8 +117,8 @@ export function HistorialDeMantenimientos() {
     <div>
       {selectedMantenimiento ? (
         <VerDetalleMantenimiento
-          idVehiculo={selectedMantenimiento.idVehiculo}
-          token={token}
+          idVehiculo={selectedMantenimiento.idVehiculo} 
+          token={token} 
           irAtras={handleIrAtras}
         />
       ) : (
@@ -111,7 +126,7 @@ export function HistorialDeMantenimientos() {
           aria-label="Historial de Mantenimientos"
           isHeaderSticky
           topContent={topContent}
-          isLoading={isLoading}
+          isLoading={isLoading} 
         >
           <TableHeader columns={columns}>
             {(column) => (

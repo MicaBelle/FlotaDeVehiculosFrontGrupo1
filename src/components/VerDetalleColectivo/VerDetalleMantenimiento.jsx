@@ -39,6 +39,16 @@ export const VerDetalleMantenimiento = ({ idVehiculo, token, irAtras }) => {
     return <p>No hay datos disponibles.</p>;
   }
 
+ 
+  const repuestosAgrupados = mantenimiento.itemUtilizado.reduce((acc, { item, cantidad }) => {
+    if (!acc[item]) {
+      acc[item] = cantidad;
+    } else {
+      acc[item] += cantidad;
+    }
+    return acc;
+  }, {});
+
   return (
     <Card className="max-w-[400px]">
       <CardHeader className="flex gap-3">
@@ -69,8 +79,8 @@ export const VerDetalleMantenimiento = ({ idVehiculo, token, irAtras }) => {
         <p><strong>Asunto:</strong> {mantenimiento.asunto}</p>
         <p><strong>Repuestos Utilizados:</strong></p>
         <ul>
-          {mantenimiento.itemUtilizado.map((item, index) => (
-            <li key={index}>{item.item} (Cantidad: {item.cantidad})</li> 
+          {Object.entries(repuestosAgrupados).map(([item, cantidad]) => (
+            <li key={item}>{item} (Cantidad: {cantidad})</li>
           ))}
         </ul>
         <Divider />
