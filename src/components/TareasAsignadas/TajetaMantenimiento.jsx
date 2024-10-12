@@ -21,7 +21,7 @@ const TarjetaMantenimiento = ({ tarea, token, onTareaFinalizada }) => {
           const data = { cantidadADisminuir: item.cantidad };
           await utilizarItem(item.id, data, token); 
         } catch (error) {
-          alert(`Error al descontar el ítem ${item.nombre}.`);
+          alert(`Error al descontar el ítem ${item.nombre}, stock insuficiente.`);
           return; 
         }
       }
