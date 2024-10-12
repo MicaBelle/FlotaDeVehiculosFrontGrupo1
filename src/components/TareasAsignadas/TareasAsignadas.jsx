@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { verMisMantenimientos } from '../../services/mantenimientoService';
-
-import '../TareasAsignadas/styles/TareasAsignadas.css'
+import '../TareasAsignadas/styles/TareasAsignadas.css';
 import TarjetaMantenimiento from './TajetaMantenimiento';
+import Loader from '../Loader/Loader'; 
 
 export const TareasAsignadas = () => {
   const [tareas, setTareas] = useState([]);
+  const [isLoading, setIsLoading] = useState(true); 
+  const [loadingTimeout, setLoadingTimeout] = useState(null); 
   const token = useSelector((state) => state.user.token); 
 
   useEffect(() => {
@@ -21,12 +23,22 @@ export const TareasAsignadas = () => {
         }
       } catch (error) {
         console.error("Error al obtener las tareas: ", error);
+        setTareas([]);
+      } finally {
+        const timeoutId = setTimeout(() => {
+          setIsLoading(false);
+        }, 3000); 
+        setLoadingTimeout(timeoutId);
       }
     };
 
     if (token) {
       fetchTareas(); 
     }
+
+    return () => {
+      clearTimeout(loadingTimeout);
+    };
   }, [token]);
 
   const handleTareaFinalizada = (tareaId) => {
@@ -34,20 +46,32 @@ export const TareasAsignadas = () => {
   };
 
   return (
-    <div className="tarjeta-container">
-      {tareas.length === 0 ? (
-        <p>No hay tareas asignadas</p>
+    <div>
+      {isLoading ? ( 
+        <>
+          <div className="flex justify-center items-center h-full">
+            <Loader />
+          </div>
+          <div className="flex justify-center items-center h-full">
+            <h2>Cargando tus tareas...</h2>
+          </div>
+        </>
       ) : (
-        tareas.map((tarea) => (
-          <div className="tarjeta" key={tarea.id}>
-          <TarjetaMantenimiento 
-            key={tarea.id} 
-            tarea={tarea} 
-            token={token} 
-            onTareaFinalizada={handleTareaFinalizada}
-          />
+        <div className="tarjeta-container">
+          {tareas.length === 0 ? ( 
+            <p>No hay tareas asignadas</p>
+          ) : (
+            tareas.map((tarea) => (
+              <div className="tarjeta" key={tarea.id}>
+                <TarjetaMantenimiento 
+                  tarea={tarea} 
+                  token={token} 
+                  onTareaFinalizada={handleTareaFinalizada}
+                />
+              </div>
+            ))
+          )}
         </div>
-        ))
       )}
     </div>
   );
