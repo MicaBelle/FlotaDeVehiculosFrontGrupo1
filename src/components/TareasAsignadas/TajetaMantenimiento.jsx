@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Card, CardHeader, CardBody, CardFooter, Divider, Image, Button } from "@nextui-org/react";
 import mantenimientoImagen from '../../assets/Images/LogoNavBar.jpeg';
 import { finalizarMantenimiento } from '../../services/mantenimientoService'; 
+import { utilizarItem } from '../../services/inventarioService'; 
 import TablaDeInventario from '../RegistroItemInventario/TablaInventario';
 
 const TarjetaMantenimiento = ({ tarea, token, onTareaFinalizada }) => {
@@ -15,10 +16,19 @@ const TarjetaMantenimiento = ({ tarea, token, onTareaFinalizada }) => {
         return;
       }
 
+      for (const item of itemsUsados) {
+        try {
+          await utilizarItem(item.id, token); 
+        } catch (error) {
+          alert(`Error al descontar el ítem ${item.nombre}.`);
+          return; 
+        }
+      }
+
       const data = {
         items: itemsUsados.map(item => ({
           idItem: item.id,
-          cantidad: item.cantidad,
+          cantidad: 1, 
         })),
       };
       console.log(data);
@@ -40,16 +50,8 @@ const TarjetaMantenimiento = ({ tarea, token, onTareaFinalizada }) => {
       return;
     }
 
-    setItemsUsados([...itemsUsados, { id, nombre, cantidad: 1 }]); 
+    setItemsUsados([...itemsUsados, { id, nombre }]); 
     setMostrarInventario(false); 
-  };
-
-  const handleCantidadChange = (id, nuevaCantidad) => {
-    setItemsUsados(prevItems => 
-      prevItems.map(item =>
-        item.id === id ? { ...item, cantidad: nuevaCantidad } : item
-      )
-    );
   };
 
   const handleOcultarInventario = () => {
@@ -106,14 +108,15 @@ const TarjetaMantenimiento = ({ tarea, token, onTareaFinalizada }) => {
             {itemsUsados.map(item => (
               <div key={item.id} className="mb-2">
                 <p>Repuesto: {item.nombre}</p>
-                <label htmlFor={`cantidad-${item.id}`}>Cantidad:</label>
+                {/* Ya no necesitamos el input de cantidad */}
+                {/* <label htmlFor={`cantidad-${item.id}`}>Cantidad:</label>
                 <input
                   type="number"
                   id={`cantidad-${item.id}`}
                   value={item.cantidad}
                   onChange={(e) => handleCantidadChange(item.id, e.target.value)}
                   min="1"
-                />
+                /> */}
               </div>
             ))}
           </div>
