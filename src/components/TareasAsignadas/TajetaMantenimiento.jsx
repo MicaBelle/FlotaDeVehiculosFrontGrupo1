@@ -18,7 +18,8 @@ const TarjetaMantenimiento = ({ tarea, token, onTareaFinalizada }) => {
 
       for (const item of itemsUsados) {
         try {
-          await utilizarItem(item.id, token); 
+          const data = { cantidadADisminuir: item.cantidad };
+          await utilizarItem(item.id, data, token); 
         } catch (error) {
           alert(`Error al descontar el ítem ${item.nombre}.`);
           return; 
@@ -28,7 +29,7 @@ const TarjetaMantenimiento = ({ tarea, token, onTareaFinalizada }) => {
       const data = {
         items: itemsUsados.map(item => ({
           idItem: item.id,
-          cantidad: 1, 
+          cantidad: item.cantidad, 
         })),
       };
       console.log(data);
@@ -50,8 +51,14 @@ const TarjetaMantenimiento = ({ tarea, token, onTareaFinalizada }) => {
       return;
     }
 
-    setItemsUsados([...itemsUsados, { id, nombre }]); 
+    setItemsUsados([...itemsUsados, { id, nombre, cantidad: 1 }]); 
     setMostrarInventario(false); 
+  };
+
+  const handleCantidadChange = (id, cantidad) => {
+    setItemsUsados(itemsUsados.map(item => 
+      item.id === id ? { ...item, cantidad: parseInt(cantidad) } : item
+    ));
   };
 
   const handleOcultarInventario = () => {
@@ -108,15 +115,14 @@ const TarjetaMantenimiento = ({ tarea, token, onTareaFinalizada }) => {
             {itemsUsados.map(item => (
               <div key={item.id} className="mb-2">
                 <p>Repuesto: {item.nombre}</p>
-                {/* Ya no necesitamos el input de cantidad */}
-                {/* <label htmlFor={`cantidad-${item.id}`}>Cantidad:</label>
+                <label htmlFor={`cantidad-${item.id}`}>Cantidad:</label>
                 <input
                   type="number"
                   id={`cantidad-${item.id}`}
                   value={item.cantidad}
                   onChange={(e) => handleCantidadChange(item.id, e.target.value)}
                   min="1"
-                /> */}
+                />
               </div>
             ))}
           </div>
