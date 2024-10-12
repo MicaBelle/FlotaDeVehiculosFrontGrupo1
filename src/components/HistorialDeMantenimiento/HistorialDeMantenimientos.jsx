@@ -1,8 +1,18 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Input, Button } from "@nextui-org/react";
+import {
+  Table,
+  TableHeader,
+  TableColumn,
+  TableBody,
+  TableRow,
+  TableCell,
+  Input,
+  Button,
+} from "@nextui-org/react";
 import VerDetalleMantenimiento from "../VerDetalleColectivo/VerDetalleMantenimiento";
 import { verMantenimientos } from "../../services/mantenimientoService"; 
 import { useSelector } from "react-redux";
+import Loader from "../Loader/Loader";
 
 const columns = [
   { uid: "patente", name: "PATENTE" },
@@ -17,8 +27,8 @@ export function HistorialDeMantenimientos() {
   const [isLoading, setIsLoading] = useState(true);
   const [filterValue, setFilterValue] = useState("");
   const [selectedMantenimiento, setSelectedMantenimiento] = useState(null);
+  const [loadingTimeout, setLoadingTimeout] = useState(null); 
   const token = useSelector((state) => state.user.token); 
-
 
   const agruparItems = (items) => {
     const itemsMap = {};
@@ -58,11 +68,21 @@ export function HistorialDeMantenimientos() {
         console.error("Error al cargar los mantenimientos:", error);
         setMantenimientos([]);
       } finally {
-        setIsLoading(false);
+      
+        const timeoutId = setTimeout(() => {
+          setIsLoading(false);
+        }, 4000); 
+
+  
+        setLoadingTimeout(timeoutId);
       }
     };
 
     cargarMantenimientos();
+
+    return () => {
+      clearTimeout(loadingTimeout);
+    };
   }, [token]);
 
   const handleVerDetalle = (mantenimiento) => {
@@ -122,30 +142,42 @@ export function HistorialDeMantenimientos() {
           irAtras={handleIrAtras}
         />
       ) : (
-        <Table
-          aria-label="Historial de Mantenimientos"
-          isHeaderSticky
-          topContent={topContent}
-          isLoading={isLoading} 
-        >
-          <TableHeader columns={columns}>
-            {(column) => (
-              <TableColumn key={column.uid}>{column.name}</TableColumn>
-            )}
-          </TableHeader>
-          <TableBody
-            emptyContent={"No hay mantenimientos encontrados"}
-            items={filteredMantenimientos}
-          >
-            {(item) => (
-              <TableRow key={item.key}>
-                {(columnKey) => (
-                  <TableCell>{renderCell(item, columnKey)}</TableCell>
+        <>
+          {isLoading ? ( 
+            <>
+            <div className="flex justify-center items-center h-full">
+              <Loader />
+            </div>
+            <div className="flex justify-center items-center h-full">
+              <h2>Cargando mantenimientos...</h2>
+            </div>
+            </>
+          ) : (
+            <Table
+              aria-label="Historial de Mantenimientos"
+              isHeaderSticky
+              topContent={topContent}
+            >
+              <TableHeader columns={columns}>
+                {(column) => (
+                  <TableColumn key={column.uid}>{column.name}</TableColumn>
                 )}
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
+              </TableHeader>
+              <TableBody
+                emptyContent={"No hay mantenimientos encontrados"}
+                items={filteredMantenimientos}
+              >
+                {(item) => (
+                  <TableRow key={item.key}>
+                    {(columnKey) => (
+                      <TableCell>{renderCell(item, columnKey)}</TableCell>
+                    )}
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          )}
+        </>
       )}
     </div>
   );

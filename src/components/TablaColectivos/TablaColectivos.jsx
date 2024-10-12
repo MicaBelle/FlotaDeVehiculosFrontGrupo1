@@ -13,6 +13,7 @@ import {
 import { useSelector } from 'react-redux';
 import { habilitar, inhabilitar, verVehiculos } from "../../services/vehiculoService";
 import RegistrarMantenimiento from "../RegistroDeControlesRutinarios/RegistroDeControlesRutinarios";
+import Loader from "../Loader/Loader";
 
 
 const columns = [
@@ -31,11 +32,13 @@ export function TablaDeColectivos({ userRole }) {
   const [filterStatus, setFilterStatus] = useState("all");
   const [mostrarRegistroControles, setMostrarRegistroControles] = useState(false); 
   const [vehiculoSeleccionado, setVehiculoSeleccionado] = useState(null); 
+  const [loading, setLoading] = useState(true);
 
   const token = useSelector((state) => state.user.token);
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true); 
       try {
         const response = await verVehiculos(token);
         
@@ -54,6 +57,10 @@ export function TablaDeColectivos({ userRole }) {
         }
       } catch (error) {
         console.error("Error fetching data: ", error);
+      } finally {
+        setTimeout(() => {
+          setLoading(false); 
+        }, 4000); 
       }
     };
 
@@ -159,7 +166,16 @@ export function TablaDeColectivos({ userRole }) {
 
   return (
     <div>
-      {!mostrarRegistroControles ? (
+      {loading ? ( 
+        <>
+        <div className="flex justify-center items-center h-full">
+          <Loader />
+        </div>
+        <div className="flex justify-center items-center h-full">
+          <h2>Cargando colectivos...</h2>
+        </div>
+        </>
+      ) : !mostrarRegistroControles ? (
         <>
           <Table
             aria-label="Tabla de Colectivos"
