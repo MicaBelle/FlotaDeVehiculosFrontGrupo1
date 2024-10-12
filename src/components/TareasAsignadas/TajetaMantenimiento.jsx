@@ -92,14 +92,17 @@ const TarjetaMantenimiento = ({ tarea, token, onTareaFinalizada }) => {
         <p><strong>Fecha de Inicio:</strong> {tarea.fechaInicio}</p>
         <p><strong>Fecha de Finalización:</strong> {tarea.fechaFinalizacion}</p>
         <p><strong>Asunto:</strong> {tarea.asunto}</p>
-        
-        <Button 
-          color="primary" 
-          onClick={() => setMostrarInventario(true)} 
-        >
-          Seleccionar Repuesto
-        </Button>
-        
+
+      
+        {tarea.estadoMantenimiento !== "FINALIZADO" && (
+          <Button 
+            color="primary" 
+            onClick={() => setMostrarInventario(true)} 
+          >
+            Seleccionar Repuesto
+          </Button>
+        )}
+
         {mostrarInventario && (
           <>
             <TablaDeInventario userRole="OPERADOR" onItemSeleccionado={handleItemSeleccionado} />
@@ -130,12 +133,15 @@ const TarjetaMantenimiento = ({ tarea, token, onTareaFinalizada }) => {
       </CardBody>
       <Divider />
       <CardFooter>
-        <Button
-          color="secondary"
-          onClick={handleFinalizarTarea}
-        >
-          Finalizar Tarea
-        </Button>
+        
+        {tarea.estadoMantenimiento !== "FINALIZADO" && (
+          <Button
+            color="secondary"
+            onClick={handleFinalizarTarea}
+          >
+            Finalizar Tarea
+          </Button>
+        )}
       </CardFooter>
     </Card>
   );
