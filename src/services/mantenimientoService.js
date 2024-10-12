@@ -19,7 +19,7 @@ export const verMantenimientoPorVehiculo = async (id, token) => {
 };
 
 export const verMantenimientos = async (token) => {
-    const endpoint = backendUrl + '/mantenimiento/verAll';
+    const endpoint = backendUrl + '/mantenimiento/finalizados';
     return await executeFetch(endpoint, null, HttpMethods.GET, token, 200);
 };
 
