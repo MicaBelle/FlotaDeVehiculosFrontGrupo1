@@ -67,7 +67,12 @@ export const VerDetalleMantenimiento = ({ idVehiculo, token, irAtras }) => {
         <p><strong>Fecha de Finalización:</strong> {mantenimiento.fechaFinalizacion}</p>
         <Divider />
         <p><strong>Asunto:</strong> {mantenimiento.asunto}</p>
-        <p><strong>Repuestos Utilizados:</strong> {mantenimiento.itemUtilizado.map(item => item.item).join(', ')}</p>
+        <p><strong>Repuestos Utilizados:</strong></p>
+        <ul>
+          {mantenimiento.itemUtilizado.map((item, index) => (
+            <li key={index}>{item.item} (Cantidad: {item.cantidad})</li> 
+          ))}
+        </ul>
         <Divider />
         <p><strong>Estado del Mantenimiento:</strong> {mantenimiento.estadoMantenimiento}</p>
       </CardBody>
