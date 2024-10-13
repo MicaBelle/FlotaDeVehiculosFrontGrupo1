@@ -57,7 +57,7 @@ export const RegistroDeColectivo = () => {
     
     const [anio, mes, dia] = formData.fechaRevision.split('-');
     const fechaRevisionString = `${dia}/${mes}/${anio}`;  
-    console.log(fechaRevisionString)
+   
   
     const dataToSubmit = {
       patente: formData.patente.toUpperCase(),
