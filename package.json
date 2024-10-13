@@ -17,6 +17,7 @@
     "@react-stately/data": "^3.11.6",
     "@reduxjs/toolkit": "^2.2.7",
     "axios": "^1.7.7",
+    "face-api.js": "^0.22.2",
     "framer-motion": "^11.7.0",
     "qrcode.react": "^4.0.1",
     "react": "^18.3.1",
