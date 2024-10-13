@@ -49,18 +49,16 @@ export const RegistroDeColectivo = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
- 
+  
     if (!validateFormData()) {
       return; 
     }
-
-    const fechaRevisionFormateada = new Date(formData.fechaRevision);
-    const anio = fechaRevisionFormateada.getFullYear();
-    const mes = String(fechaRevisionFormateada.getMonth() + 1).padStart(2, '0'); 
-    const dia = String(fechaRevisionFormateada.getDate()).padStart(2, '0');
-    const fechaRevisionString = `${dia}/${mes}/${anio}`;
-
+  
+    
+    const [anio, mes, dia] = formData.fechaRevision.split('-');
+    const fechaRevisionString = `${dia}/${mes}/${anio}`;  
+    console.log(fechaRevisionString)
+  
     const dataToSubmit = {
       patente: formData.patente.toUpperCase(),
       antiguedad: parseInt(formData.antiguedad),  
@@ -69,7 +67,7 @@ export const RegistroDeColectivo = () => {
       modelo: formData.modelo, 
       fechaRevision: fechaRevisionString, 
     };
-
+  
     try {
       const response = await registrar(dataToSubmit, token);
       setFormData({
@@ -80,13 +78,14 @@ export const RegistroDeColectivo = () => {
         modelo: '',  
         fechaRevision: '',  
       });
-
+  
       alert("Colectivo registrado con éxito.");
     } catch (error) {
       console.error("Error al registrar el colectivo:", error);
       alert("Error al registrar el colectivo. Por favor, intente nuevamente.");
     }
   };
+  
 
   return (
     <div className="container">

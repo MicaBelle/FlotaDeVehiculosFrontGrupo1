@@ -71,7 +71,7 @@ export function HistorialDeMantenimientos() {
       
         const timeoutId = setTimeout(() => {
           setIsLoading(false);
-        }, 4000); 
+        }, 2000); 
 
   
         setLoadingTimeout(timeoutId);

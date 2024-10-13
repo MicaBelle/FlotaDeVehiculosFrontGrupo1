@@ -27,7 +27,7 @@ export const TareasAsignadas = () => {
       } finally {
         const timeoutId = setTimeout(() => {
           setIsLoading(false);
-        }, 3000); 
+        }, 2000); 
         setLoadingTimeout(timeoutId);
       }
     };
