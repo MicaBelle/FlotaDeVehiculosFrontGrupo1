@@ -27,7 +27,7 @@ export const RegistroDeColectivo = () => {
     const { patente, antiguedad, kilometraje, fechaRevision } = formData;
 
     const patenteRegex = /^(?:[A-Z]{2}\d{3}[A-Z]{2}|[A-Z]{3}\d{3})$/;
-    if (!patenteRegex.test(patente)) {
+    if (!patenteRegex.test(patente.toUpperCase())) {
       alert("Formato de patente inválido. Debe ser '11AAA11' o 'AAA111'.");
       return false;
     }

@@ -94,9 +94,9 @@ export const Login = () => {
       ) : (
         <div className="card">
           <div className="card2">
-          <button  onClick={() => setShowFaceRecognition(true)}>
+         {/* <button  onClick={() => setShowFaceRecognition(true)}>
                 <img src="\src\assets\icons\scan-circle-outline.svg" alt="Scan Icon" width="40" height="40" />
-                </button>
+                </button>*/}
             <form className="form" onSubmit={handleLogin}>
               <p id="heading">Iniciar sesión</p>
               <div className="field">
