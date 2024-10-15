@@ -1,6 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useSelector } from 'react-redux';
-import { habilitar, inhabilitar, verVehiculos } from "../../services/vehiculoService";
 import Loader from "../Loader/Loader";
 import { Input, Button, Chip } from "@nextui-org/react";
 import TablaGenerica from "../TablaGenerica/TablaGenerica";
@@ -70,9 +69,9 @@ export function TablaDeChoferes() {
 
         try {
             if (newState === "HABILITADO") {
-                await habilitar(id, token);
+                await habilitarChofer(id, token);
             } else {
-                await inhabilitar(id, token);
+                await inhabilitarChofer(id, token);
             }
 
             setFilas((prevRows) =>
@@ -81,7 +80,7 @@ export function TablaDeChoferes() {
                 )
             );
         } catch (error) {
-            alert("Error al cambiar el estado del vehículo. Por favor, intente nuevamente.");
+            alert("Error al cambiar el estado del chofer. Por favor, intente nuevamente.");
         }
     };
 

@@ -4,8 +4,10 @@ import { Button } from '@nextui-org/react';
 import '../RegistroDeControlesRutinarios/styles/RegistroControlesRutinarios.css';
 import { registrarChofer } from '../../services/choferesService';
 
-const RegistrarNuevoChofer = ({ irAtras }) => { 
+export const RegistrarNuevoChofer = ({ irAtras }) => { 
   const [formData, setFormData] = useState({
+    username: '',
+    password: '',
     nombre: '',
   });
   
@@ -21,7 +23,7 @@ const RegistrarNuevoChofer = ({ irAtras }) => {
     e.preventDefault();
     
     try {
-      await registrarChofer(formData, token);
+      await registrarChofer(formData, token); 
       setSuccessMessage(true);
       
       setTimeout(() => {
@@ -30,17 +32,19 @@ const RegistrarNuevoChofer = ({ irAtras }) => {
       }, 2000); 
       
       setFormData({
+        username: '',
+        password: '',
         nombre: ''
       });
       
     } catch (error) {
-      console.error('Error al registrar el mantenimiento:', error);
+      console.error('Error al registrar el chofer:', error);
     }
   };
 
   return (
     <div className="container">
-      <h2>Registrar Nuevo chofer</h2>
+      <h2>Registrar Nuevo Chofer</h2>
 
       {successMessage && (
         <div className="success-message" style={{ color: 'green', marginBottom: '15px' }}>
@@ -48,24 +52,50 @@ const RegistrarNuevoChofer = ({ irAtras }) => {
         </div>
       )}
 
-
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label>
-           Nombre
+            Username
             <input
               type="text"
-              name="asunto"
+              name="username"
+              value={formData.username}
+              onChange={handleChange}
+              required
+            />
+          </label>
+        </div>
+
+        <div className="form-group">
+          <label>
+            Password
+            <input
+              type="password"
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+              required
+            />
+          </label>
+        </div>
+
+        <div className="form-group">
+          <label>
+            Nombre
+            <input
+              type="text"
+              name="nombre"
               value={formData.nombre}
               onChange={handleChange}
               required
             />
           </label>
         </div>
+
         <Button color="success" type="submit">Registrar chofer</Button>
-      <Button color="danger" onClick={irAtras} style={{ marginBottom: '15px' }}>
-       Cancelar
-      </Button>
+        <Button color="danger" onClick={irAtras} style={{ marginBottom: '15px' }}>
+          Cancelar
+        </Button>
       </form>
     </div>
   );
