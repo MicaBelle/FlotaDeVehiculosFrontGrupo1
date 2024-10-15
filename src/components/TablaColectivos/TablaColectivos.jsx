@@ -1,20 +1,10 @@
 import React, { useEffect, useMemo, useState } from "react";
-import {
-  Table,
-  TableHeader,
-  TableColumn,
-  TableBody,
-  TableRow,
-  TableCell,
-  Input,
-  Button,
-  Chip,
-} from "@nextui-org/react";
 import { useSelector } from 'react-redux';
 import { habilitar, inhabilitar, verVehiculos } from "../../services/vehiculoService";
 import RegistrarMantenimiento from "../RegistroDeControlesRutinarios/RegistroDeControlesRutinarios";
 import Loader from "../Loader/Loader";
-
+import { Input, Button, Chip } from "@nextui-org/react";
+import TablaGenerica from "../TablaGenerica/TablaGenerica";
 
 const columns = [
   { uid: "patente", name: "PATENTE" },
@@ -33,6 +23,7 @@ export function TablaDeColectivos({ userRole }) {
   const [mostrarRegistroControles, setMostrarRegistroControles] = useState(false); 
   const [vehiculoSeleccionado, setVehiculoSeleccionado] = useState(null); 
   const [loading, setLoading] = useState(true);
+  const [timeoutId, setTimeoutId] = useState(null); // Track timeout ID
 
   const token = useSelector((state) => state.user.token);
 
@@ -41,7 +32,6 @@ export function TablaDeColectivos({ userRole }) {
       setLoading(true); 
       try {
         const response = await verVehiculos(token);
-        
         if (response && response.vehiculos) {
           const mappedRows = response.vehiculos.map((item, index) => ({
             key: index.toString(),
@@ -58,13 +48,22 @@ export function TablaDeColectivos({ userRole }) {
       } catch (error) {
         console.error("Error fetching data: ", error);
       } finally {
-        setTimeout(() => {
+      
+        const id = setTimeout(() => {
           setLoading(false); 
-        }, 2000); 
+        }, 2000);
+        setTimeoutId(id);
       }
     };
 
     fetchData();
+
+  
+    return () => {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+    };
   }, [token]);
 
   const handleFilterByStatus = (status) => {
@@ -176,31 +175,12 @@ export function TablaDeColectivos({ userRole }) {
         </div>
         </>
       ) : !mostrarRegistroControles ? (
-        <>
-          <Table
-            aria-label="Tabla de Colectivos"
-            isHeaderSticky
-            topContent={topContent}
-          >
-            <TableHeader columns={columns}>
-              {(column) => (
-                <TableColumn
-                  key={column.uid}
-                  align={column.uid === "actions" ? "center" : "start"}
-                >
-                  {column.name}
-                </TableColumn>
-              )}
-            </TableHeader>
-            <TableBody emptyContent={"No hay colectivos encontrados"} items={filteredRows}>
-              {(item) => (
-                <TableRow key={item.key}>
-                  {(columnKey) => <TableCell>{renderCell(item, columnKey)}</TableCell>}
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        </>
+        <TablaGenerica
+          data={filteredRows}
+          columns={columns}
+          renderCell={renderCell}
+          topContent={topContent}
+        />
       ) : (
         <RegistrarMantenimiento vehiculoId={vehiculoSeleccionado} irAtras={irAtras}/>
       )}

@@ -1,18 +1,10 @@
 import React, { useEffect, useMemo, useState } from "react";
-import {
-  Table,
-  TableHeader,
-  TableColumn,
-  TableBody,
-  TableRow,
-  TableCell,
-  Input,
-  Button,
-} from "@nextui-org/react";
-import VerDetalleMantenimiento from "../VerDetalleColectivo/VerDetalleMantenimiento";
-import { verMantenimientos } from "../../services/mantenimientoService"; 
 import { useSelector } from "react-redux";
 import Loader from "../Loader/Loader";
+import VerDetalleMantenimiento from "../VerDetalleColectivo/VerDetalleMantenimiento";
+import { verMantenimientos } from "../../services/mantenimientoService";
+import TablaGenerica from "../TablaGenerica/TablaGenerica";
+import { Button, Input } from "@nextui-org/react";
 
 const columns = [
   { uid: "patente", name: "PATENTE" },
@@ -23,32 +15,16 @@ const columns = [
 ];
 
 export function HistorialDeMantenimientos() {
-  const [mantenimientos, setMantenimientos] = useState([]); 
+  const [mantenimientos, setMantenimientos] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [filterValue, setFilterValue] = useState("");
   const [selectedMantenimiento, setSelectedMantenimiento] = useState(null);
-  const [loadingTimeout, setLoadingTimeout] = useState(null); 
-  const token = useSelector((state) => state.user.token); 
-
-  const agruparItems = (items) => {
-    const itemsMap = {};
-
-    items.forEach((utilizado) => {
-      if (itemsMap[utilizado.item]) {
-        itemsMap[utilizado.item] += utilizado.cantidad;
-      } else {
-        itemsMap[utilizado.item] = utilizado.cantidad;
-      }
-    });
-
-    return Object.entries(itemsMap).map(([item, cantidad]) => `${item} (Cantidad: ${cantidad})`);
-  };
+  const token = useSelector((state) => state.user.token);
 
   useEffect(() => {
     const cargarMantenimientos = async () => {
       try {
         const response = await verMantenimientos(token);
-      
         if (response && Array.isArray(response.mantenimientos)) {
           const mappedRows = response.mantenimientos.map((item, index) => ({
             key: index.toString(),
@@ -60,30 +36,35 @@ export function HistorialDeMantenimientos() {
             realizadoPor: item.operador?.usuario || "Operador no especificado",
             idVehiculo: item.vehiculo.id,
           }));
-          setMantenimientos(mappedRows); 
+          setMantenimientos(mappedRows);
         } else {
-          setMantenimientos([]); 
+          setMantenimientos([]);
         }
       } catch (error) {
         console.error("Error al cargar los mantenimientos:", error);
         setMantenimientos([]);
       } finally {
-      
-        const timeoutId = setTimeout(() => {
-          setIsLoading(false);
-        }, 2000); 
-
   
-        setLoadingTimeout(timeoutId);
+        setTimeout(() => {
+          setIsLoading(false);
+        }, 2000);
       }
     };
 
     cargarMantenimientos();
-
-    return () => {
-      clearTimeout(loadingTimeout);
-    };
   }, [token]);
+
+  const agruparItems = (items) => {
+    const itemsMap = {};
+    items.forEach((utilizado) => {
+      if (itemsMap[utilizado.item]) {
+        itemsMap[utilizado.item] += utilizado.cantidad;
+      } else {
+        itemsMap[utilizado.item] = utilizado.cantidad;
+      }
+    });
+    return Object.entries(itemsMap).map(([item, cantidad]) => `${item} (Cantidad: ${cantidad})`);
+  };
 
   const handleVerDetalle = (mantenimiento) => {
     setSelectedMantenimiento(mantenimiento);
@@ -114,7 +95,6 @@ export function HistorialDeMantenimientos() {
 
   const renderCell = (item, columnKey) => {
     const cellValue = item[columnKey];
-
     switch (columnKey) {
       case "actions":
         return (
@@ -137,45 +117,28 @@ export function HistorialDeMantenimientos() {
     <div>
       {selectedMantenimiento ? (
         <VerDetalleMantenimiento
-          idVehiculo={selectedMantenimiento.idVehiculo} 
-          token={token} 
+          idVehiculo={selectedMantenimiento.idVehiculo}
+          token={token}
           irAtras={handleIrAtras}
         />
       ) : (
         <>
-          {isLoading ? ( 
+          {isLoading ? (
             <>
             <div className="flex justify-center items-center h-full">
               <Loader />
             </div>
             <div className="flex justify-center items-center h-full">
-              <h2>Cargando mantenimientos...</h2>
+              <h2>Cargando colectivos...</h2>
             </div>
             </>
           ) : (
-            <Table
-              aria-label="Historial de Mantenimientos"
-              isHeaderSticky
+            <TablaGenerica
+              data={filteredMantenimientos}
+              columns={columns}
+              renderCell={renderCell}
               topContent={topContent}
-            >
-              <TableHeader columns={columns}>
-                {(column) => (
-                  <TableColumn key={column.uid}>{column.name}</TableColumn>
-                )}
-              </TableHeader>
-              <TableBody
-                emptyContent={"No hay mantenimientos encontrados"}
-                items={filteredMantenimientos}
-              >
-                {(item) => (
-                  <TableRow key={item.key}>
-                    {(columnKey) => (
-                      <TableCell>{renderCell(item, columnKey)}</TableCell>
-                    )}
-                  </TableRow>
-                )}
-              </TableBody>
-            </Table>
+            />
           )}
         </>
       )}
