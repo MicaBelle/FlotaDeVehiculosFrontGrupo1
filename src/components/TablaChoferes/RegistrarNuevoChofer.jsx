@@ -12,6 +12,7 @@ export const RegistrarNuevoChofer = ({ irAtras }) => {
   });
   
   const [successMessage, setSuccessMessage] = useState(false); 
+  const [errorMessage, setErrorMessage] = useState(false); 
   const token = useSelector((state) => state.user.token); 
 
   const handleChange = (e) => {
@@ -23,14 +24,18 @@ export const RegistrarNuevoChofer = ({ irAtras }) => {
     e.preventDefault();
     
     try {
+      
       await registrarChofer(formData, token); 
       setSuccessMessage(true);
+      setErrorMessage(false); 
+      
       
       setTimeout(() => {
         setSuccessMessage(false);
         irAtras(); 
       }, 2000); 
       
+     
       setFormData({
         username: '',
         password: '',
@@ -39,6 +44,7 @@ export const RegistrarNuevoChofer = ({ irAtras }) => {
       
     } catch (error) {
       console.error('Error al registrar el chofer:', error);
+      setErrorMessage(true); 
     }
   };
 
@@ -49,6 +55,12 @@ export const RegistrarNuevoChofer = ({ irAtras }) => {
       {successMessage && (
         <div className="success-message" style={{ color: 'green', marginBottom: '15px' }}>
           ¡Chofer registrado con éxito!
+        </div>
+      )}
+
+      {errorMessage && (
+        <div className="error-message" style={{ color: 'red', marginBottom: '15px' }}>
+          Error al registrar el chofer. Intente de nuevo.
         </div>
       )}
 

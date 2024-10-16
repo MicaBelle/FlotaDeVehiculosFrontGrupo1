@@ -4,11 +4,11 @@ import Loader from "../Loader/Loader";
 import { Input, Button, Chip } from "@nextui-org/react";
 import TablaGenerica from "../TablaGenerica/TablaGenerica";
 import { RegistrarNuevoChofer } from "./RegistrarNuevoChofer";
-import { verChoferes } from "../../services/choferesService";
+import { verChoferes, habilitarChofer, inhabilitarChofer } from "../../services/choferesService"; 
 
 const columns = [
     { uid: "nombre", name: "NOMBRE" },
-    { uid: "vehiculoAsociado", name: "VEHICULO ASOCIADO" },
+    { uid: "vehiculoAsociado", name: "VEHÍCULO ASOCIADO" },
     { uid: "estado", name: "ESTADO" },
     { uid: "actions", name: "ACCIONES" },
 ];
@@ -28,20 +28,21 @@ export function TablaDeChoferes() {
             setLoading(true);
             try {
                 const response = await verChoferes(token);
-                if (response && response.choferes) {
-                    const mappedRows = response.choferes.map((item, index) => ({
+                console.log(response);
+                if (response) {
+                    const mappedRows = response.map((item, index) => ({
                         key: index.toString(),
-                        id: item.id,
-                        nombre: item.nombre,
-                        vehiculoAsociado: item.vehiculoAsociado,
-                        estado: item.estado || "Desconocido",
+                        id: item.idChofer, 
+                        nombre: item.nombre, 
+                        vehiculoAsociado: item.idVehiculo ? `Vehículo ${item.idVehiculo}` : "No asignado", 
+                        estado: item.estadoChofer || "Desconocido", 
                     }));
-                    setFilas(mappedRows);
+
+                    setFilas(mappedRows); 
                 }
             } catch (error) {
                 console.error("Error fetching data: ", error);
             } finally {
-
                 const id = setTimeout(() => {
                     setLoading(false);
                 }, 2000);
@@ -51,41 +52,40 @@ export function TablaDeChoferes() {
 
         fetchData();
 
-
         return () => {
             if (timeoutId) {
                 clearTimeout(timeoutId);
             }
         };
-    }, [token]);
+    }, [token]); 
 
     const handleFilterByStatus = (status) => {
-        setFilterStatus(status);
+        setFilterStatus(status); 
     };
 
     const handleToggleEstado = async (item) => {
         const newState = item.estado === "HABILITADO" ? "INHABILITADO" : "HABILITADO";
         const id = item.id;
-
+    
         try {
-            if (newState === "HABILITADO") {
-                await habilitarChofer(id, token);
-            } else {
-                await inhabilitarChofer(id, token);
-            }
-
-            setFilas((prevRows) =>
-                prevRows.map((row) =>
-                    row.id === id ? { ...row, estado: newState } : row
-                )
-            );
+          if (newState === "HABILITADO") {
+            await habilitar(id, token);
+          } else {
+            await inhabilitar(id, token);
+          }
+    
+          setFilas((prevRows) =>
+            prevRows.map((row) =>
+              row.id === id ? { ...row, estado: newState } : row
+            )
+          );
         } catch (error) {
-            alert("Error al cambiar el estado del chofer. Por favor, intente nuevamente.");
+          alert("Error al cambiar el estado del vehículo. Por favor, intente nuevamente.");
         }
-    };
+      };
 
-    const handleRegistrarChofer = (id) => {
-        setMostrarRegistroDeChofer(true);
+    const handleRegistrarChofer = () => {
+        setMostrarRegistroDeChofer(true); 
     };
 
     const irAtras = () => {
@@ -104,12 +104,12 @@ export function TablaDeChoferes() {
             <Input
                 isClearable
                 className="w-full sm:max-w-[44%]"
-                placeholder="Buscar por patente..."
+                placeholder="Buscar por nombre..."
                 value={filterValue}
                 onClear={() => setFilterValue("")}
                 onValueChange={setFilterValue}
             />
-            <Button color="primary" onClick={() => handleRegistrarChofer()}>
+            <Button color="primary" onClick={handleRegistrarChofer}>
                 Registrar chofer
             </Button>
             <div className="flex gap-2">

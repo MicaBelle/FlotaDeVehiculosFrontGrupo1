@@ -23,7 +23,7 @@ export function TablaDeColectivos({ userRole }) {
   const [mostrarRegistroControles, setMostrarRegistroControles] = useState(false); 
   const [vehiculoSeleccionado, setVehiculoSeleccionado] = useState(null); 
   const [loading, setLoading] = useState(true);
-  const [timeoutId, setTimeoutId] = useState(null); // Track timeout ID
+  const [timeoutId, setTimeoutId] = useState(null); 
 
   const token = useSelector((state) => state.user.token);
 

@@ -1,7 +1,6 @@
 import { backendUrl } from '../connection/backUrl';
-import {executeFetch} from '../connection/fetch'
-import {HttpMethods} from '../connection/HttpMethods'
-
+import { executeFetch } from '../connection/fetch';
+import { HttpMethods } from '../connection/HttpMethods';
 
 /*
 public class ChoferRegistroDTO {
@@ -21,34 +20,25 @@ public class AsignarChoferDTO {
     Integer idChofer;
 }
 */
-export const asignarChofer = async (token) => {
-    const endpoint = backendUrl + '/chofer/verChofers';
+export const asignarChofer = async (data, token) => {
+    const endpoint = backendUrl + '/chofer/asignar'; 
+    return await executeFetch(endpoint, data, HttpMethods.PATCH, token, 200);
+};
+
+
+export const habilitarChofer = async (id, token) => { 
+    const endpoint = backendUrl + '/chofer/habilitar/' + id;
     return await executeFetch(endpoint, null, HttpMethods.PATCH, token, 200);
 };
 
-/*
-public class ChoferEditDTO {
-    Integer idChofer;
-}
 
-*/
-export const habilitarChofer = async (token) => {
-    const endpoint = backendUrl + '/chofer/verChofers';
-    return await executeFetch(endpoint, null, HttpMethods.PATCH, token, 200);
-};
-
-/*
-public class ChoferEditDTO {
-    Integer idChofer;
-}
-
-*/
-export const inhabilitarChofer = async (token) => {
-    const endpoint = backendUrl + '/chofer/verChofers';
+export const inhabilitarChofer = async (id, token) => { 
+    const endpoint = backendUrl + '/chofer/inhabilitar/' + id;
     return await executeFetch(endpoint, null, HttpMethods.PATCH, token, 200);
 };
 
 export const verChoferes = async (token) => {
-    const endpoint = backendUrl + '/chofer/verChofers';
+    const endpoint = backendUrl + '/chofer/verChoferes';
     return await executeFetch(endpoint, null, HttpMethods.GET, token, 200);
 };
+
