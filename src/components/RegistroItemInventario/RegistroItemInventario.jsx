@@ -34,10 +34,9 @@ export const RegistroItemInventario = ({ onSubmit, onCancel }) => {
 
     try {
       const response = await registrarItem(formData, token);
-      console.log('Item registrado con éxito:', response);
       onSubmit(formData); 
     } catch (error) {
-      console.error('Error al registrar el item:', error);
+
     }
   };
 

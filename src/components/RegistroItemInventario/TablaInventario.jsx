@@ -92,7 +92,7 @@ export function TablaDeInventario({ userRole, onItemSeleccionado }) {
     if (userRole === "OPERADOR") {
       return columns.filter((col) => col.uid !== "cantCompraAutomatica");
     }
-    if (userRole === "ADMINISTRADOR" ||userRole === "SUPERVISOR"  ) {
+    if (userRole === "ADMINISTRADOR" || userRole === "SUPERVISOR"  ) {
       return columns.filter((col) => col.uid !== "acciones");
     }
     return columns;

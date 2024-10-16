@@ -4,15 +4,15 @@ import { Button } from '@nextui-org/react';
 import '../RegistroDeControlesRutinarios/styles/RegistroControlesRutinarios.css';
 import { registrarChofer } from '../../services/choferesService';
 
-export const RegistrarNuevoChofer = ({ irAtras }) => { 
+export const RegistrarNuevoChofer = ({onSubmit, onCancel }) => { 
+  const [successMessage, setSuccessMessage] = useState(false); 
   const [formData, setFormData] = useState({
     username: '',
     password: '',
     nombre: '',
   });
   
-  const [successMessage, setSuccessMessage] = useState(false); 
-  const [errorMessage, setErrorMessage] = useState(false); 
+
   const token = useSelector((state) => state.user.token); 
 
   const handleChange = (e) => {
@@ -22,48 +22,29 @@ export const RegistrarNuevoChofer = ({ irAtras }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     try {
-      
-      await registrarChofer(formData, token); 
+      await registrarChofer(formData, token);
       setSuccessMessage(true);
-      setErrorMessage(false); 
-      
       
       setTimeout(() => {
         setSuccessMessage(false);
-        irAtras(); 
-      }, 2000); 
-      
-     
-      setFormData({
-        username: '',
-        password: '',
-        nombre: ''
-      });
-      
+        onCancel();
+      }, 1000); 
+      onSubmit(formData); 
     } catch (error) {
-      console.error('Error al registrar el chofer:', error);
-      setErrorMessage(true); 
+      console.error('Error al registrar el Chofer:', error);
     }
   };
 
   return (
     <div className="container">
       <h2>Registrar Nuevo Chofer</h2>
-
       {successMessage && (
         <div className="success-message" style={{ color: 'green', marginBottom: '15px' }}>
-          ¡Chofer registrado con éxito!
+          Chofer registrado con éxito!
         </div>
       )}
-
-      {errorMessage && (
-        <div className="error-message" style={{ color: 'red', marginBottom: '15px' }}>
-          Error al registrar el chofer. Intente de nuevo.
-        </div>
-      )}
-
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label>
@@ -105,7 +86,7 @@ export const RegistrarNuevoChofer = ({ irAtras }) => {
         </div>
 
         <Button color="success" type="submit">Registrar chofer</Button>
-        <Button color="danger" onClick={irAtras} style={{ marginBottom: '15px' }}>
+        <Button color="danger" onClick={onCancel} style={{ marginBottom: '15px' }}>
           Cancelar
         </Button>
       </form>

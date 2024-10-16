@@ -28,7 +28,6 @@ export function TablaDeChoferes() {
             setLoading(true);
             try {
                 const response = await verChoferes(token);
-                console.log(response);
                 if (response) {
                     const mappedRows = response.map((item, index) => ({
                         key: index.toString(),
@@ -84,18 +83,24 @@ export function TablaDeChoferes() {
         }
       };
 
-    const handleRegistrarChofer = () => {
-        setMostrarRegistroDeChofer(true); 
-    };
+    
 
-    const irAtras = () => {
-        setMostrarRegistroDeChofer(false);
-    };
+    const handleRegistrarChofer = (nuevoChofer) => {
+        setFilas((prevFilas) => [
+          ...prevFilas,
+          {
+            key: (prevFilas.length + 1).toString(),
+            ...nuevoChofer,
+          },
+        ]);
+        setMostrarRegistroDeChofer(true);
+      };
+
 
     const filteredRows = useMemo(() => {
         return filas.filter((row) =>
             (filterStatus === "all" || row.estado === filterStatus) &&
-            row.nombre.toLowerCase().includes(filterValue.toLowerCase())
+            row.nombre?.toLowerCase().includes(filterValue.toLowerCase())
         );
     }, [filas, filterValue, filterStatus]);
 
@@ -109,7 +114,7 @@ export function TablaDeChoferes() {
                 onClear={() => setFilterValue("")}
                 onValueChange={setFilterValue}
             />
-            <Button color="primary" onClick={handleRegistrarChofer}>
+            <Button onClick={() => setMostrarRegistroDeChofer(true)} color="primary">
                 Registrar chofer
             </Button>
             <div className="flex gap-2">
@@ -170,7 +175,7 @@ export function TablaDeChoferes() {
                     topContent={topContent}
                 />
             ) : (
-                <RegistrarNuevoChofer irAtras={irAtras} />
+                <RegistrarNuevoChofer onSubmit={handleRegistrarChofer} onCancel={() => setMostrarRegistroDeChofer(false)} />
             )}
         </div>
     );
