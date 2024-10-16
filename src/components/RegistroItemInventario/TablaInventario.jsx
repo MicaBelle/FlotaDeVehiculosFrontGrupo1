@@ -3,6 +3,7 @@ import { Input, Button } from "@nextui-org/react";
 import { obtenerItems } from "../../services/inventarioService";
 import { useSelector } from "react-redux";
 import TablaGenerica from "../TablaGenerica/TablaGenerica";
+import RegistroItemInventario from "./RegistroItemInventario";
 
 const columns = [
   { uid: "nombre", name: "NOMBRE" },
@@ -43,6 +44,17 @@ export function TablaDeInventario({ userRole, onItemSeleccionado }) {
       row.nombre.toLowerCase().includes(filterValue.toLowerCase())
     );
   }, [filas, filterValue]);
+
+  const handleRegistroSubmit = (nuevoItem) => {
+    setFilas((prevFilas) => [
+      ...prevFilas,
+      {
+        key: (prevFilas.length + 1).toString(),
+        ...nuevoItem,
+      },
+    ]);
+    setShowRegistro(false);
+  };
 
   const handleUtilizarClick = (itemId, itemNombre) => {
     onItemSeleccionado(itemId, itemNombre);

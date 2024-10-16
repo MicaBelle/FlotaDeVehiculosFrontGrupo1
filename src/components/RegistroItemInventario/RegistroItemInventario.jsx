@@ -108,3 +108,5 @@ export const RegistroItemInventario = ({ onSubmit, onCancel }) => {
     </div>
   );
 };
+
+export default RegistroItemInventario;
