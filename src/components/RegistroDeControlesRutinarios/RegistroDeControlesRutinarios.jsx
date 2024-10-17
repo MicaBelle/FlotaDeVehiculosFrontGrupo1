@@ -27,7 +27,7 @@ const RegistrarMantenimiento = ({ vehiculoId, irAtras }) => {
       await cargarMantenimientoManual(formData, token);
       
      
-      await inhabilitar(vehiculoId, token);
+      //await inhabilitar(vehiculoId, token);
 
     
       setSuccessMessage(true);
@@ -54,7 +54,7 @@ const RegistrarMantenimiento = ({ vehiculoId, irAtras }) => {
 
       {successMessage && (
         <div className="success-message" style={{ color: 'green', marginBottom: '15px' }}>
-          ¡Mantenimiento registrado con éxito y vehículo inhabilitado!
+          ¡Mantenimiento registrado con éxito!
         </div>
       )}
 
