@@ -7,6 +7,7 @@ import TablaDeInventario from '../RegistroItemInventario/TablaInventario';
 import AsignarTareas from '../AsignarTareas/AsignarTareas';
 import { TareasAsignadas } from '../TareasAsignadas/TareasAsignadas';
 import TablaDeChoferes from '../TablaChoferes/TablaDeChoferes';
+import { MetricasGlobales } from '../MetricasGlobales/MetricasGlobales';
 
 
 
@@ -22,7 +23,7 @@ export const Principal = ({ activeMenu }) => {
       {activeMenu === 'Mantenimientos' && <HistorialDeMantenimientos userRole={userRole} />} 
       {activeMenu === 'AsignarTarea' && userRole === 'OPERADOR' &&  <AsignarTareas/> } 
       {activeMenu === 'TareasAsignadas' && userRole === 'OPERADOR' &&  <TareasAsignadas/> } 
-      {activeMenu === 'Reportes' && userRole === 'GERENTE' &&  <h1>hola gerente</h1> } 
+      {activeMenu === 'Reportes' && userRole === 'GERENTE' &&  <MetricasGlobales/> } 
     </div>
   );
 };
