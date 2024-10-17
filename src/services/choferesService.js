@@ -21,7 +21,7 @@ public class AsignarChoferDTO {
 }
 */
 export const asignarChofer = async (data, token) => {
-    const endpoint = backendUrl + '/chofer/asignar'; 
+    const endpoint = backendUrl + '/chofer/asignarChofer'; 
     return await executeFetch(endpoint, data, HttpMethods.PATCH, token, 200);
 };
 

@@ -27,7 +27,7 @@ const RegistrarMantenimiento = ({ vehiculoId, irAtras }) => {
       await cargarMantenimientoManual(formData, token);
       
      
-      //await inhabilitar(vehiculoId, token);
+     
 
     
       setSuccessMessage(true);
