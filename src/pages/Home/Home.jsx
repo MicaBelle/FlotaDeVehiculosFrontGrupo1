@@ -16,6 +16,8 @@ export const Home = () => {
         return 'Colectivos'; 
       case 'OPERADOR':
         return 'TareasAsignadas'; 
+      case 'GERENTE':
+        return 'Reportes'
       default:
         return 'Home'; 
     }
@@ -51,6 +53,12 @@ export const Home = () => {
             <>
               <div className={`MenuItem ${activeMenu === 'TareasAsignadas' ? 'active' : ''}`} onClick={() => handleMenuClick('TareasAsignadas')}>Mis tareas</div>
               <div className={`MenuItem ${activeMenu === 'AsignarTarea' ? 'active' : ''}`} onClick={() => handleMenuClick('AsignarTarea')}>Pendientes</div>
+            </>
+          )}
+           {userRole === 'GERENTE' && (
+            <>
+              <div className={`MenuItem ${activeMenu === 'Reportes' ? 'active' : ''}`} onClick={() => handleMenuClick('Reportes')}>Reportes</div>
+              
             </>
           )}
         </div>

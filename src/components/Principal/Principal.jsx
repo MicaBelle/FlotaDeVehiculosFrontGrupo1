@@ -22,6 +22,7 @@ export const Principal = ({ activeMenu }) => {
       {activeMenu === 'Mantenimientos' && <HistorialDeMantenimientos userRole={userRole} />} 
       {activeMenu === 'AsignarTarea' && userRole === 'OPERADOR' &&  <AsignarTareas/> } 
       {activeMenu === 'TareasAsignadas' && userRole === 'OPERADOR' &&  <TareasAsignadas/> } 
+      {activeMenu === 'Reportes' && userRole === 'GERENTE' &&  <h1>hola gerente</h1> } 
     </div>
   );
 };
