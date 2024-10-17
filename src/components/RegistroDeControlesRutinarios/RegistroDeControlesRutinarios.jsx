@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { cargarMantenimientoManual } from '../../services/mantenimientoService'; 
+import { inhabilitar } from '../../services/vehiculoService';
 import { useSelector } from 'react-redux';
 import { Button } from '@nextui-org/react';
 import '../RegistroDeControlesRutinarios/styles/RegistroControlesRutinarios.css';
@@ -22,7 +23,13 @@ const RegistrarMantenimiento = ({ vehiculoId, irAtras }) => {
     e.preventDefault();
     
     try {
+    
       await cargarMantenimientoManual(formData, token);
+      
+     
+      await inhabilitar(vehiculoId, token);
+
+    
       setSuccessMessage(true);
       
       setTimeout(() => {
@@ -30,13 +37,14 @@ const RegistrarMantenimiento = ({ vehiculoId, irAtras }) => {
         irAtras(); 
       }, 2000); 
       
+     
       setFormData({
         asunto: '',
         vehiculo_id: vehiculoId,
       });
       
     } catch (error) {
-      console.error('Error al registrar el mantenimiento:', error);
+      console.error('Error al registrar el mantenimiento o inhabilitar el vehículo:', error);
     }
   };
 
@@ -46,10 +54,9 @@ const RegistrarMantenimiento = ({ vehiculoId, irAtras }) => {
 
       {successMessage && (
         <div className="success-message" style={{ color: 'green', marginBottom: '15px' }}>
-          ¡Mantenimiento registrado con éxito!
+          ¡Mantenimiento registrado con éxito y vehículo inhabilitado!
         </div>
       )}
-
 
       <form onSubmit={handleSubmit}>
         <div className="form-group">
@@ -65,9 +72,9 @@ const RegistrarMantenimiento = ({ vehiculoId, irAtras }) => {
           </label>
         </div>
         <Button color="success" type="submit">Registrar Mantenimiento</Button>
-      <Button color="danger" onClick={irAtras} style={{ marginBottom: '15px' }}>
-       Cancelar
-      </Button>
+        <Button color="danger" onClick={irAtras} style={{ marginBottom: '15px' }}>
+          Cancelar
+        </Button>
       </form>
     </div>
   );
