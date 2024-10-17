@@ -7,7 +7,6 @@ import { RegistrarNuevoChofer } from "./RegistrarNuevoChofer";
 import { verChoferes, habilitarChofer, inhabilitarChofer, asignarChofer } from "../../services/choferesService";
 import fetchVehiculosDisponibles from "./FetchVehiculosDisponible";
 
-
 const columns = [
   { uid: "nombre", name: "NOMBRE" },
   { uid: "vehiculoAsociado", name: "VEHÍCULO ASOCIADO" },
@@ -18,8 +17,9 @@ const columns = [
 export function TablaDeChoferes() {
   const [filas, setFilas] = useState([]);
   const [vehiculosDisponibles, setVehiculosDisponibles] = useState([]);
-  const [vehiculoSeleccionado, setVehiculoSeleccionado] = useState(null);
+  const [vehiculoSeleccionado, setVehiculoSeleccionado] = useState('');
   const [choferIdSeleccionado, setChoferIdSeleccionado] = useState(null);
+  const [mostrarVehiuclosDisponibles, setMostrarVehiuclosDisponibles] = useState(false);
   const [filterValue, setFilterValue] = useState("");
   const [filterStatus, setFilterStatus] = useState("all");
   const [mostrarRegistroDeChofer, setMostrarRegistroDeChofer] = useState(false);
@@ -61,7 +61,8 @@ export function TablaDeChoferes() {
 
   const asignarVehiculo = async (idChofer) => {
     setChoferIdSeleccionado(idChofer);
-    await fetchVehiculosDisponibles(setVehiculosDisponibles, token); 
+    setMostrarVehiuclosDisponibles(true);
+    await fetchVehiculosDisponibles(setVehiculosDisponibles, token);
   };
 
   const handleAsignarVehiculo = async () => {
@@ -72,7 +73,9 @@ export function TablaDeChoferes() {
       };
       try {
         await asignarChofer(data, token);
-        await fetchChoferes(); 
+        setMostrarVehiuclosDisponibles(false);
+        setVehiculoSeleccionado('');
+        await fetchChoferes();
       } catch (error) {
         console.error("Error al asignar el vehículo: ", error);
       }
@@ -192,8 +195,8 @@ export function TablaDeChoferes() {
       ) : !mostrarRegistroDeChofer ? (
         <>
           <TablaGenerica data={filteredRows} columns={columns} renderCell={renderCell} topContent={topContent} />
-         
-          {vehiculosDisponibles.length > 0 && (
+
+          {mostrarVehiuclosDisponibles && (
             <div>
               <select
                 value={vehiculoSeleccionado}
