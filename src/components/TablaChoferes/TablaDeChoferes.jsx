@@ -23,34 +23,33 @@ export function TablaDeChoferes() {
 
     const token = useSelector((state) => state.user.token);
 
-    useEffect(() => {
-        const fetchData = async () => {
-            setLoading(true);
-            try {
-                const response = await verChoferes(token);
-                if (response) {
-                    const mappedRows = response.map((item, index) => ({
-                        key: index.toString(),
-                        id: item.idChofer, 
-                        nombre: item.nombre, 
-                        vehiculoAsociado: item.idVehiculo ? `Vehículo ${item.idVehiculo}` : "No asignado", 
-                        estado: item.estadoChofer || "Desconocido", 
-                    }));
+    const fetchChoferes = async () => {
+        setLoading(true);
+        try {
+            const response = await verChoferes(token);
+            if (response) {
+                const mappedRows = response.map((item, index) => ({
+                    key: index.toString(),
+                    id: item.idChofer, 
+                    nombre: item.nombre, 
+                    vehiculoAsociado: item.idVehiculo ? `Vehículo ${item.idVehiculo}` : "No asignado", 
+                    estado: item.estadoChofer || "Desconocido", 
+                }));
 
-                    setFilas(mappedRows); 
-                }
-            } catch (error) {
-                console.error("Error fetching data: ", error);
-            } finally {
-                const id = setTimeout(() => {
-                    setLoading(false);
-                }, 2000);
-                setTimeoutId(id);
+                setFilas(mappedRows); 
             }
-        };
+        } catch (error) {
+            console.error("Error fetching data: ", error);
+        } finally {
+            const id = setTimeout(() => {
+                setLoading(false);
+            }, 1000);
+            setTimeoutId(id);
+        }
+    };
 
-        fetchData();
-
+    useEffect(() => {
+        fetchChoferes();
         return () => {
             if (timeoutId) {
                 clearTimeout(timeoutId);
@@ -79,23 +78,14 @@ export function TablaDeChoferes() {
             )
           );
         } catch (error) {
-          alert("Error al cambiar el estado del vehículo. Por favor, intente nuevamente.");
+          alert("Error al cambiar el estado del chofer. Por favor, intente nuevamente.");
         }
-      };
+    };
 
-    
-
-    const handleRegistrarChofer = (nuevoChofer) => {
-        setFilas((prevFilas) => [
-          ...prevFilas,
-          {
-            key: (prevFilas.length + 1).toString(),
-            ...nuevoChofer,
-          },
-        ]);
-        setMostrarRegistroDeChofer(true);
-      };
-
+    const handleRegistrarChofer = async (nuevoChofer) => {
+        setMostrarRegistroDeChofer(false);
+        await fetchChoferes();  
+    };
 
     const filteredRows = useMemo(() => {
         return filas.filter((row) =>

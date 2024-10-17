@@ -4,16 +4,15 @@ import { Button } from '@nextui-org/react';
 import '../RegistroDeControlesRutinarios/styles/RegistroControlesRutinarios.css';
 import { registrarChofer } from '../../services/choferesService';
 
-export const RegistrarNuevoChofer = ({onSubmit, onCancel }) => { 
-  const [successMessage, setSuccessMessage] = useState(false); 
+export const RegistrarNuevoChofer = ({ onSubmit, onCancel }) => {
+  const [successMessage, setSuccessMessage] = useState(false);
   const [formData, setFormData] = useState({
     username: '',
     password: '',
     nombre: '',
   });
-  
 
-  const token = useSelector((state) => state.user.token); 
+  const token = useSelector((state) => state.user.token);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -24,14 +23,18 @@ export const RegistrarNuevoChofer = ({onSubmit, onCancel }) => {
     e.preventDefault();
 
     try {
+    
       await registrarChofer(formData, token);
+
+    
       setSuccessMessage(true);
+      
       
       setTimeout(() => {
         setSuccessMessage(false);
-        onCancel();
-      }, 1000); 
-      onSubmit(formData); 
+        onCancel(); 
+        onSubmit(formData);  
+      }, 2000);
     } catch (error) {
       console.error('Error al registrar el Chofer:', error);
     }
@@ -40,11 +43,14 @@ export const RegistrarNuevoChofer = ({onSubmit, onCancel }) => {
   return (
     <div className="container">
       <h2>Registrar Nuevo Chofer</h2>
+      
+  
       {successMessage && (
         <div className="success-message" style={{ color: 'green', marginBottom: '15px' }}>
-          Chofer registrado con éxito!
+          ¡Chofer registrado con éxito!
         </div>
       )}
+      
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label>
