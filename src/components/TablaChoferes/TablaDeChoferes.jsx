@@ -68,9 +68,9 @@ export function TablaDeChoferes() {
     
         try {
           if (newState === "HABILITADO") {
-            await habilitar(id, token);
+            await habilitarChofer(id, token);
           } else {
-            await inhabilitar(id, token);
+            await inhabilitarChofer(id, token);
           }
     
           setFilas((prevRows) =>
