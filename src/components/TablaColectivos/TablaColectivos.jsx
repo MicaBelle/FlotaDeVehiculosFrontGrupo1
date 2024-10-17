@@ -142,7 +142,7 @@ export function TablaDeColectivos({ userRole }) {
         );
       case "actions":
         return (
-          <div className="flex justify-end items-center gap-2">
+          <div >
             {userRole === "ADMINISTRADOR" && (
               <Button
                 color={item.estado === "HABILITADO" ? "danger" : "success"}

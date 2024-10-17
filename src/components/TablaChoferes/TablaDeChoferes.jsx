@@ -132,7 +132,7 @@ export function TablaDeChoferes() {
                 );
             case "actions":
                 return (
-                    <div className="flex justify-end items-center gap-2">
+                    <div>
                         <Button
                             color={item.estado === "HABILITADO" ? "danger" : "success"}
                             onClick={() => handleToggleEstado(item)}
