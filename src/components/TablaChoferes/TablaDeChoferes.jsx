@@ -40,9 +40,7 @@ export function TablaDeChoferes() {
           vehiculoAsociado: item.patente ? (
             item.patente
           ) : (
-            <Button color="warning" onClick={() => asignarVehiculo(item.idChofer)}>
-              Asignar Vehículo
-            </Button>
+           'Sin vehiculo asociado'
           ),
           estado: item.estadoChofer || "Desconocido",
         }));
@@ -116,7 +114,7 @@ export function TablaDeChoferes() {
     }
   };
 
-  const handleRegistrarChofer = async (nuevoChofer) => {
+  const handleRegistrarChofer = async () => {
     setMostrarRegistroDeChofer(false);
     await fetchChoferes();
   };
@@ -174,7 +172,11 @@ export function TablaDeChoferes() {
             >
               {item.estado === "HABILITADO" ? "Inhabilitar" : "Habilitar"}
             </Button>
-          </div>
+
+            <Button color="warning" onClick={() => asignarVehiculo(item.idChofer)}>
+              Asignar Vehículo
+            </Button>
+            </div>
         );
       default:
         return cellValue;
