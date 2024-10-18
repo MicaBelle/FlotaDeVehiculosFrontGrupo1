@@ -1,17 +1,20 @@
 import { Navbar, NavbarBrand, NavbarContent, Avatar, DropdownTrigger, Dropdown, DropdownMenu, DropdownItem } from "@nextui-org/react";
 import { NavBarLogo } from "../functions/NavBarLogo";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { clearUser } from "../../components/store/userSlice";
 import '../NavBar/styles/navbar.css';
 import { logout } from "../../services/authService";
 
 export default function NavBar() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const { username, role, token } = useSelector((state) => state.user); 
 
   const handleLogOut = async () => {
     try {
       await logout(token); 
+      dispatch(clearUser());
       navigate('/'); 
     } catch (error) {
       console.error("Error al cerrar sesión:", error);

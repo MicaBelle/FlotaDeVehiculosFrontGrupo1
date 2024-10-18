@@ -35,7 +35,7 @@ const getFetchOptions = (method, data, token) => {
 
 const handleResponse = async (response, statusExpected) => {
     const status = response.status
-    
+
     if (status !== statusExpected) {
         try {
             const errorData = await response.json();
