@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, cloneElement } from "react";
 import { useSelector } from "react-redux";
 import Loader from "../Loader/Loader";
 import { Input, Button, Chip } from "@nextui-org/react";
@@ -37,8 +37,8 @@ export function TablaDeChoferes() {
           key: index.toString(),
           id: item.idChofer,
           nombre: item.nombre,
-          vehiculoAsociado: item.idVehiculo ? (
-            `Vehículo ${item.idVehiculo}`
+          vehiculoAsociado: item.patente ? (
+            item.patente
           ) : (
             <Button color="warning" onClick={() => asignarVehiculo(item.idChofer)}>
               Asignar Vehículo
