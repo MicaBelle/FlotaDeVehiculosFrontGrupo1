@@ -3,7 +3,7 @@ import Loader from '../Loader/Loader';
 import { useSelector } from 'react-redux';
 import { getMetabaseToken } from '../../services/metabaseService';
 
-export const MetricasGlobales = ({ dashboardId }) => {
+export const MetricaBitacora = ({ dashboardId }) => {
   const [loading, setLoading] = useState(true);
   const [metabaseToken, setMetabaseToken] = useState("");
   const userToken = useSelector((state) => state.user.token);

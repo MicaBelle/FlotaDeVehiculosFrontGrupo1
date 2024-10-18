@@ -17,7 +17,7 @@ export const Home = () => {
       case 'OPERADOR':
         return 'TareasAsignadas'; 
       case 'GERENTE':
-        return 'Reportes'
+        return 'MetricaBitacora'
       default:
         return 'Home'; 
     }
@@ -57,8 +57,9 @@ export const Home = () => {
           )}
            {userRole === 'GERENTE' && (
             <>
-              <div className={`MenuItem ${activeMenu === 'Reportes' ? 'active' : ''}`} onClick={() => handleMenuClick('Reportes')}>Reportes</div>
-              
+              <div className={`MenuItem ${activeMenu === 'MetricaBitacora' ? 'active' : ''}`} onClick={() => handleMenuClick('MetricaBitacora')}>Métrica de Bitácora de Mantenimiento y Uso</div>
+              <div className={`MenuItem ${activeMenu === 'MetricaStock' ? 'active' : ''}`} onClick={() => handleMenuClick('MetricaStock')}>Métrica de Gestión de Stock y Compras</div>
+              <div className={`MenuItem ${activeMenu === 'MetricaFlota' ? 'active' : ''}`} onClick={() => handleMenuClick('MetricaFlota')}>Métrica de Gestión de Controles de Flota</div>
             </>
           )}
         </div>
