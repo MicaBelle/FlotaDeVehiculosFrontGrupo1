@@ -3,6 +3,8 @@ import '../RegistroDeColectivo/styles/RegistroDeColectivo.css';
 import { Button } from '@nextui-org/react';
 import { registrarItem } from '../../services/inventarioService'; 
 import { useSelector } from 'react-redux';
+import { showsuccessAlert } from '../SweetAlert/SweetAlertSucces';
+import { showErrorAlert } from '../SweetAlert/SweetAlertError';
 
 export const RegistroItemInventario = ({ onSubmit, onCancel }) => {
   const [formData, setFormData] = useState({
@@ -35,8 +37,9 @@ export const RegistroItemInventario = ({ onSubmit, onCancel }) => {
     try {
       const response = await registrarItem(formData, token);
       onSubmit(formData); 
+      showsuccessAlert('¡Registro exitoso de item!','El item fue agregado correctamente')
     } catch (error) {
-
+      showErrorAlert('Error al registrar un item',error)
     }
   };
 

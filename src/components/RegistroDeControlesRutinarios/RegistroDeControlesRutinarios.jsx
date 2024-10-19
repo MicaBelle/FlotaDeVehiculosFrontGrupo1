@@ -4,14 +4,14 @@ import { inhabilitar } from '../../services/vehiculoService';
 import { useSelector } from 'react-redux';
 import { Button } from '@nextui-org/react';
 import '../RegistroDeControlesRutinarios/styles/RegistroControlesRutinarios.css';
+import { showsuccessAlert } from '../SweetAlert/SweetAlertSucces';
 
 const RegistrarMantenimiento = ({ vehiculoId, irAtras }) => { 
   const [formData, setFormData] = useState({
     asunto: '',
     vehiculo_id: vehiculoId,
   });
-  
-  const [successMessage, setSuccessMessage] = useState(false); 
+
   const token = useSelector((state) => state.user.token); 
 
   const handleChange = (e) => {
@@ -25,12 +25,9 @@ const RegistrarMantenimiento = ({ vehiculoId, irAtras }) => {
     try {
     
       await cargarMantenimientoManual(formData, token);
-      
-     
-     
-
     
-      setSuccessMessage(true);
+      
+      showsuccessAlert('¡Mantenimiento registrado con éxito!','El mantenimeinto fue registrado correctamente')
       
       setTimeout(() => {
         setSuccessMessage(false);
@@ -44,7 +41,7 @@ const RegistrarMantenimiento = ({ vehiculoId, irAtras }) => {
       });
       
     } catch (error) {
-      console.error('Error al registrar el mantenimiento o inhabilitar el vehículo:', error);
+      showErrorAlert('Error al registrar el mantenimiento o inhabilitar el vehículo',error)
     }
   };
 
@@ -52,11 +49,6 @@ const RegistrarMantenimiento = ({ vehiculoId, irAtras }) => {
     <div className="container">
       <h2>Registrar Mantenimiento Manual</h2>
 
-      {successMessage && (
-        <div className="success-message" style={{ color: 'green', marginBottom: '15px' }}>
-          ¡Mantenimiento registrado con éxito!
-        </div>
-      )}
 
       <form onSubmit={handleSubmit}>
         <div className="form-group">
