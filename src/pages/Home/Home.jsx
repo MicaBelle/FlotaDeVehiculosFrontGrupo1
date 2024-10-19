@@ -16,6 +16,8 @@ export const Home = () => {
         return 'Colectivos'; 
       case 'OPERADOR':
         return 'TareasAsignadas'; 
+      case 'GERENTE':
+        return 'MetricaBitacora'
       default:
         return 'Home'; 
     }
@@ -38,6 +40,7 @@ export const Home = () => {
               <div className={`MenuItem ${activeMenu === 'Registro' ? 'active' : ''}`} onClick={() => handleMenuClick('Registro')}>Registro de colectivo</div>
               <div className={`MenuItem ${activeMenu === 'Inventario' ? 'active' : ''}`} onClick={() => handleMenuClick('Inventario')}>Inventario</div>
               <div className={`MenuItem ${activeMenu === 'Mantenimientos' ? 'active' : ''}`} onClick={() => handleMenuClick('Mantenimientos')}>Mantenimientos</div>
+              <div className={`MenuItem ${activeMenu === 'Choferes' ? 'active' : ''}`} onClick={() => handleMenuClick('Choferes')}>Choferes</div>
             </>
           )}
           {userRole === 'SUPERVISOR' && (
@@ -50,6 +53,13 @@ export const Home = () => {
             <>
               <div className={`MenuItem ${activeMenu === 'TareasAsignadas' ? 'active' : ''}`} onClick={() => handleMenuClick('TareasAsignadas')}>Mis tareas</div>
               <div className={`MenuItem ${activeMenu === 'AsignarTarea' ? 'active' : ''}`} onClick={() => handleMenuClick('AsignarTarea')}>Pendientes</div>
+            </>
+          )}
+           {userRole === 'GERENTE' && (
+            <>
+              <div className={`MenuItem ${activeMenu === 'MetricaBitacora' ? 'active' : ''}`} onClick={() => handleMenuClick('MetricaBitacora')}>Métrica de Bitácora de Mantenimiento y Uso</div>
+              <div className={`MenuItem ${activeMenu === 'MetricaStock' ? 'active' : ''}`} onClick={() => handleMenuClick('MetricaStock')}>Métrica de Gestión de Stock y Compras</div>
+              <div className={`MenuItem ${activeMenu === 'MetricaFlota' ? 'active' : ''}`} onClick={() => handleMenuClick('MetricaFlota')}>Métrica de Gestión de Controles de Flota</div>
             </>
           )}
         </div>

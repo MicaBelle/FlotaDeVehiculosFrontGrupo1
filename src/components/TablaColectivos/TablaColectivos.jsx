@@ -1,20 +1,10 @@
 import React, { useEffect, useMemo, useState } from "react";
-import {
-  Table,
-  TableHeader,
-  TableColumn,
-  TableBody,
-  TableRow,
-  TableCell,
-  Input,
-  Button,
-  Chip,
-} from "@nextui-org/react";
 import { useSelector } from 'react-redux';
 import { habilitar, inhabilitar, verVehiculos } from "../../services/vehiculoService";
 import RegistrarMantenimiento from "../RegistroDeControlesRutinarios/RegistroDeControlesRutinarios";
 import Loader from "../Loader/Loader";
-
+import { Input, Button, Chip } from "@nextui-org/react";
+import TablaGenerica from "../TablaGenerica/TablaGenerica";
 
 const columns = [
   { uid: "patente", name: "PATENTE" },
@@ -30,41 +20,48 @@ export function TablaDeColectivos({ userRole }) {
   const [filas, setFilas] = useState([]);
   const [filterValue, setFilterValue] = useState("");
   const [filterStatus, setFilterStatus] = useState("all");
-  const [mostrarRegistroControles, setMostrarRegistroControles] = useState(false); 
-  const [vehiculoSeleccionado, setVehiculoSeleccionado] = useState(null); 
+  const [mostrarRegistroControles, setMostrarRegistroControles] = useState(false);
+  const [vehiculoSeleccionado, setVehiculoSeleccionado] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [timeoutId, setTimeoutId] = useState(null);
 
   const token = useSelector((state) => state.user.token);
 
+  const fetchData = async () => {
+    setLoading(true);
+    try {
+      const response = await verVehiculos(token);
+      if (response && response.vehiculos) {
+        const mappedRows = response.vehiculos.map((item, index) => ({
+          key: index.toString(),
+          id: item.id,
+          patente: item.patente,
+          antiguedad: item.antiguedad,
+          kilometraje: item.kilometraje,
+          litrosDeTanque: item.litrosDeTanque || 800,
+          estado: item.estadoDeHabilitacion || "Desconocido",
+          fechaDeRevision: item.fechaVencimiento ? new Intl.DateTimeFormat('es-ES', { year: 'numeric', month: 'long', day: 'numeric' }).format(new Date(item.fechaVencimiento)) : "Sin fecha",
+        }));
+        setFilas(mappedRows);
+      }
+    } catch (error) {
+      console.error("Error fetching data: ", error);
+    } finally {
+      const id = setTimeout(() => {
+        setLoading(false);
+      }, 2000);
+      setTimeoutId(id);
+    }
+  };
+
   useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true); 
-      try {
-        const response = await verVehiculos(token);
-        
-        if (response && response.vehiculos) {
-          const mappedRows = response.vehiculos.map((item, index) => ({
-            key: index.toString(),
-            id: item.id,
-            patente: item.patente,
-            antiguedad: item.antiguedad,
-            kilometraje: item.kilometraje,
-            litrosDeTanque: item.litrosDeTanque || 800,
-            estado: item.estadoDeHabilitacion || "Desconocido",
-            fechaDeRevision: item.fechaVencimiento ? new Intl.DateTimeFormat('es-ES', { year: 'numeric', month: 'long', day: 'numeric' }).format(new Date(item.fechaVencimiento)) : "Sin fecha",
-          }));
-          setFilas(mappedRows);
-        }
-      } catch (error) {
-        console.error("Error fetching data: ", error);
-      } finally {
-        setTimeout(() => {
-          setLoading(false); 
-        }, 2000); 
+    fetchData();
+
+    return () => {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
       }
     };
-
-    fetchData();
   }, [token]);
 
   const handleFilterByStatus = (status) => {
@@ -93,12 +90,13 @@ export function TablaDeColectivos({ userRole }) {
   };
 
   const handleRegistrarMantenimiento = (id) => {
-    setVehiculoSeleccionado(id); 
-    setMostrarRegistroControles(true); 
+    setVehiculoSeleccionado(id);
+    setMostrarRegistroControles(true);
   };
 
   const irAtras = () => {
-    setMostrarRegistroControles(false); 
+    setMostrarRegistroControles(false);
+    fetchData(); 
   };
 
   const filteredRows = useMemo(() => {
@@ -143,7 +141,7 @@ export function TablaDeColectivos({ userRole }) {
         );
       case "actions":
         return (
-          <div className="flex justify-end items-center gap-2">
+          <div>
             {userRole === "ADMINISTRADOR" && (
               <Button
                 color={item.estado === "HABILITADO" ? "danger" : "success"}
@@ -152,7 +150,7 @@ export function TablaDeColectivos({ userRole }) {
                 {item.estado === "HABILITADO" ? "Inhabilitar" : "Habilitar"}
               </Button>
             )}
-            {userRole === "SUPERVISOR" && (
+            {userRole === "SUPERVISOR" && item.estado === "HABILITADO" && (
               <Button color="danger" onClick={() => handleRegistrarMantenimiento(item.id)}>
                 Registrar mantenimiento
               </Button>
@@ -166,43 +164,24 @@ export function TablaDeColectivos({ userRole }) {
 
   return (
     <div>
-      {loading ? ( 
+      {loading ? (
         <>
-        <div className="flex justify-center items-center h-full">
-          <Loader />
-        </div>
-        <div className="flex justify-center items-center h-full">
-          <h2>Cargando colectivos...</h2>
-        </div>
+          <div className="flex justify-center items-center h-full">
+            <Loader />
+          </div>
+          <div className="flex justify-center items-center h-full">
+            <h2>Cargando colectivos...</h2>
+          </div>
         </>
       ) : !mostrarRegistroControles ? (
-        <>
-          <Table
-            aria-label="Tabla de Colectivos"
-            isHeaderSticky
-            topContent={topContent}
-          >
-            <TableHeader columns={columns}>
-              {(column) => (
-                <TableColumn
-                  key={column.uid}
-                  align={column.uid === "actions" ? "center" : "start"}
-                >
-                  {column.name}
-                </TableColumn>
-              )}
-            </TableHeader>
-            <TableBody emptyContent={"No hay colectivos encontrados"} items={filteredRows}>
-              {(item) => (
-                <TableRow key={item.key}>
-                  {(columnKey) => <TableCell>{renderCell(item, columnKey)}</TableCell>}
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        </>
+        <TablaGenerica
+          data={filteredRows}
+          columns={columns}
+          renderCell={renderCell}
+          topContent={topContent}
+        />
       ) : (
-        <RegistrarMantenimiento vehiculoId={vehiculoSeleccionado} irAtras={irAtras}/>
+        <RegistrarMantenimiento vehiculoId={vehiculoSeleccionado} irAtras={irAtras} />
       )}
     </div>
   );
