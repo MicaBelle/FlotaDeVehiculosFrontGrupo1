@@ -1,3 +1,1 @@
-export const backendUrl = "http://18.209.5.94:8080"; //prod
-
-//export const backendUrl = "http://localhost:8080"; //local
+export const backendUrl = import.meta.env.VITE_API_URL

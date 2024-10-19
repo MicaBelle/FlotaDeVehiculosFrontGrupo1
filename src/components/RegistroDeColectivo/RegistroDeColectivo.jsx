@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import './styles/RegistroDeColectivo.css';
 import { useSelector } from 'react-redux';
 import { registrar } from "../../services/vehiculoService"; 
+import { showsuccessAlert } from '../SweetAlert/SweetAlertSucces';
+import { showErrorAlert } from '../SweetAlert/SweetAlertError';
 
 export const RegistroDeColectivo = () => {
   const [formData, setFormData] = useState({
@@ -79,10 +81,9 @@ export const RegistroDeColectivo = () => {
         fechaRevision: '',  
       });
   
-      alert("Colectivo registrado con éxito.");
+      showsuccessAlert('¡Registro exitoso de colectivo!','El colectivo fue agregado correctamente')
     } catch (error) {
-      console.error("Error al registrar el colectivo:", error);
-      alert("Error al registrar el colectivo. Por favor, intente nuevamente.");
+      showErrorAlert('Error al registrar un colectivo',error)
     }
   };
   
