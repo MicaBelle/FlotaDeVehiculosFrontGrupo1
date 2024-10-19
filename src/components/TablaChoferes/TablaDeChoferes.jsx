@@ -37,15 +37,11 @@ export function TablaDeChoferes() {
           key: index.toString(),
           id: item.idChofer,
           nombre: item.nombre,
-          vehiculoAsociado: item.patente ? (
-            item.patente
-          ) : (
-           'Sin vehiculo asociado'
-          ),
+          vehiculoAsociado: item.patente ? item.patente : 'Sin vehiculo asociado',
           estado: item.estadoChofer || "Desconocido",
         }));
-
-        setFilas(mappedRows);
+  
+        setFilas(mappedRows); 
       }
     } catch (error) {
       console.error("Error fetching data: ", error);
@@ -56,6 +52,7 @@ export function TablaDeChoferes() {
       setTimeoutId(id);
     }
   };
+  
 
   const asignarVehiculo = async (idChofer) => {
     setChoferIdSeleccionado(idChofer);
@@ -173,7 +170,7 @@ export function TablaDeChoferes() {
               {item.estado === "HABILITADO" ? "Inhabilitar" : "Habilitar"}
             </Button>
 
-            <Button color="warning" onClick={() => asignarVehiculo(item.idChofer)}>
+            <Button color="warning" onClick={() => asignarVehiculo(item.id)}>
               Asignar Vehículo
             </Button>
             </div>
