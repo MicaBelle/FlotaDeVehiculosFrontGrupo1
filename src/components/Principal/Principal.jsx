@@ -7,7 +7,9 @@ import TablaDeInventario from '../RegistroItemInventario/TablaInventario';
 import AsignarTareas from '../AsignarTareas/AsignarTareas';
 import { TareasAsignadas } from '../TareasAsignadas/TareasAsignadas';
 import TablaDeChoferes from '../TablaChoferes/TablaDeChoferes';
-import { MetricaBitacora } from '../MetricaBitacora/MetricaBitacora';
+import { MetricaBitacora } from '../../MetricasGlobales/MetricaBitacora/MetricaBitacora';
+import { MetricaStock } from '../../MetricasGlobales/MetricaStock/MetricaStock';
+import { MetricaFlota } from '../../MetricasGlobales/MetricaFlota/MetricaFlota';
 
 
 
@@ -25,8 +27,8 @@ export const Principal = ({ activeMenu }) => {
       {activeMenu === 'AsignarTarea' && userRole === 'OPERADOR' &&  <AsignarTareas/> } 
       {activeMenu === 'TareasAsignadas' && userRole === 'OPERADOR' &&  <TareasAsignadas/> } 
       {activeMenu === 'MetricaBitacora' && userRole === 'GERENTE' &&  <MetricaBitacora/> } 
-      {activeMenu === 'MetricaStock' && userRole === 'GERENTE' &&  <h1>MetricaStock</h1> } 
-      {activeMenu === 'MetricaFlota' && userRole === 'GERENTE' && <h1>MetricaFlota</h1> } 
+      {activeMenu === 'MetricaStock' && userRole === 'GERENTE' && <MetricaStock/> } 
+      {activeMenu === 'MetricaFlota' && userRole === 'GERENTE' && <MetricaFlota/> } 
     </div>
   );
 };
