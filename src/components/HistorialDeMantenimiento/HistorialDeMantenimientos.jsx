@@ -129,7 +129,7 @@ export function HistorialDeMantenimientos() {
               <Loader />
             </div>
             <div className="flex justify-center items-center h-full">
-              <h2>Cargando colectivos...</h2>
+              <h2>Cargando mantenimientos...</h2>
             </div>
             </>
           ) : (
