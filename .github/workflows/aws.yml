@@ -19,10 +19,15 @@ jobs:
         id: login-ecr
         run: |
           aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_REGION: ${{ secrets.AWS_REGION }}
+          docker pull 778425189746.dkr.ecr.us-east-1.amazonaws.com/hola-mundo-repo:front_latest
+          docker stop appFrontend || true
+          docker rm appFrontend || true
+          docker run \
+            -e VITE_API_URL=${{ secrets.VITE_API_URL }} \
+            -e VITE_METABASE_URL=${{ secrets.VITE_METABASE_URL }} \
+            -d --name appFrontend \
+            -p 80:80 \
+            778425189746.dkr.ecr.us-east-1.amazonaws.com/hola-mundo-repo:front_latest
 
      # Step 3: Install Dependencies and Clean Up (Optional)
       # This step is to ensure any issues with dependencies are caught before the Docker build.
