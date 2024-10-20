@@ -57,8 +57,9 @@ jobs:
             docker stop appFrontend || true
             docker rm appFrontend || true
             docker run -e VITE_API_URL=${{ secrets.VITE_API_URL }} \
-             -e VITE_METABASE_URL=${{ secrets.VITE_METABASE_URL }}    \
-             -d --name appFrontend -p 80:80 778425189746.dkr.ecr.us-east-1.amazonaws.com/hola-mundo-repo:front_latest
+             -e VITE_METABASE_URL=${{ secrets.VITE_METABASE_URL }} \
+             -d --name appFrontend \
+             -p 80:80 778425189746.dkr.ecr.us-east-1.amazonaws.com/hola-mundo-repo:front_latest
     
       - name: executing remote ssh commands using password
         uses: appleboy/ssh-action@v1.0.3
@@ -73,6 +74,7 @@ jobs:
             docker stop appFrontend || true
             docker rm appFrontend || true
             docker run -e VITE_API_URL=${{ secrets.VITE_API_URL }} \
-             -e VITE_METABASE_URL=${{ secrets.VITE_METABASE_URL }}    \
-             -d --name appFrontend -p 80:80 778425189746.dkr.ecr.us-east-1.amazonaws.com/hola-mundo-repo:front_latest
+             -e VITE_METABASE_URL=${{ secrets.VITE_METABASE_URL }} \
+             -d --name appFrontend \
+             -p 80:80 778425189746.dkr.ecr.us-east-1.amazonaws.com/hola-mundo-repo:front_latest
     
