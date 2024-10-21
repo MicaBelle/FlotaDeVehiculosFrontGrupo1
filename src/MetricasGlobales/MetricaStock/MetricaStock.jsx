@@ -1,7 +1,8 @@
 import React from 'react'
+import { MetricaGlobales } from '../MetricasGlobales'
 
 export const MetricaStock = () => {
   return (
-    <div>MetricaStockcomponente</div>
+    <MetricaGlobales dashboardId={37}/>
   )
 }
