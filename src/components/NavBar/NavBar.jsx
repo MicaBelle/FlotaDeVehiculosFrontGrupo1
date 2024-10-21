@@ -1,25 +1,47 @@
-import { Navbar, NavbarBrand, NavbarContent, Avatar, DropdownTrigger, Dropdown, DropdownMenu, DropdownItem } from "@nextui-org/react";
+import { Navbar, NavbarBrand, NavbarContent, Avatar, DropdownTrigger, Dropdown, DropdownMenu, DropdownItem, Button } from "@nextui-org/react";
 import { NavBarLogo } from "../functions/NavBarLogo";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { clearUser } from "../../components/store/userSlice";
 import '../NavBar/styles/navbar.css';
 import { logout } from "../../services/authService";
+import { showPresupuesto }  from "../SweetAlert/SweetAlertPresupuesto";
+import { useState } from "react";
+
 
 export default function NavBar() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { username, role, token } = useSelector((state) => state.user); 
+  const [presupuestoActual, setPresupuestoActual] = useState(0)
+  const { username, role, token } = useSelector((state) => state.user);
 
   const handleLogOut = async () => {
     try {
-      await logout(token); 
+      await logout(token);
       dispatch(clearUser());
-      navigate('/'); 
+      navigate('/');
     } catch (error) {
       console.error("Error al cerrar sesión:", error);
     }
   };
+
+  const handleVerPresupuesto = () => {
+    showPresupuesto(`El presupuesto actual es: ${presupuestoActual}`)
+  }
+
+  
+
+/*const handleVerPresupuesto = async () => {
+  try {
+    const presupuesto = await verPresupuesto(token); 
+    setPresupuestoActual(presupuesto);  
+    showPresupuesto(`El presupuesto actual es: ${presupuesto}`); 
+  } catch (error) {
+    console.error("Error al obtener el presupuesto:", error);
+    showPresupuesto(`Error al obtener el presupuesto: ${error.message}`);
+  }
+}*/
+
 
   return (
     <Navbar isBordered className="navbar">
@@ -29,6 +51,11 @@ export default function NavBar() {
           <p className="hidden sm:block font-bold text-inherit">GIFA</p>
         </NavbarBrand>
       </NavbarContent>
+
+      {
+        role === "SUPERVISOR" &&
+        <Button color="primary" onClick={handleVerPresupuesto} >Presupuesto</Button>
+      }
 
       <NavbarContent as="div" className="items-center navbar-content" justify="end">
         <p className="role-text">{role || "No Role"}</p>

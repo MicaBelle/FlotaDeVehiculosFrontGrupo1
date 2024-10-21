@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import TablaGenerica from "../TablaGenerica/TablaGenerica";
 import RegistroItemInventario from "./RegistroItemInventario";
 
+
 const columns = [
   { uid: "nombre", name: "NOMBRE" },
   { uid: "umbral", name: "UMBRAL" },
@@ -92,7 +93,7 @@ export function TablaDeInventario({ userRole, onItemSeleccionado }) {
     if (userRole === "OPERADOR") {
       return columns.filter((col) => col.uid !== "cantCompraAutomatica");
     }
-    if (userRole === "ADMINISTRADOR" || userRole === "SUPERVISOR"  ) {
+    if (userRole === "ADMINISTRADOR" || userRole === "SUPERVISOR") {
       return columns.filter((col) => col.uid !== "acciones");
     }
     return columns;
