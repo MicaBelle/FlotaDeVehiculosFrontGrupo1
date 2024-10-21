@@ -56,7 +56,7 @@ jobs:
             docker pull 778425189746.dkr.ecr.us-east-1.amazonaws.com/hola-mundo-repo:front_latest
             docker stop appFrontend || true
             docker rm appFrontend || true
-            docker run -d --name appFrontend -p 80:80 -e VITE_API_URL=${{ secrets.VITE_API_URL }} -e VITE_METABASE_URL=${{ secrets.VITE_METABASE_URL }}  778425189746.dkr.ecr.us-east-1.amazonaws.com/hola-mundo-repo:front_latest
+            docker run -d --name appFrontend -p 80:80 -e VITE_API_URL=lpm -e VITE_METABASE_URL=puta 778425189746.dkr.ecr.us-east-1.amazonaws.com/hola-mundo-repo:front_latest
 
             
       - name: executing remote ssh commands using password
@@ -71,4 +71,4 @@ jobs:
             docker pull 778425189746.dkr.ecr.us-east-1.amazonaws.com/hola-mundo-repo:front_latest
             docker stop appFrontend || true
             docker rm appFrontend || true
-            docker run -d --name appFrontend -p 80:80 -e VITE_API_URL=${{ secrets.VITE_API_URL }} -e VITE_METABASE_URL=${{ secrets.VITE_METABASE_URL }}  778425189746.dkr.ecr.us-east-1.amazonaws.com/hola-mundo-repo:front_latest
+            docker run -d --name appFrontend -p 80:80 -e VITE_API_URL=lpm -e VITE_METABASE_URL=puta 778425189746.dkr.ecr.us-east-1.amazonaws.com/hola-mundo-repo:front_latest
