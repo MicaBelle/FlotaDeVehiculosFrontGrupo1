@@ -169,10 +169,13 @@ export function TablaDeChoferes() {
             >
               {item.estado === "HABILITADO" ? "Inhabilitar" : "Habilitar"}
             </Button>
-
-            <Button color="warning" onClick={() => asignarVehiculo(item.id)}>
-              Asignar Vehículo
-            </Button>
+            
+            { item.estado === "HABILITADO" &&
+               <Button color="warning" onClick={() => asignarVehiculo(item.id)}>
+               Asignar Vehículo
+             </Button>
+            }
+           
             </div>
         );
       default:

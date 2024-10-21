@@ -43,13 +43,13 @@ export const MetricaGlobales = ({ dashboardId }) => {
   const iframeUrl = `${import.meta.env.VITE_METABASE_URL}/embed/dashboard/${metabaseToken}#theme=night&bordered=true&titled=true`;
 
   return (
-    <div className="metabase-dashboard">
-      <iframe
-        src={iframeUrl}
-        frameBorder="0"
-        allowtransparency="true"
-        title="Metabase Dashboard"
-      ></iframe>
-    </div>
+    <iframe
+      src={iframeUrl}
+      frameBorder="0"
+      width="100%"
+      height="600"
+      allowtransparency="true"
+      title="Metabase Dashboard"
+    ></iframe>
   );
 };
