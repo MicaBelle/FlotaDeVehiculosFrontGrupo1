@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import { getMetabaseToken } from '../services/metabaseService';
 import Loader from '../components/Loader/Loader';
 import './styles/MetricasGlobales.css'
+import { metaBaseUrl } from '../connection/backUrl';
 
 
 export const MetricaGlobales = ({ dashboardId }) => {
@@ -40,7 +41,7 @@ export const MetricaGlobales = ({ dashboardId }) => {
   }
 
  
-  const iframeUrl = `${import.meta.env.VITE_METABASE_URL}/embed/dashboard/${metabaseToken}#theme=night&bordered=true&titled=true`;
+  const iframeUrl = `${metaBaseUrl}/embed/dashboard/${metabaseToken}#theme=night&bordered=true&titled=true`;
 
   return (
     <iframe

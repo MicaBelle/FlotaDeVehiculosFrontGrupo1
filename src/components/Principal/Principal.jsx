@@ -10,6 +10,8 @@ import TablaDeChoferes from '../TablaChoferes/TablaDeChoferes';
 import { MetricaBitacora } from '../../MetricasGlobales/MetricaBitacora/MetricaBitacora';
 import { MetricaStock } from '../../MetricasGlobales/MetricaStock/MetricaStock';
 import { MetricaFlota } from '../../MetricasGlobales/MetricaFlota/MetricaFlota';
+import TablaPedidosRealizados from '../TablaPedidos/TablaPedidosRealizados';
+import { MetricaInconsistente } from '../../MetricasGlobales/MetricaInconsitencias/MetricaInconsistentes';
 
 
 
@@ -22,6 +24,7 @@ export const Principal = ({ activeMenu }) => {
       {activeMenu === 'Registro' && userRole === 'ADMINISTRADOR' && <RegistroDeColectivo />} 
       {activeMenu === 'Inventario' && (userRole === 'ADMINISTRADOR' || userRole === 'SUPERVISOR' || userRole === 'OPERADOR' ) && <TablaDeInventario userRole={userRole} />}
       {activeMenu === 'Choferes' && userRole === 'ADMINISTRADOR' && <TablaDeChoferes/> }  
+      {activeMenu === 'Pedidos' && userRole === 'SUPERVISOR' && <TablaPedidosRealizados/> }  
       {activeMenu === 'Colectivos' && <TablaDeColectivos userRole={userRole} />} 
       {activeMenu === 'Mantenimientos' && <HistorialDeMantenimientos userRole={userRole} />} 
       {activeMenu === 'AsignarTarea' && userRole === 'OPERADOR' &&  <AsignarTareas/> } 
@@ -29,6 +32,7 @@ export const Principal = ({ activeMenu }) => {
       {activeMenu === 'MetricaBitacora' && userRole === 'GERENTE' &&  <MetricaBitacora/> } 
       {activeMenu === 'MetricaStock' && userRole === 'GERENTE' && <MetricaStock/> } 
       {activeMenu === 'MetricaFlota' && userRole === 'GERENTE' && <MetricaFlota/> } 
+      {activeMenu === 'Inconsistencias' && userRole === 'GERENTE' && <MetricaInconsistente/> } 
     </div>
   );
 };

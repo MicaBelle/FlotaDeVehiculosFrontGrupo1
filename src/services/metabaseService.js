@@ -1,4 +1,4 @@
-import { metaBaseUrl  } from "../connection/backUrl";
+import { metaBaseUrl } from "../connection/backUrl";
 import { executeFetch } from "../connection/fetch";
 import { HttpMethods } from "../connection/HttpMethods";
 

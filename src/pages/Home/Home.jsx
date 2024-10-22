@@ -47,6 +47,7 @@ export const Home = () => {
             <>
               <div className={`MenuItem ${activeMenu === 'Colectivos' ? 'active' : ''}`} onClick={() => handleMenuClick('Colectivos')}>Colectivos</div>
               <div className={`MenuItem ${activeMenu === 'Inventario' ? 'active' : ''}`} onClick={() => handleMenuClick('Inventario')}>Inventario</div>
+              <div className={`MenuItem ${activeMenu === 'Pedidos' ? 'active' : ''}`} onClick={() => handleMenuClick('Pedidos')}>Pedidos</div>
             </>
           )}
           {userRole === 'OPERADOR' && (
@@ -60,6 +61,7 @@ export const Home = () => {
               <div className={`MenuItem ${activeMenu === 'MetricaBitacora' ? 'active' : ''}`} onClick={() => handleMenuClick('MetricaBitacora')}>Métrica de Bitácora de Mantenimiento y Uso</div>
               <div className={`MenuItem ${activeMenu === 'MetricaStock' ? 'active' : ''}`} onClick={() => handleMenuClick('MetricaStock')}>Métrica de Gestión de Stock y Compras</div>
               <div className={`MenuItem ${activeMenu === 'MetricaFlota' ? 'active' : ''}`} onClick={() => handleMenuClick('MetricaFlota')}>Métrica de Gestión de Controles de Flota</div>
+              <div className={`MenuItem ${activeMenu === 'Inconsistencias' ? 'active' : ''}`} onClick={() => handleMenuClick('Inconsistencias')}>Inconsistencias</div>
             </>
           )}
         </div>
