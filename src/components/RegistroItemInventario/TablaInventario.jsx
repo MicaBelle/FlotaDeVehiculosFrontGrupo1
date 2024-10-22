@@ -4,7 +4,7 @@ import { obtenerItems, modificarPresupuesto } from "../../services/inventarioSer
 import { useSelector } from "react-redux";
 import TablaGenerica from "../TablaGenerica/TablaGenerica";
 import RegistroItemInventario from "./RegistroItemInventario";
-import RegistroModificarPresupuesto from "./RegistroModificarPresupuesto ";
+import RegistroModificarPresupuesto from './RegistroModificarPresupuesto '
 
 
 const columns = [
@@ -19,7 +19,7 @@ export function TablaDeInventario({ userRole, onItemSeleccionado }) {
   const [filas, setFilas] = useState([]);
   const [filterValue, setFilterValue] = useState("");
   const [showRegistro, setShowRegistro] = useState(false);
-  const [showModificarPresupuesto, setShowModificarPresupuesto] = useState(false); 
+  const [showModificarPresupuesto, setShowModificarPresupuesto] = useState(false);
   const token = useSelector((state) => state.user.token);
 
   useEffect(() => {
@@ -64,16 +64,23 @@ export function TablaDeInventario({ userRole, onItemSeleccionado }) {
   };
 
   const handleModificarPresupuesto = async (data) => {
+   
     try {
-      await modificarPresupuesto(data, token);
-      console.log("Presupuesto modificado exitosamente");
-      setShowModificarPresupuesto(false); 
+      const response = await modificarPresupuesto(data, token);
+      
+  
+      if (response) {
+        console.log("Presupuesto modificado exitosamente", response);
+        alert("Presupuesto modificado exitosamente"); 
+        setShowModificarPresupuesto(false);
+      }
     } catch (error) {
       console.error("Error al modificar el presupuesto:", error);
+      alert("Error al modificar el presupuesto"); 
     }
   };
   
-
+  
   const renderCell = (item, columnKey) => {
     if (columnKey === "acciones" && userRole === "OPERADOR") {
       return (
@@ -99,12 +106,10 @@ export function TablaDeInventario({ userRole, onItemSeleccionado }) {
           Agregar Item
         </Button>
       )}
-
       {userRole === "SUPERVISOR" && (
         <Button onClick={() => setShowModificarPresupuesto(true)} color="primary">
-        Modificar presupuesto
-      </Button>
-      
+          Modificar presupuesto
+        </Button>
       )}
     </div>
   );
@@ -124,9 +129,9 @@ export function TablaDeInventario({ userRole, onItemSeleccionado }) {
       {showRegistro && userRole === "ADMINISTRADOR" ? (
         <RegistroItemInventario onSubmit={handleRegistroSubmit} onCancel={() => setShowRegistro(false)} />
       ) : showModificarPresupuesto ? (
-        <RegistroModificarPresupuesto 
-          onCancel={() => setShowModificarPresupuesto(false)} 
-          onSubmit={handleModificarPresupuesto} 
+        <RegistroModificarPresupuesto
+          onCancel={() => setShowModificarPresupuesto(false)}
+          onSubmit={handleModificarPresupuesto}
         />
       ) : (
         <TablaGenerica

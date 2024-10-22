@@ -5,29 +5,30 @@ import { Button } from '@nextui-org/react';
 export const RegistroModificarPresupuesto = ({ onSubmit, onCancel }) => {
   const [formData, setFormData] = useState({
     presupuesto: 0,
-    cantDePedidoAutomatico: 0,
   });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    if (value < 0) {
-      alert('No se permiten valores negativos');
-      return;
-    }
-
     setFormData((prevData) => ({
       ...prevData,
-      [name]: value,
+      [name]: parseFloat(value),  
     }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    const presupuesto = parseFloat(formData.presupuesto);
+  
+
+    if (presupuesto < 0) {
+      alert('No se permiten valores negativos');
+      return;
+    }
+
     const data = {
-      presupuesto: parseFloat(formData.presupuesto),
-      cantDePedidoAutomatico: parseInt(formData.cantDePedidoAutomatico),
+      presupuesto, 
     };
 
     onSubmit(data);
@@ -46,20 +47,7 @@ export const RegistroModificarPresupuesto = ({ onSubmit, onCancel }) => {
               value={formData.presupuesto}
               onChange={handleChange}
               min="0"
-              required
-              className="input-field"
-            />
-          </label>
-        </div>
-        <div className="form-group">
-          <label className="label">
-            Cantidad para Pedido Automático:
-            <input
-              type="number"
-              name="cantDePedidoAutomatico"
-              value={formData.cantDePedidoAutomatico}
-              onChange={handleChange}
-              min="0"
+              step="0.01"  
               required
               className="input-field"
             />
