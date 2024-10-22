@@ -86,6 +86,12 @@ export function TablaDeInventario({ userRole, onItemSeleccionado }) {
           Agregar Item
         </Button>
       )}
+
+      {userRole === "SUPERVISOR" && (
+        <Button  color="primary">
+          Modificar presupuesto
+        </Button>
+      )}
     </div>
   );
 

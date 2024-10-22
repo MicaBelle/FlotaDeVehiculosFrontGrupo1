@@ -34,6 +34,8 @@ export const obtenerPresupuesto = async (token) => {
     return await executeFetch(endpoint, null, HttpMethods.GET, token, 200);
 };
 
+
+
 /*para obtener los datos : {{baseUrl}}/gestorOperacional/obtener
 {
     "presupuesto": 999.0,

@@ -13,7 +13,6 @@ import { obtenerPresupuesto } from "../../services/inventarioService";
 export default function NavBar() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [presupuestoActual, setPresupuestoActual] = useState(0)
   const { username, role, token } = useSelector((state) => state.user);
 
   const handleLogOut = async () => {
@@ -25,18 +24,11 @@ export default function NavBar() {
       console.error("Error al cerrar sesión:", error);
     }
   };
-
-  /*const handleVerPresupuesto = () => {
-    showPresupuesto(`El presupuesto actual es: ${presupuestoActual}`)
-  }*/
-
   
-
 const handleVerPresupuesto = async () => {
   try {
     const presupuesto = await obtenerPresupuesto(token); 
-    setPresupuestoActual(presupuesto.presupuesto);  
-    showPresupuesto(`El presupuesto actual es: ${presupuestoActual}`); 
+    showPresupuesto(`El presupuesto actual es: ${presupuesto.presupuesto}`); 
   } catch (error) {
     console.error("Error al obtener el presupuesto:", error);
     showPresupuesto(`Error al obtener el presupuesto: ${error.message}`);
