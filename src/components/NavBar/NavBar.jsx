@@ -7,6 +7,7 @@ import '../NavBar/styles/navbar.css';
 import { logout } from "../../services/authService";
 import { showPresupuesto }  from "../SweetAlert/SweetAlertPresupuesto";
 import { useState } from "react";
+import { obtenerPresupuesto } from "../../services/inventarioService";
 
 
 export default function NavBar() {
@@ -25,22 +26,22 @@ export default function NavBar() {
     }
   };
 
-  const handleVerPresupuesto = () => {
+  /*const handleVerPresupuesto = () => {
     showPresupuesto(`El presupuesto actual es: ${presupuestoActual}`)
-  }
+  }*/
 
   
 
-/*const handleVerPresupuesto = async () => {
+const handleVerPresupuesto = async () => {
   try {
-    const presupuesto = await verPresupuesto(token); 
-    setPresupuestoActual(presupuesto);  
-    showPresupuesto(`El presupuesto actual es: ${presupuesto}`); 
+    const presupuesto = await obtenerPresupuesto(token); 
+    setPresupuestoActual(presupuesto.presupuesto);  
+    showPresupuesto(`El presupuesto actual es: ${presupuestoActual}`); 
   } catch (error) {
     console.error("Error al obtener el presupuesto:", error);
     showPresupuesto(`Error al obtener el presupuesto: ${error.message}`);
   }
-}*/
+}
 
 
   return (
