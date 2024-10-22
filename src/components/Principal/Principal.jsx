@@ -11,6 +11,7 @@ import { MetricaBitacora } from '../../MetricasGlobales/MetricaBitacora/MetricaB
 import { MetricaStock } from '../../MetricasGlobales/MetricaStock/MetricaStock';
 import { MetricaFlota } from '../../MetricasGlobales/MetricaFlota/MetricaFlota';
 import TablaPedidosRealizados from '../TablaPedidos/TablaPedidosRealizados';
+import { MetricaInconsistente } from '../../MetricasGlobales/MetricaInconsitencias/MetricaInconsistentes';
 
 
 
@@ -31,6 +32,7 @@ export const Principal = ({ activeMenu }) => {
       {activeMenu === 'MetricaBitacora' && userRole === 'GERENTE' &&  <MetricaBitacora/> } 
       {activeMenu === 'MetricaStock' && userRole === 'GERENTE' && <MetricaStock/> } 
       {activeMenu === 'MetricaFlota' && userRole === 'GERENTE' && <MetricaFlota/> } 
+      {activeMenu === 'Inconsistencias' && userRole === 'GERENTE' && <MetricaInconsistente/> } 
     </div>
   );
 };
