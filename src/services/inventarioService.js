@@ -34,6 +34,11 @@ export const obtenerPresupuesto = async (token) => {
     return await executeFetch(endpoint, null, HttpMethods.GET, token, 200);
 };
 
+export const modificarPresupuesto = async (data, token) => {
+    const endpoint = backendUrl + '/gestorOperacional/actualizar';
+    return await executeFetch(endpoint, data, HttpMethods.POST, token, 201);
+};
+
 
 
 /*para obtener los datos : {{baseUrl}}/gestorOperacional/obtener
