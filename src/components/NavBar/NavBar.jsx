@@ -7,12 +7,12 @@ import '../NavBar/styles/navbar.css';
 import { logout } from "../../services/authService";
 import { showPresupuesto }  from "../SweetAlert/SweetAlertPresupuesto";
 import { useState } from "react";
+import { obtenerPresupuesto } from "../../services/inventarioService";
 
 
 export default function NavBar() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [presupuestoActual, setPresupuestoActual] = useState(0)
   const { username, role, token } = useSelector((state) => state.user);
 
   const handleLogOut = async () => {
@@ -24,23 +24,16 @@ export default function NavBar() {
       console.error("Error al cerrar sesión:", error);
     }
   };
-
-  const handleVerPresupuesto = () => {
-    showPresupuesto(`El presupuesto actual es: ${presupuestoActual}`)
-  }
-
   
-
-/*const handleVerPresupuesto = async () => {
+const handleVerPresupuesto = async () => {
   try {
-    const presupuesto = await verPresupuesto(token); 
-    setPresupuestoActual(presupuesto);  
-    showPresupuesto(`El presupuesto actual es: ${presupuesto}`); 
+    const presupuesto = await obtenerPresupuesto(token); 
+    showPresupuesto(`El presupuesto actual es: ${presupuesto.presupuesto}`); 
   } catch (error) {
     console.error("Error al obtener el presupuesto:", error);
     showPresupuesto(`Error al obtener el presupuesto: ${error.message}`);
   }
-}*/
+}
 
 
   return (

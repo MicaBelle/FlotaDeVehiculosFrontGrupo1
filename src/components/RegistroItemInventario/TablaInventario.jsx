@@ -1,9 +1,10 @@
 import React, { useEffect, useState, useMemo } from "react";
 import { Input, Button } from "@nextui-org/react";
-import { obtenerItems } from "../../services/inventarioService";
+import { obtenerItems, modificarPresupuesto } from "../../services/inventarioService";
 import { useSelector } from "react-redux";
 import TablaGenerica from "../TablaGenerica/TablaGenerica";
 import RegistroItemInventario from "./RegistroItemInventario";
+import RegistroModificarPresupuesto from "./RegistroModificarPresupuesto ";
 
 
 const columns = [
@@ -18,6 +19,7 @@ export function TablaDeInventario({ userRole, onItemSeleccionado }) {
   const [filas, setFilas] = useState([]);
   const [filterValue, setFilterValue] = useState("");
   const [showRegistro, setShowRegistro] = useState(false);
+  const [showModificarPresupuesto, setShowModificarPresupuesto] = useState(false); 
   const token = useSelector((state) => state.user.token);
 
   useEffect(() => {
@@ -61,6 +63,17 @@ export function TablaDeInventario({ userRole, onItemSeleccionado }) {
     onItemSeleccionado(itemId, itemNombre);
   };
 
+  const handleModificarPresupuesto = async (data) => {
+    try {
+      await modificarPresupuesto(data, token);
+      console.log("Presupuesto modificado exitosamente");
+      setShowModificarPresupuesto(false); 
+    } catch (error) {
+      console.error("Error al modificar el presupuesto:", error);
+    }
+  };
+  
+
   const renderCell = (item, columnKey) => {
     if (columnKey === "acciones" && userRole === "OPERADOR") {
       return (
@@ -86,6 +99,13 @@ export function TablaDeInventario({ userRole, onItemSeleccionado }) {
           Agregar Item
         </Button>
       )}
+
+      {userRole === "SUPERVISOR" && (
+        <Button onClick={() => setShowModificarPresupuesto(true)} color="primary">
+        Modificar presupuesto
+      </Button>
+      
+      )}
     </div>
   );
 
@@ -103,6 +123,11 @@ export function TablaDeInventario({ userRole, onItemSeleccionado }) {
     <>
       {showRegistro && userRole === "ADMINISTRADOR" ? (
         <RegistroItemInventario onSubmit={handleRegistroSubmit} onCancel={() => setShowRegistro(false)} />
+      ) : showModificarPresupuesto ? (
+        <RegistroModificarPresupuesto 
+          onCancel={() => setShowModificarPresupuesto(false)} 
+          onSubmit={handleModificarPresupuesto} 
+        />
       ) : (
         <TablaGenerica
           data={filteredRows}
