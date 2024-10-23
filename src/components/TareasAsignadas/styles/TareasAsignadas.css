@@ -1,23 +1,82 @@
+:root {
+  --color-background: #05061d; 
+  --color-card-background: #1a1c3d;
+  --color-text: #ffffff;         
+  --color-border: #444;        
+  --color-input-background: #333; 
+  --color-input-border: #666;  
+  --color-input-placeholder: #aaa; 
+  --color-shadow: rgba(0, 0, 0, 0.5); 
+}
+
 .tarjeta-container {
-  display: flex;                
-  flex-wrap: wrap;             
-  justify-content: flex-start; 
-  gap: 16px;                   
-  padding: 16px;               
+  display: flex;
+  gap: 16px;
+  padding: 16px;
+  overflow: auto; 
+}
+
+.columna {
+  display: flex;
+  flex-direction: column;
+  flex: 1;                 
+  min-width: 300px;       
+  max-width: 100%;        
+  background-color: var(--color-card-background);  
+  padding: 16px;         
+  border-radius: 8px;     
+  box-shadow: 0 2px 8px var(--color-shadow);  
+  align-items: center;   
+  max-height: 80vh; 
+  overflow-y: auto;
+}
+
+.columna h3 {
+  color: var(--color-text);    
+  text-align: center;     
+  margin-bottom: 12px;   
+  font-size: 1.5em;     
+  font-weight: 600;     
+}
+
+.filtro-busqueda {
+  position: sticky;         
+  top: 16px;               
+  margin-bottom: 16px;    
+  width: 100%;            
+  padding: 10px;          
+  background-color: var(--color-input-background);
+  border: 1px solid var(--color-input-border); 
+  border-radius: 4px;   
+  color: var(--color-text); 
+  z-index: 1;              
+}
+
+.filtro-busqueda::placeholder {
+  color: var(--color-input-placeholder); 
 }
 
 .tarjeta {
-  flex: 1 1 300px; 
-  min-width: 300px; 
-  max-width: 100%; 
-  display: flex; 
-  flex-direction: column; 
-  height: 100%; 
+  background-color: #1a1c3d; 
+  border-radius: 6px; 
+  padding: 12px; 
+  margin-bottom: 12px;
+  color: var(--color-text); 
+  transition: transform 0.2s, box-shadow 0.2s; 
+}
+
+.tarjeta:hover {
+  transform: translateY(-2px); 
+  box-shadow: 0 4px 12px var(--color-shadow);
 }
 
 @media (max-width: 768px) {
   .tarjeta-container {
-    flex-direction: column; 
-    align-items: center;    
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .columna {
+    width: 100%; 
   }
 }

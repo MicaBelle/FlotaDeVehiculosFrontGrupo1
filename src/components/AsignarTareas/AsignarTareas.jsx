@@ -44,7 +44,6 @@ export function AsignarMantenimiento() {
       
       await asignarMantenimiento(mantenimiento.id, token);
       
-      
       await fetchMantenimientosPendientes();
   
       console.log(`Mantenimiento de patente ${mantenimiento.vehiculo.patente} asignado con éxito`);
@@ -59,6 +58,8 @@ export function AsignarMantenimiento() {
     <div>
       {isLoading ? (
         <p>Cargando mantenimientos...</p>
+      ) : mantenimientos.length === 0 ? (  
+        <p>No hay tareas pendientes.</p>
       ) : (
         <Table aria-label="Mantenimientos Pendientes">
           <TableHeader columns={columns}>
