@@ -3,7 +3,7 @@ import { Card, CardHeader, CardBody, CardFooter, Divider, Image, Button } from "
 import mantenimientoImagen from '../../assets/Images/LogoNavBar.jpeg';
 import { finalizarMantenimiento } from '../../services/mantenimientoService';
 import { utilizarItem } from '../../services/inventarioService';
-import TablaDeInventario from '../RegistroItemInventario/TablaInventario';
+import TablaDeInventario from '../TablaInventario/TablaInventario';
 
 const TarjetaMantenimiento = ({ tarea, token, onTareaFinalizada }) => {
   const [itemsUsados, setItemsUsados] = useState([]);

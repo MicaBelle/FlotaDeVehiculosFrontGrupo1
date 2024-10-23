@@ -3,7 +3,6 @@ import { useSelector } from 'react-redux';
 import TablaDeColectivos from '../TablaColectivos/TablaColectivos';
 import { RegistroDeColectivo } from '../RegistroDeColectivo/RegistroDeColectivo';
 import { HistorialDeMantenimientos } from '../HistorialDeMantenimiento/HistorialDeMantenimientos';
-import TablaDeInventario from '../RegistroItemInventario/TablaInventario';
 import AsignarTareas from '../AsignarTareas/AsignarTareas';
 import { TareasAsignadas } from '../TareasAsignadas/TareasAsignadas';
 import TablaDeChoferes from '../TablaChoferes/TablaDeChoferes';
@@ -12,6 +11,7 @@ import { MetricaStock } from '../../MetricasGlobales/MetricaStock/MetricaStock';
 import { MetricaFlota } from '../../MetricasGlobales/MetricaFlota/MetricaFlota';
 import TablaPedidosRealizados from '../TablaPedidos/TablaPedidosRealizados';
 import { RegistroProveedor } from '../RegistroProveedor.jsx/RegistroProveedor';
+import TablaDeInventario from '../TablaInventario/TablaInventario';
 
 
 

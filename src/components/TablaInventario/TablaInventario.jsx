@@ -3,8 +3,12 @@ import { Input, Button } from "@nextui-org/react";
 import { obtenerItems, modificarPresupuesto } from "../../services/inventarioService";
 import { useSelector } from "react-redux";
 import TablaGenerica from "../TablaGenerica/TablaGenerica";
-import RegistroItemInventario from "./RegistroItemInventario";
-import RegistroModificarPresupuesto from './RegistroModificarPresupuesto '
+import RegistroItemInventario from "../../components/RegistroItemInventario/RegistroItemInventario";
+import RegistroModificarPresupuesto from "../../components/RegistroItemInventario/RegistroModificarPresupuesto ";
+import { RealizarPedido } from "../RealizarPedido/RealizarPedido";
+import { showsuccessAlert } from "../SweetAlert/SweetAlertSucces";
+import { showErrorAlert } from "../SweetAlert/SweetAlertError";
+import { generarPedido } from "../../services/proveedoresYPedidosController";
 
 
 const columns = [
@@ -20,6 +24,8 @@ export function TablaDeInventario({ userRole, onItemSeleccionado }) {
   const [filterValue, setFilterValue] = useState("");
   const [showRegistro, setShowRegistro] = useState(false);
   const [showModificarPresupuesto, setShowModificarPresupuesto] = useState(false);
+  const [selectedItemId, setSelectedItemId] = useState(null);
+  const [showRealizarPedido, setShowRealizarPedido] = useState(false);
   const token = useSelector((state) => state.user.token);
 
   useEffect(() => {
@@ -63,33 +69,60 @@ export function TablaDeInventario({ userRole, onItemSeleccionado }) {
     onItemSeleccionado(itemId, itemNombre);
   };
 
+  const handleRealizarPedidoClick = (itemId) => {
+    setSelectedItemId(itemId);
+    setShowRealizarPedido(true);
+  };
+
   const handleModificarPresupuesto = async (data) => {
-   
     try {
       const response = await modificarPresupuesto(data, token);
-      
-  
       if (response) {
-        console.log("Presupuesto modificado exitosamente", response);
-        alert("Presupuesto modificado exitosamente"); 
+        showsuccessAlert('¡Se modificó el presupuesto!', 'El presuspuesto fue modificado correctamente');
         setShowModificarPresupuesto(false);
       }
     } catch (error) {
-      console.error("Error al modificar el presupuesto:", error);
-      alert("Error al modificar el presupuesto"); 
+      showErrorAlert('Error al modificar el presupuesto', error);
+    }
+  };
+
+  const handlePedidoSubmit = async (data) => {
+    console.log(data);
+    try {
+      const response = await generarPedido(data, token); 
+      if (response) {
+        showsuccessAlert('¡Pedido realizado!', 'El pedido fue realizado correctamente');
+        setShowRealizarPedido(false);
+      }
+    } catch (error) {
+      showErrorAlert('Error al generar un pedido', error.message);
     }
   };
   
   
+
   const renderCell = (item, columnKey) => {
-    if (columnKey === "acciones" && userRole === "OPERADOR") {
-      return (
-        <Button onClick={() => handleUtilizarClick(item.id, item.nombre)} color="success">
-          Utilizar
-        </Button>
-      );
+    switch (columnKey) {
+      case "acciones":
+        switch (userRole) {
+          case "OPERADOR":
+            return (
+              <Button onClick={() => handleUtilizarClick(item.id, item.nombre)} color="success">
+                Utilizar
+              </Button>
+            );
+          case "SUPERVISOR":
+            return (
+              <Button onClick={() => handleRealizarPedidoClick(item.id)} color="success">
+                Realizar pedido
+              </Button>
+            );
+          default:
+            return null;
+        }
+      default:
+        return item[columnKey];
     }
-    return item[columnKey];
   };
 
   const topContent = (
@@ -118,7 +151,7 @@ export function TablaDeInventario({ userRole, onItemSeleccionado }) {
     if (userRole === "OPERADOR") {
       return columns.filter((col) => col.uid !== "cantCompraAutomatica");
     }
-    if (userRole === "ADMINISTRADOR" || userRole === "SUPERVISOR") {
+    if (userRole === "ADMINISTRADOR") {
       return columns.filter((col) => col.uid !== "acciones");
     }
     return columns;
@@ -132,6 +165,12 @@ export function TablaDeInventario({ userRole, onItemSeleccionado }) {
         <RegistroModificarPresupuesto
           onCancel={() => setShowModificarPresupuesto(false)}
           onSubmit={handleModificarPresupuesto}
+        />
+      ) : showRealizarPedido ? (
+        <RealizarPedido
+          idItem={selectedItemId} 
+          onCancel={() => setShowRealizarPedido(false)}
+          onSubmit={handlePedidoSubmit}
         />
       ) : (
         <TablaGenerica
