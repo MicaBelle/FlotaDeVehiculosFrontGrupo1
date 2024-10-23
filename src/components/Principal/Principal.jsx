@@ -11,6 +11,7 @@ import { MetricaBitacora } from '../../MetricasGlobales/MetricaBitacora/MetricaB
 import { MetricaStock } from '../../MetricasGlobales/MetricaStock/MetricaStock';
 import { MetricaFlota } from '../../MetricasGlobales/MetricaFlota/MetricaFlota';
 import TablaPedidosRealizados from '../TablaPedidos/TablaPedidosRealizados';
+import { RegistroProveedor } from '../RegistroProveedor.jsx/RegistroProveedor';
 
 
 
@@ -24,6 +25,7 @@ export const Principal = ({ activeMenu }) => {
       {activeMenu === 'Registro' && userRole === 'ADMINISTRADOR' && <RegistroDeColectivo />} 
       {activeMenu === 'Inventario' && (userRole === 'ADMINISTRADOR' || userRole === 'SUPERVISOR' || userRole === 'OPERADOR' ) && <TablaDeInventario userRole={userRole} />}
       {activeMenu === 'Choferes' && userRole === 'ADMINISTRADOR' && <TablaDeChoferes/> }  
+      {activeMenu === 'RegistroProveedor' && userRole === 'ADMINISTRADOR' && <RegistroProveedor/> }
       {activeMenu === 'Pedidos' && userRole === 'SUPERVISOR' && <TablaPedidosRealizados/> }  
       {activeMenu === 'Colectivos' && <TablaDeColectivos userRole={userRole} />} 
       {activeMenu === 'Mantenimientos' && <HistorialDeMantenimientos userRole={userRole} />} 
