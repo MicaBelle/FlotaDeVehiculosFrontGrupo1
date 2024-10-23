@@ -10,6 +10,8 @@ import {
 } from "@nextui-org/react";
 import { verMantenimientosPendientes, asignarMantenimiento } from "../../services/mantenimientoService"; 
 import { useSelector } from "react-redux"; 
+import { showsuccessAlert } from "../SweetAlert/SweetAlertSucces";
+import { showErrorAlert } from "../SweetAlert/SweetAlertError";
 
 const columns = [
   { uid: "patente", name: "Patente" },
@@ -46,9 +48,10 @@ export function AsignarMantenimiento() {
       
       await fetchMantenimientosPendientes();
   
-      console.log(`Mantenimiento de patente ${mantenimiento.vehiculo.patente} asignado con éxito`);
+      showsuccessAlert('¡Mantenimiento asignado!',`El mantenimiento fue asiganado correctamente`)
+      
     } catch (error) {
-      console.error("Error al asignar el mantenimiento:", error);
+      showErrorAlert(`No se pudo asignar mantenimiento`,error)
     } finally {
       setIsLoading(false);
     }

@@ -84,9 +84,9 @@ export function TablaPedidosRealizados() {
         onClear={() => setFilterValue("")}
         onValueChange={setFilterValue}
       />
-      <div className="flex gap-2">
+      {/*<div className="flex gap-2">
         <Button onClick={() => handleFilterByStatus("all")}>Todos</Button>
-      </div>
+      </div>*/}
     </div>
   );
 
