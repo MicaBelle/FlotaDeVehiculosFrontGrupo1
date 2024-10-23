@@ -10,7 +10,6 @@ const columns = [
   { uid: "patente", name: "PATENTE" },
   { uid: "antiguedad", name: "ANTIGÜEDAD" },
   { uid: "kilometraje", name: "KILOMETRAJE" },
-  { uid: "litrosDeTanque", name: "LITROS DE TANQUE" },
   { uid: "estado", name: "ESTADO" },
   { uid: "fechaDeRevision", name: "FECHA DE REVISION" },
   { uid: "actions", name: "ACCIONES" },
@@ -38,7 +37,6 @@ export function TablaDeColectivos({ userRole }) {
           patente: item.patente,
           antiguedad: item.antiguedad,
           kilometraje: item.kilometraje,
-          litrosDeTanque: item.litrosDeTanque || 800,
           estado: item.estadoDeHabilitacion || "Desconocido",
           fechaDeRevision: item.fechaVencimiento ? new Intl.DateTimeFormat('es-ES', { year: 'numeric', month: 'long', day: 'numeric' }).format(new Date(item.fechaVencimiento)) : "Sin fecha",
         }));

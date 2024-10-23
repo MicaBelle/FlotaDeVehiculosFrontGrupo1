@@ -121,7 +121,7 @@ export const Login = () => {
               {error && <p className="error-message">{error}</p>}
               <div className="btn">
                 <button className="button1" type="submit">
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;login&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Iniciar sesion&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 </button>
               </div>
             </form>

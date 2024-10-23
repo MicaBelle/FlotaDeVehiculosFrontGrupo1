@@ -10,7 +10,6 @@ export const RegistroDeColectivo = () => {
     patente: '',
     antiguedad: '',
     kilometraje: '',
-    litrosDeTanque: 800,
     modelo: '',  
     fechaRevision: '',  
   });
@@ -65,7 +64,6 @@ export const RegistroDeColectivo = () => {
       patente: formData.patente.toUpperCase(),
       antiguedad: parseInt(formData.antiguedad),  
       kilometraje: parseInt(formData.kilometraje),  
-      litrosDeTanque: formData.litrosDeTanque,
       modelo: formData.modelo, 
       fechaRevision: fechaRevisionString, 
     };
@@ -76,7 +74,6 @@ export const RegistroDeColectivo = () => {
         patente: '',
         antiguedad: '',
         kilometraje: '',
-        litrosDeTanque: 800,
         modelo: '',  
         fechaRevision: '',  
       });
@@ -130,18 +127,6 @@ export const RegistroDeColectivo = () => {
               required
               className="input-field"
               min="0"
-            />
-          </label>
-        </div>
-        <div className="form-group">
-          <label className="label">
-            Litros de Tanque:
-            <input
-              type="number"
-              name="litrosDeTanque" 
-              value={formData.litrosDeTanque} 
-              readOnly
-              className="input-field"
             />
           </label>
         </div>
