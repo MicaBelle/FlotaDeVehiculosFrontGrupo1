@@ -12,6 +12,7 @@ import { MetricaFlota } from '../../MetricasGlobales/MetricaFlota/MetricaFlota';
 import TablaPedidosRealizados from '../TablaPedidos/TablaPedidosRealizados';
 import { RegistroProveedor } from '../RegistroProveedor.jsx/RegistroProveedor';
 import TablaDeInventario from '../TablaInventario/TablaInventario';
+import { TablaDeProveedores } from '../TablaProveedores/TablaProveedores';
 
 
 
@@ -27,6 +28,7 @@ export const Principal = ({ activeMenu }) => {
       {activeMenu === 'Choferes' && (userRole === 'ADMINISTRADOR' || userRole === 'SUPERVISOR') && <TablaDeChoferes/> }  
       {activeMenu === 'RegistroProveedor' && userRole === 'ADMINISTRADOR' && <RegistroProveedor/> }
       {activeMenu === 'Pedidos' && userRole === 'SUPERVISOR' && <TablaPedidosRealizados/> }  
+      {activeMenu === 'Proveedores' && userRole === 'SUPERVISOR' && <TablaDeProveedores/> }  
       {activeMenu === 'Colectivos' && <TablaDeColectivos userRole={userRole} />} 
       {activeMenu === 'Mantenimientos' && <HistorialDeMantenimientos userRole={userRole} />} 
       {activeMenu === 'AsignarTarea' && userRole === 'OPERADOR' &&  <AsignarTareas/> } 

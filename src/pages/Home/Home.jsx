@@ -51,6 +51,8 @@ export const Home = () => {
               <div className={`MenuItem ${activeMenu === 'Inventario' ? 'active' : ''}`} onClick={() => handleMenuClick('Inventario')}>Inventario</div>
               <div className={`MenuItem ${activeMenu === 'Pedidos' ? 'active' : ''}`} onClick={() => handleMenuClick('Pedidos')}>Pedidos</div>
               <div className={`MenuItem ${activeMenu === 'Choferes' ? 'active' : ''}`} onClick={() => handleMenuClick('Choferes')}>Choferes</div>
+              <div className={`MenuItem ${activeMenu === 'Proveedores' ? 'active' : ''}`} onClick={() => handleMenuClick('Proveedores')}>Proveedores</div>
+              
             </>
           )}
           {userRole === 'OPERADOR' && (
