@@ -25,6 +25,7 @@ export function TablaDeChoferes() {
   const [mostrarRegistroDeChofer, setMostrarRegistroDeChofer] = useState(false);
   const [loading, setLoading] = useState(true);
   const [timeoutId, setTimeoutId] = useState(null);
+  const { role } = useSelector((state) => state.user);
 
   const token = useSelector((state) => state.user.token);
 
@@ -134,9 +135,10 @@ export function TablaDeChoferes() {
         onClear={() => setFilterValue("")}
         onValueChange={setFilterValue}
       />
+      {role==="ADMINISTRADOR" && 
       <Button onClick={() => setMostrarRegistroDeChofer(true)} color="primary">
         Registrar chofer
-      </Button>
+      </Button>}
       <div className="flex gap-2">
         <Button onClick={() => handleFilterByStatus("all")}>Todos</Button>
         <Button onClick={() => handleFilterByStatus("HABILITADO")}>Habilitados</Button>
@@ -163,14 +165,18 @@ export function TablaDeChoferes() {
       case "actions":
         return (
           <div>
-            <Button
+           {
+            
+          role === "ADMINISTRADOR" &&
+          <Button
               color={item.estado === "HABILITADO" ? "danger" : "success"}
               onClick={() => handleToggleEstado(item)}
             >
               {item.estado === "HABILITADO" ? "Inhabilitar" : "Habilitar"}
             </Button>
+           } 
             
-            { item.estado === "HABILITADO" &&
+            { item.estado === "HABILITADO" && role === "SUPERVISOR" &&
                <Button color="warning" onClick={() => asignarVehiculo(item.id)}>
                Asignar Vehículo
              </Button>

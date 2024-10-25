@@ -24,7 +24,7 @@ export const Principal = ({ activeMenu }) => {
     <div>
       {activeMenu === 'Registro' && userRole === 'ADMINISTRADOR' && <RegistroDeColectivo />} 
       {activeMenu === 'Inventario' && (userRole === 'ADMINISTRADOR' || userRole === 'SUPERVISOR' || userRole === 'OPERADOR' ) && <TablaDeInventario userRole={userRole} />}
-      {activeMenu === 'Choferes' && userRole === 'ADMINISTRADOR' && <TablaDeChoferes/> }  
+      {activeMenu === 'Choferes' && (userRole === 'ADMINISTRADOR' || userRole === 'SUPERVISOR') && <TablaDeChoferes/> }  
       {activeMenu === 'RegistroProveedor' && userRole === 'ADMINISTRADOR' && <RegistroProveedor/> }
       {activeMenu === 'Pedidos' && userRole === 'SUPERVISOR' && <TablaPedidosRealizados/> }  
       {activeMenu === 'Colectivos' && <TablaDeColectivos userRole={userRole} />} 

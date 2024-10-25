@@ -7,7 +7,6 @@ import { showErrorAlert } from '../SweetAlert/SweetAlertError';
 import { showsuccessAlert } from '../SweetAlert/SweetAlertSucces';
 
 export const RegistrarNuevoChofer = ({ onSubmit, onCancel }) => {
-  const [successMessage, setSuccessMessage] = useState(false);
   const [formData, setFormData] = useState({
     username: '',
     password: '',
