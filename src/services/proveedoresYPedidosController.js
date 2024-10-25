@@ -9,7 +9,7 @@ public class RegistroProveedorRequestDTO {
 }
 */
 export const registrarProveedor = async (data, token) => {
-    const endpoint = backendUrl + '/pedido/registrarProveedor';
+    const endpoint = backendUrl + '/pedido/registrar';
     return await executeFetch(endpoint, data, HttpMethods.POST, token, 201);
 };
 
@@ -21,8 +21,19 @@ public class AsociacionProveedorDeITemDTO {
 }
 */
 export const asociarProveedor = async (data, token) => {
-    const endpoint = backendUrl + '/pedido/asociarProveedor';
+    const endpoint = backendUrl + '/pedido/asociarAitem';
     return await executeFetch(endpoint, data, HttpMethods.POST, token, 201);
+};
+
+
+export const verProveedores = async (token) => {
+    const endpoint = backendUrl + '/proveedor/verAll';
+    return await executeFetch(endpoint, null, HttpMethods.GET, token, 200);
+};
+
+export const verProveedoresDeItems = async (token) => {
+    const endpoint = backendUrl + '/proveedor/verProveedoresDeItems';
+    return await executeFetch(endpoint, null, HttpMethods.GET, token, 200);
 };
 
 /* 
@@ -53,6 +64,16 @@ export const verPedidos = async (token) => {
     return await executeFetch(endpoint, null, HttpMethods.GET, token, 200);
 };
 
+export const verPedidosRechazadosYpendientes = async (token) => {
+    const endpoint = backendUrl + '/pedido/PedidosRechazadosYpendientes';
+    return await executeFetch(endpoint, null, HttpMethods.GET, token, 200);
+};
+
+export const verPedidosAceptados = async (token) => {
+    const endpoint = backendUrl + '/pedido/aceptados';
+    return await executeFetch(endpoint, null, HttpMethods.GET, token, 200);
+};
+
 /*
 public class PedidoManualDTO {
     Integer cantidad;
@@ -64,5 +85,10 @@ public class PedidoManualDTO {
 export const generarPedido = async (data, token) => {
     const endpoint = backendUrl + '/pedido/generarPedido';
     return await executeFetch(endpoint, data, HttpMethods.POST, token, 201);
+};
+
+export const confirmarPedidoRecibido = async (id, token) => { 
+    const endpoint = backendUrl + '/pedido/confirmarPedidoRecibido/' + id;
+    return await executeFetch(endpoint, null, HttpMethods.PATCH, token, 200);
 };
 
