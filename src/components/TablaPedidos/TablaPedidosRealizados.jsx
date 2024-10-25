@@ -1,9 +1,11 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useSelector } from 'react-redux';
-import { verPedidos } from "../../services/proveedoresYPedidosController";
+
 import Loader from "../Loader/Loader";
 import { Input, Button, Chip } from "@nextui-org/react";
 import TablaGenerica from "../TablaGenerica/TablaGenerica";
+import { verPedidosRechazadosYpendientes } from "../../services/proveedoresYPedidosController";
+
 
 const columns = [
   { uid: "nombre", name: "NOMBRE" },
@@ -25,7 +27,7 @@ export function TablaPedidosRealizados() {
   const fetchData = async () => {
     setLoading(true);
     try {
-      const response = await verPedidos(token);
+      const response = await verPedidosRechazadosYpendientes(token);
       if (response) {
         const mappedRows = response.map((item, index) => {
           const formattedDate = item.fecha 
@@ -84,9 +86,11 @@ export function TablaPedidosRealizados() {
         onClear={() => setFilterValue("")}
         onValueChange={setFilterValue}
       />
-      {/*<div className="flex gap-2">
+      <div className="flex gap-2">
         <Button onClick={() => handleFilterByStatus("all")}>Todos</Button>
-      </div>*/}
+        <Button onClick={() => handleFilterByStatus("RECHAZADO")}>Rechazados</Button>
+        <Button onClick={() => handleFilterByStatus("PENDIENTE")}>Pendientes</Button>
+      </div>
     </div>
   );
 
@@ -98,7 +102,7 @@ export function TablaPedidosRealizados() {
         return (
           <Chip
             className="capitalize"
-            color={cellValue === "PENDIENTE" ? "warning" : "success"}
+            color={cellValue === "RECHAZADO" ? "danger" : "warning"}
             size="sm"
             variant="flat"
           >
